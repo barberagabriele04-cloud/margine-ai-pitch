@@ -749,6 +749,186 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
 .status-badge.pending{background:var(--amber-bg);color:#8A5A18}
 .status-badge.cancelled{background:var(--rust-bg);color:var(--rust)}
 
+/* ---------- Notifications dropdown ---------- */
+.notif-wrapper{position:relative}
+.notif-dropdown{
+  position:absolute;
+  top:calc(100% + 10px);right:0;
+  width:380px;max-width:calc(100vw - 32px);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  z-index:60;
+  animation:fadeInDrop .2s ease;
+}
+@keyframes fadeInDrop{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.notif-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper-soft);
+}
+.notif-header h3{
+  font-family:var(--serif);font-size:18px;font-weight:400;
+  letter-spacing:-0.01em;color:var(--ink);line-height:1;
+}
+.notif-clear{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--ink-3);text-transform:uppercase;letter-spacing:0.12em;
+  transition:color .15s;
+}
+.notif-clear:hover{color:var(--green-700)}
+.notif-list{max-height:440px;overflow-y:auto}
+.notif-item{
+  display:grid;grid-template-columns:36px 1fr;gap:12px;
+  padding:14px 18px 14px 22px;
+  border-bottom:1px solid var(--line-2);
+  transition:background .15s;
+  align-items:start;
+  position:relative;
+  cursor:pointer;
+}
+.notif-item:hover{background:var(--surface-2)}
+.notif-item:last-child{border-bottom:none}
+.notif-item.unread::before{
+  content:"";
+  position:absolute;left:8px;top:24px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green-500);
+}
+.notif-item .notif-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.notif-icon.urgent{background:var(--rust-bg);color:var(--rust)}
+.notif-icon.warning{background:var(--amber-bg);color:#8A5A18}
+.notif-icon.info{background:var(--green-50);color:var(--green-800)}
+.notif-icon.neutral{background:var(--paper-soft);color:var(--ink-3)}
+.notif-icon svg{width:16px;height:16px}
+.notif-body .notif-title{
+  font-size:13px;font-weight:500;color:var(--ink);line-height:1.35;
+}
+.notif-body .notif-desc{
+  font-size:12px;color:var(--ink-3);
+  margin-top:4px;line-height:1.45;
+}
+.notif-body .notif-time{
+  font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  margin-top:6px;letter-spacing:0.04em;
+}
+.notif-footer{
+  display:block;text-align:center;
+  padding:12px 18px;
+  font-size:12px;font-weight:500;
+  color:var(--green-800);
+  border-top:1px solid var(--line);
+  background:var(--paper-soft);
+  transition:background .15s;
+  text-decoration:none;
+}
+.notif-footer:hover{background:#fff}
+
+/* ---------- Shift edit modal ---------- */
+.shift-modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(14,20,16,0.45);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;padding:20px;
+  animation:fadeInOverlay .2s ease;
+}
+@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
+.shift-modal{
+  background:var(--surface);
+  border-radius:16px;
+  padding:24px 28px 20px;
+  width:380px;max-width:100%;
+  box-shadow:var(--shadow-lg);
+  animation:slideInModal .25s ease;
+}
+@keyframes slideInModal{
+  from{opacity:0;transform:translateY(-12px) scale(0.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.shift-modal-meta{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:var(--green-700);margin-bottom:6px;
+}
+.shift-modal-title{
+  font-family:var(--serif);font-size:24px;font-weight:400;
+  letter-spacing:-0.01em;color:var(--ink);line-height:1.1;
+}
+.shift-modal-form{
+  margin-top:20px;display:flex;flex-direction:column;gap:14px;
+}
+.shift-modal-form label{
+  display:flex;flex-direction:column;gap:6px;
+  font-size:11px;color:var(--ink-3);font-weight:500;
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:0.12em;
+}
+.shift-modal-form select,
+.shift-modal-form input{
+  padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  font-size:14px;color:var(--ink);font-family:var(--sans);
+  background:var(--surface-2);
+  text-transform:none;letter-spacing:normal;
+}
+.shift-modal-form select:focus,
+.shift-modal-form input:focus{
+  outline:2px solid var(--green-700);outline-offset:0;border-color:var(--green-700);
+}
+.shift-times{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.shift-times.hidden{display:none}
+.shift-modal-actions{
+  display:flex;gap:10px;justify-content:flex-end;
+  margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--line-2);
+}
+
+/* ---------- Toast notifications ---------- */
+.toast-container{
+  position:fixed;
+  bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;gap:8px;
+  z-index:200;
+  pointer-events:none;
+}
+.toast{
+  background:var(--green-900);color:var(--paper);
+  padding:12px 18px;
+  border-radius:10px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-lg);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .25s, transform .25s;
+  pointer-events:auto;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast .toast-icon{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--green-500);color:var(--green-900);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-weight:700;font-size:11px;
+}
+
+/* Make shift cells visibly clickable */
+.shift-cell{cursor:pointer;transition:background .15s}
+.staff-row > .shift-cell:hover{background:var(--green-50) !important}
+.staff-row > .shift-cell:hover .shift{transform:scale(1.04);box-shadow:0 2px 6px rgba(15,77,58,0.18)}
+.shift{transition:transform .15s, box-shadow .15s}
+
 /* Chat preview */
 .chat-preview{
   background:#0B141A;
@@ -1004,10 +1184,91 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
           <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>Cerca fattura, fornitore, prenotazione…</span>
         </div>
-        <button class="icon-btn" aria-label="Notifiche">
-          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 014 4v3l1.5 2.5h-11L4 9V6a4 4 0 014-4zm-2 12a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          <span class="dot-notif"></span>
-        </button>
+        <div class="notif-wrapper">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifiche" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 014 4v3l1.5 2.5h-11L4 9V6a4 4 0 014-4zm-2 12a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            <span class="dot-notif"></span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown" hidden>
+            <div class="notif-header">
+              <h3>Notifiche</h3>
+              <button class="notif-clear" type="button">Segna tutte come lette</button>
+            </div>
+            <div class="notif-list">
+              <a href="#fatture" class="notif-item unread">
+                <div class="notif-icon urgent" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 7v3M8 12v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Macelleria Ferri scade DOMANI</div>
+                  <div class="notif-desc">Fattura €1.240 — pagamento entro il 6 maggio. Saldo cassa proiettato: ok.</div>
+                  <div class="notif-time">2 minuti fa</div>
+                </div>
+              </a>
+              <a href="#personale" class="notif-item unread">
+                <div class="notif-icon warning" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M5 6a3 3 0 106 0 3 3 0 00-6 0zM2 14a6 6 0 0112 0H2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Sabato cena: serve un cameriere extra</div>
+                  <div class="notif-desc">64 coperti previsti, hai 3 in sala. Soglia di stress superata: aggiungi Tommaso 19—24.</div>
+                  <div class="notif-time">15 minuti fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item unread">
+                <div class="notif-icon warning" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M2 12l4-5 3 2 5-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 2h3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Olio EVO Frantoio Rinaldi: prezzo +22%</div>
+                  <div class="notif-desc">In 6 settimane il prezzo è passato da €5,80 a €7,08/lt. Volume tuo 18lt/mese → impatto €78/mese.</div>
+                  <div class="notif-time">1 ora fa</div>
+                </div>
+              </a>
+              <a href="#prenotazioni" class="notif-item">
+                <div class="notif-icon info" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M14 8a6 6 0 11-2.5-4.9L14 2v3.5h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Nuova prenotazione confermata</div>
+                  <div class="notif-desc">Famiglia Russo · 4 coperti · oggi 20:30 · ⚠ 1 celiaco segnalato</div>
+                  <div class="notif-time">3 ore fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon urgent" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Burrata 250g: +28% in 6 settimane</div>
+                  <div class="notif-desc">Caseificio La Sorgente. Da €4,20 a €5,38/cad. Confronto fornitori disponibile.</div>
+                  <div class="notif-time">5 ore fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon info" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M14 2H6a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6h6M8 9h6M8 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">47 nuove fatture classificate</div>
+                  <div class="notif-desc">Settimana 18: 31 acquisti, 8 utenze, 6 servizi, 2 catering attivi.</div>
+                  <div class="notif-time">ieri</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon neutral" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="scale(0.6) translate(2 2)"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Report del lunedì inviato</div>
+                  <div class="notif-desc">Settimana 18 · 3 azioni consegnate su WhatsApp alle 7:30. Risparmio stimato: €212/mese.</div>
+                  <div class="notif-time">2 giorni fa</div>
+                </div>
+              </a>
+            </div>
+            <a class="notif-footer" href="#">Vedi tutte le notifiche →</a>
+          </div>
+        </div>
         <button class="icon-btn" aria-label="Impostazioni">
           <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 8a5.5 5.5 0 00-.1-1l1.4-1-1.5-2.6-1.6.6a5.5 5.5 0 00-1.7-1L9.5 1h-3l-.5 1.6a5.5 5.5 0 00-1.7 1l-1.6-.6L1.2 6l1.4 1A5.5 5.5 0 002.5 8c0 .3 0 .7.1 1l-1.4 1 1.5 2.6 1.6-.6a5.5 5.5 0 001.7 1L6.5 15h3l.5-1.6a5.5 5.5 0 001.7-1l1.6.6 1.5-2.6-1.4-1c.1-.3.1-.7.1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         </button>
@@ -1885,6 +2146,42 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
   </main>
 </div>
 
+<!-- ============ Shift edit modal ============ -->
+<div class="shift-modal-overlay" id="shiftModalOverlay" hidden>
+  <div class="shift-modal">
+    <div class="shift-modal-meta" id="shiftModalMeta">Membro staff · Giorno</div>
+    <div class="shift-modal-title">Modifica turno</div>
+    <div class="shift-modal-form">
+      <label>
+        <span>Tipo</span>
+        <select id="shiftType">
+          <option value="cena">Cena</option>
+          <option value="pranzo">Pranzo</option>
+          <option value="doppio">Doppio turno</option>
+          <option value="riposo">Riposo</option>
+        </select>
+      </label>
+      <div class="shift-times" id="shiftTimes">
+        <label>
+          <span>Dalle</span>
+          <input type="time" id="shiftFrom" value="19:00" />
+        </label>
+        <label>
+          <span>Alle</span>
+          <input type="time" id="shiftTo" value="23:00" />
+        </label>
+      </div>
+    </div>
+    <div class="shift-modal-actions">
+      <button class="btn-secondary" type="button" id="shiftCancel">Annulla</button>
+      <button class="btn-primary-app" type="button" id="shiftSave">Salva turno</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast container ============ -->
+<div class="toast-container" id="toastContainer"></div>
+
 <script>
 (function(){
   const PAGES = {
@@ -1921,16 +2218,239 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
     });
   });
 
-  // Suggest apply (visual)
+  // Suggest apply (visual + toast)
   document.querySelectorAll('.suggest-apply, .alert-action, .inv-action:not(.disabled):not(.secondary)').forEach(btn => {
     btn.addEventListener('click', e => {
       const b = e.currentTarget;
       const original = b.textContent;
       b.textContent = '✓ fatto';
       b.style.background = 'var(--green-700)';
-      setTimeout(() => { b.textContent = original; b.style.background = ''; }, 1400);
+      const action = original.toLowerCase();
+      let msg = 'Azione applicata';
+      if (action.includes('paga')) msg = 'Fattura segnata come pagata';
+      else if (action.includes('applica')) msg = 'Suggerimento applicato';
+      else if (action.includes('alternativa')) msg = 'Confronto fornitori aperto';
+      else if (action.includes('disdici')) msg = 'Promemoria disdetta inviato';
+      else if (action.includes('confronta')) msg = 'Confronto fornitori avviato';
+      showToast(msg);
+      setTimeout(() => { b.textContent = original; b.style.background = ''; }, 1800);
     });
   });
+
+  // ============ Toast helper ============
+  function showToast(text){
+    const container = document.getElementById('toastContainer');
+    if(!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<span class="toast-icon">✓</span><span>' + text + '</span>';
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 2400);
+  }
+  window.showToast = showToast;
+
+  // ============ Notifications dropdown ============
+  const notifBtn = document.getElementById('notifBtn');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const dotNotif = notifBtn ? notifBtn.querySelector('.dot-notif') : null;
+
+  function updateUnreadDot(){
+    if(!dotNotif) return;
+    const hasUnread = !!notifDropdown.querySelector('.notif-item.unread');
+    dotNotif.style.display = hasUnread ? '' : 'none';
+  }
+
+  if(notifBtn && notifDropdown){
+    notifBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = !notifDropdown.hidden;
+      notifDropdown.hidden = isOpen;
+      notifBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    document.addEventListener('click', e => {
+      if(!notifDropdown.hidden && !notifDropdown.contains(e.target) && !notifBtn.contains(e.target)){
+        notifDropdown.hidden = true;
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    notifDropdown.addEventListener('click', e => {
+      const item = e.target.closest('.notif-item');
+      if(item){
+        item.classList.remove('unread');
+        updateUnreadDot();
+      }
+      const link = e.target.closest('a.notif-item, a.notif-footer');
+      if(link){
+        setTimeout(() => {
+          notifDropdown.hidden = true;
+          notifBtn.setAttribute('aria-expanded', 'false');
+        }, 60);
+      }
+    });
+
+    const clearBtn = notifDropdown.querySelector('.notif-clear');
+    if(clearBtn){
+      clearBtn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        notifDropdown.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
+        updateUnreadDot();
+        showToast('Notifiche segnate come lette');
+      });
+    }
+  }
+
+  // ============ Shift edit modal ============
+  const shiftModalOverlay = document.getElementById('shiftModalOverlay');
+  const shiftType = document.getElementById('shiftType');
+  const shiftFrom = document.getElementById('shiftFrom');
+  const shiftTo = document.getElementById('shiftTo');
+  const shiftTimes = document.getElementById('shiftTimes');
+  const shiftSave = document.getElementById('shiftSave');
+  const shiftCancel = document.getElementById('shiftCancel');
+  const shiftModalMeta = document.getElementById('shiftModalMeta');
+
+  let activeShiftCell = null;
+
+  function openShiftModal(cell){
+    activeShiftCell = cell;
+
+    const row = cell.closest('.staff-row');
+    const staffName = row && row.querySelector('.staff-name') ? row.querySelector('.staff-name').textContent.trim() : 'Membro staff';
+
+    const cellsInRow = row ? Array.from(row.children) : [];
+    const cellIndex = cellsInRow.indexOf(cell); // 0 = staff name, 1-7 = days
+    const dayHeaders = document.querySelectorAll('.staff-week-head .day-col-h');
+    const dayHeader = dayHeaders[cellIndex - 1];
+    let dayLabel = 'Giorno';
+    if(dayHeader){
+      const dn = dayHeader.querySelector('.day-name')?.textContent.trim();
+      const dd = dayHeader.querySelector('.day-date')?.textContent.trim();
+      dayLabel = (dn && dd) ? (dn + ' ' + dd + ' maggio') : dayLabel;
+    }
+    shiftModalMeta.textContent = staffName + ' · ' + dayLabel;
+
+    // Determine current state from cell content
+    const shifts = cell.querySelectorAll('.shift');
+    const firstShift = shifts[0];
+    const txt = firstShift ? firstShift.textContent.trim() : '';
+
+    if(!firstShift || txt === '—'){
+      shiftType.value = 'cena';
+      shiftFrom.value = '19:00';
+      shiftTo.value = '23:00';
+      shiftTimes.classList.remove('hidden');
+    } else if(firstShift.classList.contains('off')){
+      shiftType.value = 'riposo';
+      shiftTimes.classList.add('hidden');
+    } else {
+      const m = txt.match(/(\d{1,2})\D+(\d{1,2})/);
+      if(m){
+        const fromHour = parseInt(m[1], 10);
+        const toHour = parseInt(m[2], 10);
+        if(shifts.length > 1){
+          shiftType.value = 'doppio';
+          shiftFrom.value = '12:00';
+          shiftTo.value = '23:00';
+        } else if(fromHour < 14){
+          shiftType.value = 'pranzo';
+          shiftFrom.value = String(fromHour).padStart(2,'0') + ':00';
+          shiftTo.value = String(toHour).padStart(2,'0') + ':00';
+        } else {
+          shiftType.value = 'cena';
+          shiftFrom.value = String(fromHour).padStart(2,'0') + ':00';
+          shiftTo.value = String(toHour).padStart(2,'0') + ':00';
+        }
+      } else {
+        shiftType.value = 'cena';
+        shiftFrom.value = '19:00';
+        shiftTo.value = '23:00';
+      }
+      shiftTimes.classList.remove('hidden');
+    }
+
+    shiftModalOverlay.hidden = false;
+    setTimeout(() => shiftType.focus(), 50);
+  }
+
+  function closeShiftModal(){
+    shiftModalOverlay.hidden = true;
+    activeShiftCell = null;
+  }
+
+  function saveShift(){
+    if(!activeShiftCell) return;
+    const type = shiftType.value;
+
+    if(type === 'riposo'){
+      activeShiftCell.innerHTML = '<span class="shift off">riposo</span>';
+    } else {
+      const fromInt = parseInt(shiftFrom.value.split(':')[0], 10);
+      const toInt = parseInt(shiftTo.value.split(':')[0], 10);
+      if(type === 'doppio'){
+        activeShiftCell.innerHTML = '<span class="shift full">' + fromInt + '—15</span><span class="shift">19—' + toInt + '</span>';
+      } else if(type === 'pranzo'){
+        activeShiftCell.innerHTML = '<span class="shift full">' + fromInt + '—' + toInt + '</span>';
+      } else {
+        activeShiftCell.innerHTML = '<span class="shift">' + fromInt + '—' + toInt + '</span>';
+      }
+    }
+
+    closeShiftModal();
+    showToast('Turno aggiornato');
+  }
+
+  // Shift type change → adjust default times
+  if(shiftType){
+    shiftType.addEventListener('change', () => {
+      if(shiftType.value === 'riposo'){
+        shiftTimes.classList.add('hidden');
+      } else {
+        shiftTimes.classList.remove('hidden');
+        if(shiftType.value === 'pranzo'){
+          shiftFrom.value = '12:00'; shiftTo.value = '15:00';
+        } else if(shiftType.value === 'cena'){
+          shiftFrom.value = '19:00'; shiftTo.value = '23:00';
+        } else if(shiftType.value === 'doppio'){
+          shiftFrom.value = '12:00'; shiftTo.value = '23:00';
+        }
+      }
+    });
+  }
+
+  if(shiftSave) shiftSave.addEventListener('click', saveShift);
+  if(shiftCancel) shiftCancel.addEventListener('click', closeShiftModal);
+  if(shiftModalOverlay){
+    shiftModalOverlay.addEventListener('click', e => {
+      if(e.target === shiftModalOverlay) closeShiftModal();
+    });
+  }
+
+  // Click on shift cells (event delegation, only in personale page)
+  document.addEventListener('click', e => {
+    const cell = e.target.closest('.shift-cell');
+    if(cell && cell.closest('[data-page="personale"]')) openShiftModal(cell);
+  });
+
+  // ESC closes any open overlay
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      if(shiftModalOverlay && !shiftModalOverlay.hidden) closeShiftModal();
+      if(notifDropdown && !notifDropdown.hidden){
+        notifDropdown.hidden = true;
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  // Initial state
+  updateUnreadDot();
 })();
 </script>
 
