@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Margine.ai — Quali dati ci servono per costruire il tuo profilo</title>
+<meta name="description" content="Cosa serve davvero per attivare Margine.ai: cosa prendiamo automaticamente dalle fatture elettroniche, cosa ti chiediamo una volta sola, cosa ci aggiorni ogni settimana." />
+<meta name="theme-color" content="#0F4D3A" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230F4D3A'/><path d='M8 22 L13 14 L17 18 L24 8' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M19 8 L24 8 L24 13' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --green-900:#06281F;
+  --green-800:#0F4D3A;
+  --green-700:#175E47;
+  --green-600:#1D9E75;
+  --green-500:#2BB585;
+  --green-100:#E1F0E8;
+  --green-50:#F0F7F2;
+
+  --paper:#F5F1EA;
+  --paper-soft:#EDE7DA;
+  --ink:#0E1410;
+  --ink-2:#2A322D;
+  --ink-3:#5C6660;
+  --ink-4:#8E948F;
+  --line:rgba(14,20,16,0.10);
+  --line-2:rgba(14,20,16,0.06);
+
+  --amber:#E0A04A;
+  --rust:#C0552B;
+
+  --serif:'Instrument Serif', 'Times New Roman', serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --radius-s:8px;
+  --radius-m:14px;
+  --radius-l:22px;
+  --radius-xl:30px;
+
+  --container:1240px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit;background:none;border:0;cursor:pointer;color:inherit}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+
+/* ---------- Layout primitives ---------- */
+.wrap{max-width:var(--container);margin:0 auto;padding:0 32px}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--green-700);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{
+  content:"";width:18px;height:1px;background:var(--green-700);display:inline-block;
+}
+.eyebrow.on-dark{color:#9BD9BC}
+.eyebrow.on-dark::before{background:#9BD9BC}
+
+h1,h2,h3,h4{font-weight:400;letter-spacing:-0.02em}
+.serif{font-family:var(--serif);font-weight:400;letter-spacing:-0.01em}
+.h-display{font-family:var(--serif);font-size:clamp(48px,7vw,108px);line-height:0.98;letter-spacing:-0.02em}
+.h-section{font-family:var(--serif);font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.015em}
+.lead{font-size:18px;line-height:1.55;color:var(--ink-3);max-width:640px}
+.italic{font-style:italic}
+
+/* ---------- Top nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(245,241,234,0.78);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--line-2);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.logo-mark{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--green-800);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.15);
+}
+.logo-mark svg{width:18px;height:18px}
+.logo-name{font-size:18px;font-weight:500;letter-spacing:-0.02em}
+.logo-name em{font-style:normal;color:var(--green-700);font-family:var(--serif);font-size:21px;letter-spacing:-0.01em;font-weight:400}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:14px;color:var(--ink-2);transition:color .15s}
+.nav-links a:hover{color:var(--green-700)}
+.nav-links a.is-current{color:var(--green-800);font-weight:500}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-800);color:var(--paper);
+  font-size:14px;font-weight:500;
+  padding:10px 16px;border-radius:999px;
+  transition:transform .2s, box-shadow .2s, background .2s;
+}
+.nav-cta:hover{background:var(--green-900);transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,77,58,0.25)}
+.nav-cta svg{width:14px;height:14px}
+@media (max-width:840px){ .nav-links{display:none} }
+
+/* ---------- Page hero (lighter than home hero) ---------- */
+.page-hero{
+  padding:80px 0 72px;
+  position:relative;
+  border-bottom:1px solid var(--line-2);
+  background:
+    radial-gradient(700px 360px at 90% 0%, rgba(43,181,133,0.10), transparent 60%),
+    radial-gradient(500px 300px at 0% 100%, rgba(224,160,74,0.07), transparent 60%),
+    var(--paper);
+}
+.page-hero .back-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--ink-3);margin-bottom:36px;
+  transition:color .15s;
+}
+.page-hero .back-link:hover{color:var(--green-700)}
+.page-hero .back-link svg{width:12px;height:12px}
+.page-hero-grid{
+  display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:end;
+}
+.page-hero h1{
+  font-family:var(--serif);
+  font-size:clamp(46px,6vw,88px);
+  line-height:1;
+  letter-spacing:-0.02em;
+  margin-top:18px;
+}
+.page-hero h1 em{font-style:italic;color:var(--green-700)}
+.page-hero .lead{margin-top:24px;font-size:19px}
+.page-hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
+}
+.hstat{
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-l);padding:24px 22px;
+}
+.hstat .num{font-family:var(--serif);font-size:54px;line-height:1;letter-spacing:-0.02em;color:var(--green-800)}
+.hstat .lbl{font-size:13px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+@media (max-width:880px){
+  .page-hero-grid{grid-template-columns:1fr;gap:36px}
+  .page-hero{padding:48px 0 56px}
+}
+
+/* ---------- Section base ---------- */
+section.block{padding:120px 0;position:relative}
+section.block + section.block{border-top:1px solid var(--line-2)}
+.block-head{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;margin-bottom:72px;align-items:end}
+.block-head .left .eyebrow{margin-bottom:18px}
+.block-head h2{margin-top:8px}
+.block-head .right{color:var(--ink-3);font-size:17px;line-height:1.55;max-width:540px;margin-bottom:6px}
+@media (max-width:880px){
+  .block-head{grid-template-columns:1fr;gap:18px;margin-bottom:48px}
+  section.block{padding:80px 0}
+}
+
+/* ---------- Auto-grid (cosa prendiamo da soli) ---------- */
+.auto-grid{
+  display:grid;grid-template-columns:repeat(2, 1fr);gap:0;
+  border-top:1px solid var(--line);
+}
+.auto-card{
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:36px 32px 38px;
+  background:transparent;
+  transition:background .25s;
+  display:flex;flex-direction:column;gap:16px;
+}
+.auto-card:nth-child(2n){border-right:0}
+.auto-card:hover{background:rgba(15,77,58,0.04)}
+.auto-card .icon{
+  width:46px;height:46px;border-radius:12px;
+  background:var(--green-50);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--green-800);
+  border:1px solid var(--green-100);
+}
+.auto-card .icon svg{width:22px;height:22px}
+.auto-card h3{font-family:var(--serif);font-size:28px;line-height:1.05;letter-spacing:-0.01em;margin-bottom:4px}
+.auto-card p{font-size:14.5px;color:var(--ink-3);line-height:1.55}
+.auto-card p + p{margin-top:8px}
+.auto-card .takeaway{
+  margin-top:6px;font-size:13px;color:var(--green-800);line-height:1.5;
+  padding-top:14px;border-top:1px dashed var(--line);
+}
+.auto-card .takeaway strong{font-weight:600;color:var(--green-900)}
+@media (max-width:880px){
+  .auto-grid{grid-template-columns:1fr}
+  .auto-card{border-right:0}
+}
+
+/* ---------- Required-from-you cards ---------- */
+.req-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:24px;
+}
+.req-card{
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:32px 30px 30px;
+  display:flex;flex-direction:column;gap:14px;
+  transition:transform .25s, box-shadow .25s;
+  position:relative;
+}
+.req-card:hover{transform:translateY(-3px);box-shadow:0 24px 40px -22px rgba(14,20,16,0.18)}
+.req-card .index{
+  font-family:var(--mono);font-size:11px;color:var(--ink-4);
+  letter-spacing:0.18em;text-transform:uppercase;font-weight:500;
+}
+.req-card h3{font-family:var(--serif);font-size:30px;line-height:1.05;letter-spacing:-0.01em;margin-top:2px}
+.req-card p{font-size:14.5px;color:var(--ink-3);line-height:1.6}
+.req-card p + p{margin-top:8px}
+.req-meta{
+  margin-top:auto;display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--green-800);
+  background:var(--green-50);border:1px solid var(--green-100);
+  padding:7px 12px;border-radius:999px;align-self:flex-start;
+}
+.req-meta svg{width:12px;height:12px}
+.example{
+  margin-top:6px;
+  background:var(--paper-soft);
+  border:1px dashed var(--ink-4);
+  border-radius:var(--radius-m);
+  padding:18px 20px;
+  font-size:13.5px;color:var(--ink-2);line-height:1.6;
+}
+.example .example-eyebrow{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--green-700);margin-bottom:10px;
+}
+.example code{font-family:var(--mono);font-size:12.5px;color:var(--ink);line-height:1.7}
+@media (max-width:880px){.req-grid{grid-template-columns:1fr}}
+
+/* ---------- Weekly: A/B options ---------- */
+.weekly-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+.weekly-card{
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:36px 32px 36px;
+  display:flex;flex-direction:column;gap:18px;
+  position:relative;overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.weekly-card.featured{
+  background:var(--green-900);color:var(--paper);
+  border-color:var(--green-900);
+}
+.weekly-card:hover{transform:translateY(-3px);box-shadow:0 28px 50px -25px rgba(14,20,16,0.22)}
+.weekly-card.featured:hover{box-shadow:0 28px 50px -22px rgba(15,77,58,0.45)}
+.weekly-card .tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.18em;
+  text-transform:uppercase;font-weight:500;
+  color:var(--ink-3);
+}
+.weekly-card.featured .tag{color:#9BD9BC}
+.weekly-card .tag .badge{
+  background:var(--paper-soft);color:var(--ink-2);
+  padding:3px 10px;border-radius:999px;font-size:10px;letter-spacing:0.16em;
+}
+.weekly-card.featured .tag .badge{background:var(--green-700);color:var(--paper)}
+.weekly-card h3{font-family:var(--serif);font-size:36px;line-height:1.05;letter-spacing:-0.01em}
+.weekly-card.featured h3{color:#FAF6EC}
+.weekly-card p{font-size:14.5px;color:var(--ink-3);line-height:1.6}
+.weekly-card.featured p{color:rgba(250,246,236,0.78)}
+.weekly-card .example{background:var(--paper);border-color:rgba(14,20,16,0.18)}
+.weekly-card.featured .example{background:rgba(0,0,0,0.18);border-color:rgba(255,255,255,0.12);color:rgba(250,246,236,0.85)}
+.weekly-card.featured .example .example-eyebrow{color:#9BD9BC}
+.weekly-card .pos-list{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;
+}
+.weekly-card .pos-list span{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.04em;
+  background:rgba(255,255,255,0.06);color:rgba(250,246,236,0.75);
+  padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);
+}
+@media (max-width:880px){.weekly-grid{grid-template-columns:1fr}}
+
+/* ---------- Optional smaller items ---------- */
+.opt-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:0;
+  border-top:1px solid var(--line);
+}
+.opt-card{
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:30px 24px 32px;
+  display:flex;flex-direction:column;gap:12px;
+  background:transparent;
+  transition:background .25s;
+  min-height:230px;
+}
+.opt-card:nth-child(4n){border-right:0}
+.opt-card:hover{background:rgba(15,77,58,0.04)}
+.opt-card .opt-num{
+  font-family:var(--serif);font-size:38px;color:var(--green-700);line-height:1;letter-spacing:-0.02em;
+}
+.opt-card h3{font-family:var(--serif);font-size:22px;line-height:1.1;letter-spacing:-0.01em}
+.opt-card p{font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:auto}
+@media (max-width:880px){
+  .opt-grid{grid-template-columns:1fr 1fr}
+  .opt-card:nth-child(4n){border-right:1px solid var(--line)}
+  .opt-card:nth-child(2n){border-right:0}
+}
+@media (max-width:560px){
+  .opt-grid{grid-template-columns:1fr}
+  .opt-card{border-right:0!important}
+}
+
+/* ---------- Bonus callout (sotto opt-grid) ---------- */
+.bonus-callout{
+  margin-top:32px;
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:30px 36px;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+}
+.bonus-callout .bc-icon{
+  width:56px;height:56px;border-radius:14px;
+  background:var(--green-50);border:1px solid var(--green-100);
+  color:var(--green-800);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.bonus-callout .bc-icon svg{width:24px;height:24px}
+.bonus-callout h3{
+  font-family:var(--serif);font-size:26px;line-height:1.1;
+  margin-bottom:8px;letter-spacing:-0.01em;
+}
+.bonus-callout p{
+  font-size:14.5px;color:var(--ink-3);line-height:1.6;max-width:760px;
+}
+.bonus-callout p strong{color:var(--ink);font-weight:600}
+@media (max-width:560px){
+  .bonus-callout{grid-template-columns:1fr;padding:24px 22px;gap:18px}
+}
+
+/* ---------- Timeline ---------- */
+.timeline{position:relative;display:grid;gap:24px}
+.timeline::before{
+  content:"";position:absolute;left:24px;top:14px;bottom:14px;
+  width:1px;background:var(--line);
+}
+.tl-item{
+  display:grid;grid-template-columns:48px 1fr;gap:24px;
+  padding:14px 0;align-items:start;
+  position:relative;
+}
+.tl-dot{
+  width:48px;height:48px;border-radius:50%;
+  background:#fff;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--green-800);
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  position:relative;z-index:1;
+  box-shadow:0 6px 14px -8px rgba(14,20,16,0.2);
+}
+.tl-item.now .tl-dot{background:var(--green-800);color:var(--paper);border-color:var(--green-800)}
+.tl-body .tl-day{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--green-700);
+}
+.tl-body h3{
+  font-family:var(--serif);font-size:28px;line-height:1.1;letter-spacing:-0.01em;
+  margin:8px 0 8px;
+}
+.tl-body p{font-size:15px;color:var(--ink-3);line-height:1.6;max-width:680px}
+
+/* ---------- Privacy / nope ---------- */
+.privacy-wrap{
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-xl);
+  padding:48px 48px 44px;
+}
+.privacy-wrap .lead{margin-bottom:28px}
+.nope-list{display:flex;flex-direction:column;gap:14px}
+.nope-list li{
+  display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;
+  font-size:15.5px;color:var(--ink-2);line-height:1.55;
+}
+.nope-list li .x{
+  width:28px;height:28px;border-radius:50%;
+  background:#FBE9E2;color:var(--rust);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.nope-list li .x svg{width:12px;height:12px}
+.privacy-note{
+  margin-top:32px;padding:18px 22px;
+  background:var(--paper-soft);
+  border-radius:var(--radius-m);
+  font-family:var(--serif);font-style:italic;
+  font-size:18px;line-height:1.45;color:var(--ink-2);
+}
+@media (max-width:680px){
+  .privacy-wrap{padding:32px 24px 28px}
+}
+
+/* ---------- Final CTA (same as home) ---------- */
+.final{
+  background:var(--green-900);
+  color:var(--paper);
+  position:relative;overflow:hidden;
+  padding:160px 0 140px;
+}
+.final::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(700px 400px at 80% 20%, rgba(43,181,133,0.18), transparent 60%),
+    radial-gradient(500px 300px at 10% 90%, rgba(224,160,74,0.10), transparent 60%);
+  pointer-events:none;
+}
+.final::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse 70% 50% at 50% 50%, black 50%, transparent 100%);
+  pointer-events:none;
+}
+.final-inner{position:relative;z-index:1;max-width:920px;margin:0 auto;text-align:center}
+.final h2{
+  font-family:var(--serif);
+  font-size:clamp(48px,6vw,92px);
+  line-height:1;letter-spacing:-0.02em;color:#FAF6EC;
+  margin-top:32px;
+}
+.final h2 em{color:var(--green-500);font-style:italic}
+.final p{font-size:19px;color:rgba(250,246,236,0.7);margin-top:28px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.55}
+.final-cta{display:inline-flex;gap:14px;margin-top:44px;flex-wrap:wrap;justify-content:center}
+.final-meta{margin-top:24px;font-size:13px;color:rgba(250,246,236,0.5)}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--paper);color:var(--green-900);
+  padding:15px 22px;border-radius:999px;
+  font-size:15px;font-weight:500;letter-spacing:-0.005em;
+  transition:transform .2s, box-shadow .2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,0.35)}
+.btn-primary svg{width:14px;height:14px;transition:transform .25s}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  color:rgba(250,246,236,0.85);
+  padding:15px 18px;border-radius:999px;
+  font-size:15px;font-weight:500;
+  border:1px solid rgba(250,246,236,0.2);
+  transition:background .2s, color .2s, border-color .2s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.06);color:var(--paper);border-color:rgba(250,246,236,0.4)}
+
+/* ---------- Footer ---------- */
+.footer{
+  background:#06281F;color:rgba(250,246,236,0.7);
+  padding:80px 0 40px;
+}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
+.footer-brand .logo-name{color:var(--paper);font-size:22px}
+.footer-brand .logo-name em{color:var(--green-500);font-size:26px}
+.footer-brand p{margin-top:14px;font-size:14px;line-height:1.55;max-width:320px;color:rgba(250,246,236,0.55)}
+.footer-col h4{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.18em;color:rgba(250,246,236,0.55);margin-bottom:18px;font-weight:500}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col a{font-size:14px;color:rgba(250,246,236,0.78);transition:color .15s}
+.footer-col a:hover{color:var(--green-500)}
+.footer-bottom{
+  margin-top:64px;padding-top:24px;
+  border-top:1px solid rgba(250,246,236,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:rgba(250,246,236,0.45);
+}
+@media (max-width:880px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+  .footer-bottom{flex-direction:column;gap:10px;align-items:flex-start}
+}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:1;transform:none;transition:opacity .8s ease, transform .8s ease}
+.js-reveal .reveal:not(.in){opacity:0;transform:translateY(18px)}
+.js-reveal .reveal.in{opacity:1;transform:translateY(0)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* Mobile fixes */
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .nav-inner{height:56px}
+  .logo-name{font-size:16px}
+  .logo-name em{font-size:19px}
+  .nav-cta{padding:8px 14px;font-size:13px}
+  section.block{padding:64px 0}
+  .h-section{font-size:34px;line-height:1.05}
+  .page-hero h1{font-size:42px}
+  .page-hero{padding:36px 0 48px}
+  .auto-card,.req-card,.weekly-card{padding:26px 22px}
+  .auto-card h3,.req-card h3{font-size:24px}
+  .weekly-card h3{font-size:28px}
+  .tl-body h3{font-size:22px}
+  .privacy-wrap{padding:28px 22px}
+  .nope-list li{font-size:14px}
+  .final{padding:80px 0 70px}
+  .final h2{font-size:42px}
+  .final-cta{flex-direction:column;align-items:stretch;gap:10px}
+  .final-cta .btn-primary,.final-cta .btn-ghost{justify-content:center}
+  .footer{padding:56px 0 32px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none">
+          <polyline points="2,15 7,9 11,12 18,4" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="14,4 18,4 18,8" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="logo-name">mar<em>gine</em>.ai</span>
+    </a>
+    <nav class="nav-links" aria-label="Sezioni">
+      <a href="index.html#problema">Problema</a>
+      <a href="index.html#funziona">Come funziona</a>
+      <a href="dati.html" class="is-current">Dati</a>
+      <a href="gestionale.html">Demo</a>
+      <a href="index.html#risultati">Risultati</a>
+      <a href="index.html#piani">Piani</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <a href="index.html#cta" class="nav-cta">
+      Prova gratis
+      <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ============ PAGE HERO ============ -->
+<section class="page-hero">
+  <div class="wrap">
+    <a href="index.html" class="back-link">
+      <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Torna alla presentazione
+    </a>
+
+    <div class="page-hero-grid reveal">
+      <div>
+        <span class="eyebrow">Setup &amp; dati richiesti</span>
+        <h1>Per costruire il tuo<br/><em>gestionale</em>, ci servono<br/>pochi dati. Quasi tutti<br/>li abbiamo già.</h1>
+        <p class="lead">Margine.ai non ti chiede di compilare schede, caricare Excel o imparare un programma. Il <strong>70%</strong> dei dati ce li dà direttamente lo Stato (le tue fatture elettroniche). Per il resto, una chiamata di mezz'ora con noi e sei a posto.</p>
+      </div>
+      <div class="page-hero-stats">
+        <div class="hstat">
+          <div class="num">~70%</div>
+          <div class="lbl">dei dati arriva da solo via SDI, senza che tu faccia nulla</div>
+        </div>
+        <div class="hstat">
+          <div class="num">30<span style="font-size:24px;color:var(--ink-3);margin-left:4px">min</span></div>
+          <div class="lbl">di chiamata di onboarding, una volta sola, ti aiutiamo noi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 1 — COSA PRENDIAMO DA SOLI ============ -->
+<section class="block" id="auto">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">01 — Quello che prendiamo da soli</span>
+        <h2 class="h-section">Tutto quello che è già una<br/><em class="serif italic">fattura elettronica</em>,<br/>lo leggiamo noi.</h2>
+      </div>
+      <div class="right">
+        Quando firmi la delega SDI (la stessa che dai al commercialista), abbiamo accesso a tutte le fatture che ricevi e che emetti. Da lì estraiamo automaticamente le <strong>quattro cose più importanti</strong>.
+      </div>
+    </div>
+
+    <div class="auto-grid reveal">
+      <article class="auto-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Ogni acquisto da ogni fornitore</h3>
+        <p>Carne, pesce, ortofrutta, vini, birre, materiali da pulizia, packaging, attrezzature. Vediamo cosa hai comprato, da chi, quanto hai pagato e quando.</p>
+        <div class="takeaway"><strong>Ne ricaviamo:</strong> il costo reale di ogni ingrediente che usi e come è cambiato nel tempo.</div>
+      </article>
+      <article class="auto-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 7h7v7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>L'andamento dei prezzi nel tempo</h3>
+        <p>Il prezzo della burrata sei mesi fa, tre mesi fa, oggi. Stesso fornitore, stesso prodotto. Vediamo gli aumenti silenziosi che nessuno ti segnala.</p>
+        <div class="takeaway"><strong>Ne ricaviamo:</strong> avvisi quando un ingrediente sale e ti sta mangiando il margine.</div>
+      </article>
+      <article class="auto-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Bollette, affitto, servizi ricorrenti</h3>
+        <p>Luce, gas, acqua, internet, software, commercialista, manutenzione. Tutto quello che ti viene fatturato elettronicamente.</p>
+        <div class="takeaway"><strong>Ne ricaviamo:</strong> i tuoi costi fissi mensili, senza che tu li debba scrivere da nessuna parte.</div>
+      </article>
+      <article class="auto-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 2v6h6M9 13l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Le tue fatture attive (se ne emetti)</h3>
+        <p>Fatture verso aziende clienti, eventi privati, catering, consegne B2B. Tutto quello che esce dal tuo sistema di fatturazione.</p>
+        <div class="takeaway"><strong>Ne ricaviamo:</strong> incassi tracciabili, stagionalità, peso del catering vs sala.</div>
+      </article>
+    </div>
+
+    <p style="margin-top:40px;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink-2);max-width:780px;line-height:1.4">
+      Risultato: senza che tu apra niente, sappiamo già la stragrande maggioranza dei tuoi costi e una buona parte dei ricavi.
+    </p>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 2 — CHIESTI UNA VOLTA SOLA ============ -->
+<section class="block" id="setup-once" style="background:var(--paper-soft);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">02 — Quello che ti chiediamo una volta sola</span>
+        <h2 class="h-section">Quattro cose che le fatture<br/><em class="serif italic">non possono</em> dirci.<br/>Le copriamo nella call di onboarding.</h2>
+      </div>
+      <div class="right">
+        Le fatture sanno tutto degli ingredienti, ma non sanno cosa ne fai. Per chiudere il cerchio ci servono quattro cose. Ti aiutiamo noi a metterle insieme — <strong>niente da scaricare o compilare a freddo</strong>.
+      </div>
+    </div>
+
+    <div class="req-grid reveal">
+      <article class="req-card">
+        <div class="index">RICHIESTA 01</div>
+        <h3>Identità del locale</h3>
+        <p>Tipo di cucina (pizzeria, trattoria, fine dining, bistrot, sushi, hamburgheria…), numero di coperti, giorni e fasce di apertura, scontrino medio se lo conosci.</p>
+        <div class="req-meta">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.5V6l1.6 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          ~5 minuti, durante la call
+        </div>
+      </article>
+
+      <article class="req-card">
+        <div class="index">RICHIESTA 02</div>
+        <h3>Il menu attuale, con i prezzi</h3>
+        <p>Una <strong>foto del menu</strong> va benissimo. Lo trascriviamo noi: piatto, categoria, prezzo. Se hai più menu (pranzo, cena, stagionale) li gestiamo tutti.</p>
+        <div class="req-meta">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.5V6l1.6 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          ~5 minuti, basta una foto
+        </div>
+      </article>
+
+      <article class="req-card" style="grid-column:1 / -1">
+        <div class="index">RICHIESTA 03</div>
+        <h3>Le ricette dei tuoi piatti più importanti</h3>
+        <p>Per i tuoi <strong>5-10 piatti principali</strong> (carne, pesce, primi con ingredienti pregiati) ci basta sapere a grandi linee gli ingredienti e le quantità. Non servono grammature da pasticceria — bastano stime ragionevoli, con il nostro aiuto in call.</p>
+        <p>Per gli ingredienti principali ti chiediamo anche il <strong>fattore di sfrido</strong> (es: 100g di manzo crudo da pulire diventano ~75g nel piatto). Lo stimiamo insieme — basta la tua esperienza, niente bilancia.</p>
+        <div class="example">
+          <div class="example-eyebrow">A cosa ci servono</div>
+          <p style="margin-top:0;font-size:13.5px;line-height:1.6;color:var(--ink-3)">Le ricette ci permettono di sapere quali piatti sono <strong style="color:var(--ink)">impattati</strong> quando un ingrediente aumenta. Esempio: il manzo del tuo macellaio è salito del 18% in due mesi — sappiamo che 4 piatti del tuo menu lo usano, e ti scriviamo subito su WhatsApp con il fornitore alternativo più conveniente.</p>
+          <p style="margin-top:14px;font-size:13px;line-height:1.55;color:var(--ink-3);font-style:italic">Non facciamo "menu engineering" classico (star/dog per piatto): per quello servirebbero le vendite per singolo piatto, dato che oggi in Italia è poco accessibile. Margine.ai lavora sul lato costi e fornitori — è lì che si gioca il margine vero.</p>
+        </div>
+        <div class="req-meta">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.5V6l1.6 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          ~15-20 minuti, fatti insieme in call
+        </div>
+      </article>
+
+      <article class="req-card" style="grid-column:1 / -1">
+        <div class="index">RICHIESTA 04</div>
+        <h3>Il tuo personale e i turni tipici</h3>
+        <p>Quante persone lavorano in cucina e in sala, con che ruolo (cuoco, aiuto, lavapiatti, cameriere, runner), il costo orario medio o lo stipendio mensile, e i turni tipici della settimana — del tipo "lunedì sera 2 in sala, martedì pranzo 1, weekend tutti".</p>
+        <p>Non ci servono nomi né dati anagrafici. <strong>Solo ruoli e ore.</strong></p>
+        <div class="req-meta">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.5V6l1.6 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          ~5 minuti
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 3 — AGGIORNAMENTI SETTIMANALI ============ -->
+<section class="block" id="weekly">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">03 — Aggiornamenti settimanali</span>
+        <h2 class="h-section"><em class="serif italic">Cinque minuti</em><br/>il venerdì sera. O zero,<br/>se hai una cassa connessa.</h2>
+      </div>
+      <div class="right">
+        Per dirti cosa cambiare la settimana dopo, ogni 7 giorni ci serve sapere com'è andata quella appena passata. <strong>Ci sono due strade.</strong>
+      </div>
+    </div>
+
+    <div class="weekly-grid reveal">
+      <article class="weekly-card">
+        <div class="tag"><span class="badge">Opzione A</span> Manuale</div>
+        <h3>5 minuti, su WhatsApp</h3>
+        <p>Rispondi a un breve messaggio con i numeri della settimana: coperti per servizio (anche solo a memoria, vanno bene stime), <strong>variazioni dei turni rispetto allo standard</strong> (chi ha lavorato in più o in meno), eventuali piatti tolti o aggiunti, promozioni o eventi straordinari.</p>
+        <p style="font-size:13px;color:var(--ink-3);font-style:italic">I turni effettivi (non solo quelli "tipici") sono quello che ci permette di dire <em>"il martedì sera bastano 2 camerieri"</em> con un numero in euro accanto. Senza, lo staffing resta una stima grezza.</p>
+        <div class="example">
+          <div class="example-eyebrow">Esempio messaggio Margine.ai → te, venerdì 18:00</div>
+          «Ciao Gabriele, com'è andata la settimana?<br/>
+          · Coperti pranzo lun-ven (anche stima)?<br/>
+          · Coperti cena ven-sab?<br/>
+          · Variazioni nei turni rispetto allo standard?<br/>
+          · Hai cambiato qualcosa nel menu o nei prezzi?»
+        </div>
+      </article>
+
+      <article class="weekly-card featured">
+        <div class="tag"><span class="badge">Opzione B</span> Automatica</div>
+        <h3>Zero minuti, se hai un POS compatibile</h3>
+        <p>Una connessione una tantum e tutti i dati di vendita ci arrivano da soli: coperti reali, scontrini, piatti venduti, orari, mance. In alternativa: una volta a settimana esporti un CSV dalla cassa e ce lo mandi — lo elaboriamo noi.</p>
+        <div class="pos-list">
+          <span>SumUp</span>
+          <span>Tilby</span>
+          <span>Cassa in Cloud</span>
+          <span>iPratico</span>
+          <span>Cassanova</span>
+          <span>+ altri</span>
+        </div>
+      </article>
+    </div>
+
+    <div style="margin-top:32px;padding:24px 28px;background:#FFF4E0;border-left:3px solid var(--amber);border-radius:0 var(--radius-m) var(--radius-m) 0;max-width:840px">
+      <div style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#8A5A18;margin-bottom:10px">Onesti su un punto</div>
+      <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">
+        Margine.ai si concentra esplicitamente sul <strong>lato costi</strong>: fornitori, sprechi, cash flow, costi fissi. Il <strong>menu engineering</strong> classico (analisi star/dog per piatto venduto) lo abbiamo lasciato fuori — richiederebbe vendite-per-piatto da cassa, e oggi in Italia l'accesso a quei dati è frammentato e poco standardizzato. Per la nostra esperienza il margine vero si gioca lato acquisti, non lato carta del menu.
+      </p>
+    </div>
+    <p style="margin-top:20px;font-size:14px;color:var(--ink-3);font-style:italic;max-width:680px">
+      Più dati ci dai, più i consigli diventano precisi. Anche con la versione "manuale a memoria" il sistema funziona: abbiamo clienti pilota che vanno avanti così da mesi.
+    </p>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 4 — OPZIONALI ============ -->
+<section class="block" id="optional" style="background:var(--paper-soft);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">04 — Opzionali che aiutano</span>
+        <h2 class="h-section">Se ce le dai,<br/>i consigli diventano<br/><em class="serif italic">più affilati</em>.</h2>
+      </div>
+      <div class="right">
+        Nessuna di queste è obbligatoria, ma ognuna alza il livello di precisione del tuo profilo. Le aggiungiamo quando vuoi tu, anche dopo i primi mesi.
+      </div>
+    </div>
+
+    <div class="opt-grid reveal">
+      <article class="opt-card">
+        <div class="opt-num">01</div>
+        <h3>Conto economico annuale</h3>
+        <p>In PDF, dal commercialista. Ci serve per tarare benchmark personalizzati invece dei medi di settore.</p>
+      </article>
+      <article class="opt-card">
+        <div class="opt-num">02</div>
+        <h3>Report Glovo, Deliveroo, JustEat</h3>
+        <p>Estratti mensili delle piattaforme. Ci dicono il vero margine al netto delle commissioni (25-35%).</p>
+      </article>
+      <article class="opt-card">
+        <div class="opt-num">03</div>
+        <h3>Recensioni Google e TripAdvisor</h3>
+        <p>Solo per il piano Pro. In sola lettura. Ti segnaliamo i piatti più nominati, in positivo o negativo.</p>
+      </article>
+      <article class="opt-card">
+        <div class="opt-num">04</div>
+        <h3>Calendario chiusure ed eventi</h3>
+        <p>Ferie, eventi privati, sagre o partite di calcio importanti vicino al locale. Aiuta a leggere settimane "anomale".</p>
+      </article>
+    </div>
+
+    <div class="reveal bonus-callout">
+      <div class="bc-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M3 7l9 4 9-4M3 7v10l9 4 9-4V7M3 7l9-4 9 4M12 11v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h3>Bonus — Inventari di fine mese, se li fai</h3>
+        <p>Senza inventari, <strong>"comprato" non equivale a "consumato"</strong>. Se chiudi il mese con un conteggio rimanenze (anche solo dei prodotti più costosi: carne, pesce, vini), il food cost settimanale diventa molto più preciso. Tipicamente lo fai già per il commercialista — basta inoltrarcelo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 5 — TIMELINE ============ -->
+<section class="block" id="timeline">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">05 — Cosa succede, giorno per giorno</span>
+        <h2 class="h-section">Da quando firmi<br/>al primo report:<br/><em class="serif italic">due settimane</em>.</h2>
+      </div>
+      <div class="right">
+        Tu fai due cose (firmare la delega e fare la call). Tutto il resto succede dietro le quinte. <strong>Nessun software da installare, nessuna formazione</strong>.
+      </div>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-dot">D0</div>
+        <div class="tl-body">
+          <div class="tl-day">Giorno 0</div>
+          <h3>Firmi la delega SDI con SPID</h3>
+          <p>5 minuti online. Stessa identica procedura della delega al commercialista. Da questo momento possiamo accedere alle tue fatture elettroniche.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">D1-7</div>
+        <div class="tl-body">
+          <div class="tl-day">Giorni 1 → 7</div>
+          <h3>Tu non fai niente. Noi leggiamo</h3>
+          <p>Scarichiamo le tue fatture degli ultimi 12 mesi, classifichiamo fornitori e prodotti, costruiamo lo storico costi. Tu nel frattempo lavori come sempre.</p>
+        </div>
+      </div>
+      <div class="tl-item now">
+        <div class="tl-dot">D7</div>
+        <div class="tl-body">
+          <div class="tl-day">Giorno 7-8</div>
+          <h3>Chiamata di onboarding (30 min)</h3>
+          <p>In videochiamata raccogliamo insieme menu, ricette principali, personale e turni tipici. Foto, voce, condivisione schermo: come ti viene comodo. Non c'è niente da preparare.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">D9-13</div>
+        <div class="tl-body">
+          <div class="tl-day">Giorni 9 → 13</div>
+          <h3>Costruiamo il tuo profilo</h3>
+          <p>Incrociamo fatture e ricette per stimare il food cost teorico del menu, il costo del lavoro per servizio, i margini aggregati e il cash flow proiettato. È il tuo "gestionale" — ma non devi mai aprirlo.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">D14</div>
+        <div class="tl-body">
+          <div class="tl-day">Giorno 14, lunedì 7:30</div>
+          <h3>Primo messaggio su WhatsApp</h3>
+          <p>3 azioni concrete per la settimana, ognuna con un numero in euro accanto. Da qui in poi, ogni lunedì, sempre la stessa ora.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOCCO 6 — PRIVACY / NON TOCCHIAMO ============ -->
+<section class="block" id="privacy" style="background:var(--paper-soft);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="block-head reveal">
+      <div class="left">
+        <span class="eyebrow">06 — Privacy e perimetro</span>
+        <h2 class="h-section">Quello che <em class="serif italic">non</em><br/>ci serve, e che<br/>non tocchiamo mai.</h2>
+      </div>
+      <div class="right">
+        Margine.ai è uno strumento per <strong>gestire margini</strong>, non per profilare persone. Per questo il perimetro dei dati è volutamente stretto.
+      </div>
+    </div>
+
+    <div class="privacy-wrap reveal">
+      <ul class="nope-list">
+        <li>
+          <span class="x" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <span>Dati anagrafici dei tuoi dipendenti (nomi, codici fiscali, contratti). Ci bastano i ruoli.</span>
+        </li>
+        <li>
+          <span class="x" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <span>Nominativi dei clienti o storico prenotazioni con nomi. Ci interessano i numeri aggregati.</span>
+        </li>
+        <li>
+          <span class="x" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <span>Conti correnti, carte di credito, accessi bancari. Non li chiediamo né li gestiamo.</span>
+        </li>
+        <li>
+          <span class="x" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <span>Recensioni private, messaggi WhatsApp con clienti, dati dei tuoi social. Non ci entriamo.</span>
+        </li>
+        <li>
+          <span class="x" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <span>Dati sanitari del personale, presenze giornaliere nominative, allergeni dei singoli clienti.</span>
+        </li>
+      </ul>
+      <div class="privacy-note">
+        La delega SDI può essere revocata in qualsiasi momento dal tuo cassetto fiscale. Da quel secondo non leggiamo più nulla.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final" id="cta">
+  <div class="wrap final-inner">
+    <span class="eyebrow on-dark">Pronto?</span>
+    <h2>Prenotiamo la<br/>chiamata di <em>onboarding</em>.</h2>
+    <p>30 minuti in videochiamata. Ti spieghiamo tutto in dettaglio, raccogliamo le poche cose che servono, e nel giro di due settimane ricevi il primo report.</p>
+    <div class="final-cta">
+      <a href="mailto:hello@margine.ai?subject=Onboarding%20Margine.ai" class="btn-primary">
+        Prenota la chiamata di onboarding
+        <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <!-- TODO: sostituire +390000000000 col numero WhatsApp Business reale -->
+      <a href="https://wa.me/390000000000" class="btn-ghost">
+        Scrivici su WhatsApp
+      </a>
+    </div>
+    <div class="final-meta">Oppure torna alla <a href="index.html" style="color:#9BD9BC;text-decoration:underline;text-decoration-color:rgba(155,217,188,0.4)">presentazione</a>.</div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="index.html">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none">
+              <polyline points="2,15 7,9 11,12 18,4" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="14,4 18,4 18,8" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="logo-name">mar<em>gine</em>.ai</span>
+        </a>
+        <p>Il tuo analista personale, su WhatsApp. Per ristoratori italiani che vogliono guadagnare di più senza imparare un altro software.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Prodotto</h4>
+        <ul>
+          <li><a href="index.html#funziona">Come funziona</a></li>
+          <li><a href="dati.html">Dati richiesti</a></li>
+          <li><a href="gestionale.html">Demo gestionale</a></li>
+          <li><a href="index.html#piani">Piani</a></li>
+          <li><a href="index.html#risultati">Risultati</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Azienda</h4>
+        <ul>
+          <li><a href="#">Chi siamo</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Lavora con noi</a></li>
+          <li><a href="#">Stampa</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legale</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Termini</a></li>
+          <li><a href="#">Cookie</a></li>
+          <li><a href="mailto:hello@margine.ai">hello@margine.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Margine.ai · P.IVA 00000000000 · Bologna, Italia</span>
+      <span>Fatto con cura per ristoratori italiani</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js-reveal');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Margine.ai — Demo gestionale</title>
+<meta name="description" content="L'interfaccia di Margine.ai. Panoramica margini, personale, prenotazioni e fatture in un unico posto, sempre aggiornati." />
+<meta name="theme-color" content="#0F4D3A" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230F4D3A'/><path d='M8 22 L13 14 L17 18 L24 8' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M19 8 L24 8 L24 13' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --green-900:#06281F;
+  --green-800:#0F4D3A;
+  --green-700:#175E47;
+  --green-600:#1D9E75;
+  --green-500:#2BB585;
+  --green-400:#4DCB9D;
+  --green-100:#E1F0E8;
+  --green-50:#F0F7F2;
+
+  --paper:#F5F1EA;
+  --paper-soft:#EDE7DA;
+  --bg-app:#F7F3EC;
+  --surface:#FFFFFF;
+  --surface-2:#FAF6EC;
+
+  --ink:#0E1410;
+  --ink-2:#2A322D;
+  --ink-3:#5C6660;
+  --ink-4:#8E948F;
+  --ink-5:#B5BAB5;
+
+  --line:rgba(14,20,16,0.10);
+  --line-2:rgba(14,20,16,0.06);
+  --line-strong:rgba(14,20,16,0.16);
+
+  --amber:#E0A04A;
+  --amber-bg:#FFF4E0;
+  --rust:#C0552B;
+  --rust-bg:#FBE9E2;
+  --rust-soft:#F2D6CB;
+
+  --serif:'Instrument Serif', 'Times New Roman', serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --radius-s:6px;
+  --radius-m:10px;
+  --radius-l:16px;
+  --radius-xl:24px;
+
+  --shadow-xs:0 1px 2px rgba(14,20,16,0.04);
+  --shadow-sm:0 1px 3px rgba(14,20,16,0.06), 0 1px 2px rgba(14,20,16,0.04);
+  --shadow-md:0 4px 12px rgba(14,20,16,0.08), 0 2px 4px rgba(14,20,16,0.04);
+  --shadow-lg:0 12px 28px rgba(14,20,16,0.10), 0 4px 8px rgba(14,20,16,0.04);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg-app);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  font-size:14px;
+}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit;background:none;border:0;cursor:pointer;color:inherit;font-size:inherit}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+table{border-collapse:collapse;width:100%}
+input,select{font-family:inherit;font-size:inherit;color:inherit}
+
+/* ============ APP SHELL ============ */
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  min-height:100vh;
+  background:var(--bg-app);
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar{
+  background:var(--green-900);
+  color:rgba(250,246,236,0.78);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;
+  height:100vh;
+  overflow-y:auto;
+}
+.sidebar-brand{
+  display:flex;align-items:center;gap:10px;
+  padding:22px 22px 22px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.sidebar-brand .logo-mark{
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.sidebar-brand .logo-mark svg{width:18px;height:18px}
+.sidebar-brand .logo-name{
+  font-size:17px;font-weight:500;letter-spacing:-0.02em;
+  color:var(--paper);
+}
+.sidebar-brand .logo-name em{
+  font-style:normal;color:var(--green-500);
+  font-family:var(--serif);font-size:20px;letter-spacing:-0.01em;font-weight:400;
+}
+.demo-badge{
+  margin-left:auto;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  background:var(--amber);color:#3a2305;
+  padding:3px 8px;border-radius:4px;
+}
+
+.sidebar-restaurant{
+  padding:18px 22px 22px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.sidebar-restaurant .rs-label{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:rgba(250,246,236,0.45);
+  margin-bottom:6px;
+}
+.sidebar-restaurant .rs-name{
+  font-family:var(--serif);font-size:22px;color:var(--paper);line-height:1.1;
+  letter-spacing:-0.01em;
+}
+.sidebar-restaurant .rs-meta{
+  font-size:12px;color:rgba(250,246,236,0.55);margin-top:4px;
+}
+
+.sidebar-nav{
+  padding:14px 12px;
+  display:flex;flex-direction:column;gap:2px;
+  flex:1;
+}
+.sidebar-nav .nav-section-label{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:rgba(250,246,236,0.4);
+  padding:14px 12px 8px;
+}
+.sidebar-nav .nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:8px;
+  color:rgba(250,246,236,0.78);
+  font-size:14px;font-weight:500;
+  transition:background .15s, color .15s;
+  position:relative;
+}
+.sidebar-nav .nav-item:hover{
+  background:rgba(255,255,255,0.04);
+  color:var(--paper);
+}
+.sidebar-nav .nav-item.active{
+  background:var(--green-700);
+  color:var(--paper);
+}
+.sidebar-nav .nav-item.active::before{
+  content:"";position:absolute;left:-12px;top:8px;bottom:8px;
+  width:3px;background:var(--green-500);border-radius:0 3px 3px 0;
+}
+.sidebar-nav .nav-item .ic{
+  width:18px;height:18px;flex-shrink:0;
+  color:rgba(250,246,236,0.6);
+}
+.sidebar-nav .nav-item.active .ic,
+.sidebar-nav .nav-item:hover .ic{color:var(--green-500)}
+.sidebar-nav .nav-item .nav-badge{
+  margin-left:auto;
+  font-size:10px;font-weight:500;
+  background:rgba(255,255,255,0.08);
+  color:rgba(250,246,236,0.7);
+  padding:2px 7px;border-radius:999px;
+  font-family:var(--mono);letter-spacing:0.04em;
+}
+.sidebar-nav .nav-item .nav-badge.urgent{
+  background:var(--rust);color:#fff;
+}
+
+.sidebar-footer{
+  padding:18px 18px;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.user-info{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 0;
+  margin-bottom:14px;
+}
+.user-info .avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.user-info .user-name{
+  font-size:13px;font-weight:500;color:var(--paper);line-height:1.2;
+}
+.user-info .user-role{
+  font-size:11px;color:rgba(250,246,236,0.5);margin-top:2px;
+}
+.back-to-site{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:6px;
+  font-size:12px;color:rgba(250,246,236,0.6);
+  transition:background .15s, color .15s;
+}
+.back-to-site:hover{
+  background:rgba(255,255,255,0.04);
+  color:var(--paper);
+}
+.back-to-site svg{width:12px;height:12px}
+
+/* ============ APP MAIN ============ */
+.app-main{
+  display:flex;flex-direction:column;
+  min-width:0;
+}
+
+/* Topbar */
+.app-topbar{
+  position:sticky;top:0;z-index:30;
+  background:rgba(247,243,236,0.85);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--line-2);
+  padding:18px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+}
+.topbar-title h1{
+  font-family:var(--serif);font-size:34px;line-height:1;letter-spacing:-0.015em;
+  font-weight:400;color:var(--ink);
+}
+.topbar-title .subtitle{
+  font-size:13px;color:var(--ink-3);margin-top:6px;
+}
+.topbar-actions{
+  display:flex;align-items:center;gap:12px;
+}
+.search-input{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 14px;
+  width:240px;
+  font-size:13px;color:var(--ink-3);
+}
+.search-input svg{width:14px;height:14px}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);
+  position:relative;
+  transition:background .15s, border-color .15s;
+}
+.icon-btn:hover{background:#fff;border-color:var(--line-strong)}
+.icon-btn svg{width:16px;height:16px}
+.icon-btn .dot-notif{
+  position:absolute;top:8px;right:9px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--rust);
+  border:2px solid var(--surface);
+}
+
+/* App content */
+.app-content{
+  padding:32px 36px 64px;
+  max-width:1400px;
+  width:100%;
+}
+
+/* Pages */
+.page{display:none;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ============ PRIMITIVES ============ */
+.eyebrow{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:var(--ink-3);
+}
+
+/* Filter bar */
+.filter-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:14px;
+}
+.chip-group{
+  display:inline-flex;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:3px;
+  gap:2px;
+}
+.chip{
+  font-size:13px;font-weight:500;
+  color:var(--ink-3);
+  padding:7px 14px;border-radius:999px;
+  transition:background .15s, color .15s;
+}
+.chip:hover{color:var(--ink)}
+.chip.active{
+  background:var(--green-800);
+  color:var(--paper);
+}
+.chip-group.small .chip{font-size:12px;padding:5px 11px}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:500;
+  background:var(--surface);color:var(--ink-2);
+  border:1px solid var(--line);
+  padding:8px 14px;border-radius:8px;
+  transition:background .15s, border-color .15s;
+}
+.btn-secondary:hover{background:#fff;border-color:var(--line-strong)}
+.btn-secondary svg{width:13px;height:13px}
+
+.btn-primary-app{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:500;
+  background:var(--green-800);color:var(--paper);
+  border:1px solid var(--green-800);
+  padding:8px 16px;border-radius:8px;
+  transition:background .15s;
+}
+.btn-primary-app:hover{background:var(--green-900)}
+.btn-primary-app svg{width:13px;height:13px}
+
+/* Cards */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:24px 26px;
+  box-shadow:var(--shadow-xs);
+}
+.card + .card{margin-top:18px}
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;gap:14px;flex-wrap:wrap;
+}
+.card-header h2{
+  font-family:var(--serif);font-size:24px;font-weight:400;
+  letter-spacing:-0.01em;line-height:1.1;
+  color:var(--ink);
+}
+.card-meta{
+  font-size:12px;color:var(--ink-3);
+}
+.card-meta select{
+  border:1px solid var(--line);
+  background:var(--surface);
+  border-radius:6px;
+  padding:5px 10px;font-size:12px;color:var(--ink-2);
+  cursor:pointer;
+}
+
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.12em;
+  padding:4px 9px;border-radius:4px;
+}
+.badge.warn{background:var(--amber-bg);color:#8A5A18}
+.badge.danger{background:var(--rust-bg);color:var(--rust)}
+.badge.success{background:var(--green-50);color:var(--green-800)}
+.badge.neutral{background:var(--paper-soft);color:var(--ink-3)}
+
+/* KPI grid */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;
+  margin-bottom:24px;
+}
+.kpi-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:20px 22px;
+  display:flex;flex-direction:column;gap:8px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow-xs);
+}
+.kpi-card .kpi-label{
+  font-size:12px;color:var(--ink-3);
+  display:flex;align-items:center;gap:6px;
+}
+.kpi-card .kpi-label .ic{width:13px;height:13px;color:var(--ink-4)}
+.kpi-card .kpi-value{
+  font-family:var(--serif);font-size:34px;line-height:1;letter-spacing:-0.02em;
+  color:var(--ink);font-weight:400;
+}
+.kpi-card .kpi-value .small{font-size:18px;color:var(--ink-3);margin-left:2px}
+.kpi-card .kpi-change{
+  font-size:12px;font-weight:500;
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:auto;
+}
+.kpi-change.positive{color:var(--green-700)}
+.kpi-change.negative{color:var(--rust)}
+.kpi-change.neutral{color:var(--ink-3)}
+.kpi-change.urgent{color:var(--rust);font-weight:600}
+.kpi-change svg{width:11px;height:11px}
+.kpi-card .kpi-spark{
+  position:absolute;right:16px;bottom:14px;
+  width:74px;height:30px;
+  opacity:0.6;
+}
+
+/* Dual grid (2 columns) */
+.dual-grid{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:18px;
+  margin-bottom:18px;
+}
+
+/* ============ PANORAMICA ============ */
+
+/* Big chart */
+.big-chart-wrap{position:relative}
+.chart-legend{
+  display:flex;gap:18px;
+  font-size:12px;color:var(--ink-3);
+}
+.chart-legend span{display:inline-flex;align-items:center;gap:7px}
+.chart-legend i{width:12px;height:2px;border-radius:2px;display:inline-block}
+.big-chart{width:100%;height:280px}
+.chart-x-axis{
+  display:grid;grid-template-columns:repeat(12,1fr);
+  font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-top:8px;text-align:center;
+}
+
+/* Day-of-week bars */
+.dow-chart{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:8px;
+  align-items:end;
+  height:200px;
+  padding:10px 4px 0;
+}
+.dow-bar{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  height:100%;
+  position:relative;
+}
+.dow-bar-track{
+  flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;
+  position:relative;
+}
+.dow-bar-fill{
+  width:80%;max-width:42px;
+  background:linear-gradient(180deg,var(--green-500),var(--green-700));
+  border-radius:6px 6px 0 0;
+  position:relative;
+  transition:transform .25s;
+}
+.dow-bar:hover .dow-bar-fill{transform:scaleY(1.04);transform-origin:bottom}
+.dow-bar-fill .bar-value{
+  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:600;color:var(--ink-2);
+  white-space:nowrap;
+}
+.dow-bar.today .dow-bar-fill{
+  background:linear-gradient(180deg,var(--amber),#C18437);
+}
+.dow-bar.today .dow-bar-fill::after{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  bottom:100%;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--amber);
+  margin-bottom:6px;
+  box-shadow:0 0 0 4px rgba(224,160,74,0.18);
+}
+.dow-label{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--ink-3);text-transform:uppercase;letter-spacing:0.1em;
+}
+.dow-label.today{color:var(--amber)}
+
+/* Holidays */
+.holiday-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.holiday-row{
+  display:grid;grid-template-columns:64px 1fr auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.holiday-row:hover{background:var(--surface-2)}
+.holiday-date{
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  border-radius:8px;
+  padding:8px 4px;text-align:center;
+}
+.holiday-date .day{
+  font-family:var(--serif);font-size:22px;line-height:1;color:var(--green-800);
+}
+.holiday-date .month{
+  font-family:var(--mono);font-size:9px;color:var(--green-700);
+  text-transform:uppercase;letter-spacing:0.16em;margin-top:3px;font-weight:500;
+}
+.holiday-info .holiday-name{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.holiday-info .holiday-meta{
+  font-size:12px;color:var(--ink-3);margin-top:3px;
+}
+.holiday-forecast{text-align:right}
+.holiday-forecast .forecast-value{
+  font-family:var(--serif);font-size:22px;color:var(--ink);line-height:1;
+  letter-spacing:-0.01em;
+}
+.holiday-forecast .forecast-change{
+  font-size:11px;font-weight:500;margin-top:4px;
+}
+.holiday-forecast .forecast-change.positive{color:var(--green-700)}
+.holiday-forecast .forecast-change.negative{color:var(--rust)}
+
+/* Cost drift alerts */
+.alerts-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.alert-item{
+  display:grid;grid-template-columns:36px 1fr auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.alert-item:hover{background:var(--surface-2)}
+.alert-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.alert-icon.up{background:var(--rust-bg);color:var(--rust)}
+.alert-icon.flat{background:var(--paper-soft);color:var(--ink-3)}
+.alert-icon.opportunity{background:var(--green-50);color:var(--green-700)}
+.alert-icon svg{width:16px;height:16px}
+.alert-body .alert-title{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.alert-body .alert-meta{
+  font-size:12px;color:var(--ink-3);margin-top:3px;
+}
+.alert-body .alert-meta strong{color:var(--ink-2);font-weight:600}
+.alert-action{
+  font-size:12px;font-weight:500;color:var(--green-800);
+  padding:6px 12px;border-radius:8px;
+  background:var(--green-50);border:1px solid var(--green-100);
+  transition:background .15s;
+}
+.alert-action:hover{background:var(--green-100)}
+
+/* ============ PERSONALE ============ */
+.week-nav{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;
+  padding:4px;
+}
+.week-nav .nav-arrow{
+  width:30px;height:30px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);
+  transition:background .15s;
+}
+.week-nav .nav-arrow:hover{background:var(--paper-soft)}
+.week-nav .nav-arrow svg{width:12px;height:12px}
+.week-nav .week-label{
+  font-size:13px;font-weight:500;color:var(--ink-2);
+  padding:0 12px;
+}
+
+.staff-week{
+  display:grid;
+  grid-template-columns:200px repeat(7, 1fr);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--surface);
+}
+.staff-week-head{display:contents}
+.staff-week-head > div{
+  padding:14px 12px;
+  background:var(--paper-soft);
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  font-size:12px;
+}
+.staff-week-head > div:last-child{border-right:0}
+.staff-week-head .staff-name-col-h{
+  font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:0.16em;color:var(--ink-3);font-weight:500;
+}
+.staff-week-head .day-col-h{
+  text-align:center;
+}
+.staff-week-head .day-col-h .day-name{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;color:var(--ink-3);
+}
+.staff-week-head .day-col-h .day-date{
+  font-family:var(--serif);font-size:20px;color:var(--ink);line-height:1;margin-top:6px;
+}
+.staff-week-head .day-col-h .day-meta{
+  font-size:10px;color:var(--ink-3);margin-top:4px;
+  font-family:var(--mono);letter-spacing:0.04em;
+}
+.staff-week-head .day-col-h.today .day-date{color:var(--amber)}
+.staff-week-head .day-col-h.today .day-name{color:var(--amber)}
+
+.staff-row{display:contents}
+.staff-row > div{
+  padding:14px 12px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  background:var(--surface);
+  transition:background .15s;
+}
+.staff-row:last-child > div{border-bottom:0}
+.staff-row > div:last-child{border-right:0}
+.staff-row:hover > div{background:var(--surface-2)}
+
+.staff-name-cell{
+  display:flex;align-items:center;gap:10px;
+}
+.staff-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:15px;color:#fff;
+  flex-shrink:0;
+}
+.staff-avatar.alt-1{background:linear-gradient(135deg,#D88A66,#A04A2E)}
+.staff-avatar.alt-2{background:linear-gradient(135deg,#B89968,#7A5E33)}
+.staff-avatar.alt-3{background:linear-gradient(135deg,#7A98A8,#3D5566)}
+.staff-avatar.alt-4{background:linear-gradient(135deg,#A8868F,#6B484F)}
+.staff-name-cell .staff-name{font-size:13px;font-weight:500;color:var(--ink);line-height:1.2}
+.staff-name-cell .staff-role{font-size:11px;color:var(--ink-3);margin-top:2px}
+
+.shift-cell{text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:center;min-height:56px}
+.shift{
+  display:inline-flex;align-items:center;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--green-800);
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  padding:3px 8px;border-radius:6px;
+  letter-spacing:0.04em;
+}
+.shift.full{background:var(--green-100);color:var(--green-900)}
+.shift.off{
+  color:var(--ink-4);background:transparent;border-color:transparent;
+  font-style:italic;
+}
+
+/* Day suggestions */
+.day-suggestions{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.day-suggest{
+  display:grid;grid-template-columns:88px 1fr auto auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+}
+.day-tag{
+  background:var(--paper-soft);
+  border-radius:6px;
+  padding:6px 10px;text-align:center;
+}
+.day-tag .dt-day{font-family:var(--mono);font-size:10px;color:var(--ink-3);font-weight:500;letter-spacing:0.1em}
+.day-tag .dt-date{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1;margin-top:2px}
+.suggest-message{font-size:13px;color:var(--ink-2);line-height:1.5}
+.suggest-message strong{color:var(--ink);font-weight:600}
+.suggest-savings{
+  font-size:12px;color:var(--green-700);font-weight:500;text-align:right;
+}
+.suggest-savings strong{font-family:var(--serif);font-size:18px;color:var(--green-800);font-weight:400;display:block;margin-top:2px}
+.suggest-apply{
+  font-size:12px;font-weight:500;color:#fff;
+  background:var(--green-800);
+  padding:7px 14px;border-radius:7px;
+  transition:background .15s;
+}
+.suggest-apply:hover{background:var(--green-900)}
+
+/* ============ PRENOTAZIONI ============ */
+.reservations-feed{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.rsv-item{
+  display:grid;grid-template-columns:74px 1fr auto;
+  gap:16px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.rsv-item:hover{background:var(--surface-2)}
+.rsv-time{text-align:center;background:var(--paper-soft);border-radius:8px;padding:8px 6px}
+.rsv-time .rsv-day{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;color:var(--ink-3);
+}
+.rsv-time .rsv-day.today{color:var(--amber)}
+.rsv-time .rsv-hour{
+  font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1;margin-top:3px;
+}
+.rsv-body .rsv-name{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.rsv-body .rsv-name .rsv-size{
+  display:inline-block;margin-left:8px;
+  font-family:var(--mono);font-size:11px;
+  background:var(--green-50);color:var(--green-800);
+  padding:2px 8px;border-radius:4px;font-weight:500;
+}
+.rsv-body .rsv-meta{font-size:12px;color:var(--ink-3);margin-top:3px}
+.rsv-body .rsv-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rsv-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:500;
+  padding:3px 8px;border-radius:4px;
+}
+.rsv-tag.warn{background:var(--amber-bg);color:#8A5A18}
+.rsv-tag.info{background:var(--green-50);color:var(--green-800)}
+.rsv-tag.neutral{background:var(--paper-soft);color:var(--ink-3)}
+.status-badge{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;
+  padding:5px 10px;border-radius:6px;
+}
+.status-badge.ok{background:var(--green-50);color:var(--green-800)}
+.status-badge.pending{background:var(--amber-bg);color:#8A5A18}
+.status-badge.cancelled{background:var(--rust-bg);color:var(--rust)}
+
+/* Chat preview */
+.chat-preview{
+  background:#0B141A;
+  border-radius:14px;
+  padding:18px;
+  display:flex;flex-direction:column;gap:8px;
+  max-height:480px;overflow:hidden;
+  position:relative;
+}
+.chat-preview::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:60px;
+  background:linear-gradient(180deg, transparent 0%, #0B141A 100%);
+  pointer-events:none;
+}
+.chat-day{
+  align-self:center;
+  background:#182229;color:#8696A0;
+  font-size:10px;padding:4px 10px;border-radius:6px;
+  margin:4px 0;
+}
+.chat-bubble{
+  max-width:80%;
+  padding:8px 12px 7px;
+  font-size:12.5px;line-height:1.4;
+  border-radius:8px;
+  position:relative;
+}
+.chat-bubble.customer{
+  align-self:flex-start;
+  background:#1F2C33;
+  color:#E9EDEF;
+  border-radius:8px 8px 8px 2px;
+}
+.chat-bubble.bot{
+  align-self:flex-end;
+  background:#005C4B;
+  color:#E9EDEF;
+  border-radius:8px 8px 2px 8px;
+}
+.chat-bubble strong{color:#fff;font-weight:600}
+.chat-bubble .ts{
+  font-size:9px;color:rgba(233,237,239,0.55);
+  margin-left:8px;float:right;margin-top:4px;
+}
+.chat-typing{
+  align-self:flex-start;background:#1F2C33;border-radius:12px;padding:8px 10px;
+  display:inline-flex;gap:3px;
+}
+.chat-typing span{width:5px;height:5px;background:#8696A0;border-radius:50%;animation:bounceTyping 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.15s}
+.chat-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounceTyping{0%,80%,100%{transform:translateY(0);opacity:0.4}40%{transform:translateY(-3px);opacity:1}}
+
+/* ============ FATTURE ============ */
+.invoices-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.invoice-row{
+  display:grid;grid-template-columns:1.6fr 2fr 100px 110px auto;
+  gap:18px;align-items:center;
+  padding:14px 18px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.invoice-row:hover{background:var(--surface-2)}
+.invoice-row.urgent{
+  border-left:3px solid var(--rust);
+  padding-left:15px;
+}
+.invoice-row.coming{border-left:3px solid var(--amber);padding-left:15px}
+.invoice-row.paid{border-left:3px solid var(--green-500);padding-left:15px;opacity:0.85}
+.inv-supplier{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.inv-supplier .inv-id{
+  display:block;font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  margin-top:3px;letter-spacing:0.04em;
+}
+.inv-desc{
+  font-size:13px;color:var(--ink-3);
+}
+.inv-amount{
+  font-family:var(--serif);font-size:20px;color:var(--ink);text-align:right;letter-spacing:-0.01em;
+}
+.inv-due{text-align:right}
+.inv-due .due-label{font-family:var(--mono);font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.12em;font-weight:500}
+.inv-due .due-date{font-size:13px;font-weight:500;color:var(--ink-2);margin-top:3px}
+.invoice-row.urgent .due-date{color:var(--rust);font-weight:600}
+.inv-action{
+  font-size:12px;font-weight:500;
+  background:var(--green-800);color:var(--paper);
+  padding:7px 14px;border-radius:7px;
+  transition:background .15s;
+  white-space:nowrap;
+}
+.inv-action:hover{background:var(--green-900)}
+.inv-action.secondary{
+  background:var(--surface);color:var(--ink-2);
+  border:1px solid var(--line);
+}
+.inv-action.secondary:hover{background:#fff;border-color:var(--line-strong)}
+.inv-action.disabled{
+  background:var(--paper-soft);color:var(--ink-4);
+  cursor:default;
+}
+.inv-action.disabled:hover{background:var(--paper-soft)}
+
+.invoices-table{
+  width:100%;border-collapse:collapse;
+}
+.invoices-table thead th{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--ink-3);
+  text-align:left;padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper-soft);
+}
+.invoices-table tbody td{
+  padding:14px 12px;
+  border-bottom:1px solid var(--line-2);
+  font-size:13px;color:var(--ink-2);
+  vertical-align:middle;
+}
+.invoices-table tbody tr:last-child td{border-bottom:0}
+.invoices-table tbody tr:hover{background:var(--surface-2)}
+.invoices-table .col-supplier{font-weight:500;color:var(--ink)}
+.invoices-table .col-amount{font-family:var(--serif);font-size:16px;text-align:right}
+.invoices-table .col-due{white-space:nowrap}
+.invoices-table .col-status{text-align:center}
+
+/* Section headers within page */
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin:32px 0 14px;gap:14px;flex-wrap:wrap;
+}
+.section-head h3{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  color:var(--ink);letter-spacing:-0.01em;line-height:1;
+}
+.section-head .meta{font-size:12px;color:var(--ink-3)}
+.section-head.first{margin-top:0}
+
+/* Empty state hint */
+.hint-box{
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:12.5px;color:var(--green-800);
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.hint-box svg{width:14px;height:14px;flex-shrink:0}
+
+/* Responsive */
+@media (max-width:1100px){
+  .kpi-grid{grid-template-columns:repeat(2, 1fr)}
+  .dual-grid{grid-template-columns:1fr}
+}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto}
+  .sidebar-nav{flex-direction:row;overflow-x:auto;padding:8px}
+  .sidebar-nav .nav-section-label{display:none}
+  .sidebar-nav .nav-item{flex-shrink:0}
+  .sidebar-restaurant,.sidebar-footer{display:none}
+  .app-content{padding:24px 18px 48px}
+  .app-topbar{padding:14px 18px}
+  .topbar-title h1{font-size:24px}
+  .search-input{display:none}
+}
+@media (max-width:640px){
+  .invoice-row{grid-template-columns:1fr 1fr;gap:8px}
+  .invoice-row .inv-desc,.invoice-row .inv-action{grid-column:1 / -1}
+  .staff-week{font-size:11px}
+  .kpi-grid{grid-template-columns:1fr}
+  .day-suggest{grid-template-columns:1fr;gap:8px}
+  .rsv-item{grid-template-columns:60px 1fr;gap:12px}
+  .rsv-item .status-badge{grid-column:2;justify-self:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none">
+          <polyline points="2,15 7,9 11,12 18,4" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="14,4 18,4 18,8" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="logo-name">mar<em>gine</em>.ai</span>
+      <span class="demo-badge">Demo</span>
+    </div>
+
+    <div class="sidebar-restaurant">
+      <div class="rs-label">Locale</div>
+      <div class="rs-name">Trattoria del Borgo</div>
+      <div class="rs-meta">Bologna · 42 coperti · attivo da 41 mesi</div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-section-label">Gestione</div>
+      <a href="#panoramica" class="nav-item active" data-tab="panoramica">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M3 13h7V3H3v10zm0 8h7v-6H3v6zm11 0h7V11h-7v10zm0-18v6h7V3h-7z" fill="currentColor"/></svg>
+        Panoramica
+      </a>
+      <a href="#personale" class="nav-item" data-tab="personale">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M9 11a4 4 0 100-8 4 4 0 000 8zm-7 9a7 7 0 1114 0H2zm17-3.5l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Personale
+      </a>
+      <a href="#prenotazioni" class="nav-item" data-tab="prenotazioni">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Prenotazioni
+        <span class="nav-badge">14 oggi</span>
+      </a>
+      <a href="#fatture" class="nav-item" data-tab="fatture">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 2v6h6M9 14h6M9 18h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Fatture
+        <span class="nav-badge urgent">2 urgenti</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar">G</div>
+        <div>
+          <div class="user-name">Gabriele Russo</div>
+          <div class="user-role">Proprietario</div>
+        </div>
+      </div>
+      <a href="index.html" class="back-to-site">
+        <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Esci dalla demo
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="app-main">
+
+    <!-- TOPBAR -->
+    <header class="app-topbar">
+      <div class="topbar-title">
+        <h1 id="pageTitle">Panoramica</h1>
+        <p class="subtitle" id="pageSubtitle">Martedì 5 maggio 2026 · settimana 19</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-input">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>Cerca fattura, fornitore, prenotazione…</span>
+        </div>
+        <button class="icon-btn" aria-label="Notifiche">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 014 4v3l1.5 2.5h-11L4 9V6a4 4 0 014-4zm-2 12a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span class="dot-notif"></span>
+        </button>
+        <button class="icon-btn" aria-label="Impostazioni">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 8a5.5 5.5 0 00-.1-1l1.4-1-1.5-2.6-1.6.6a5.5 5.5 0 00-1.7-1L9.5 1h-3l-.5 1.6a5.5 5.5 0 00-1.7 1l-1.6-.6L1.2 6l1.4 1A5.5 5.5 0 002.5 8c0 .3 0 .7.1 1l-1.4 1 1.5 2.6 1.6-.6a5.5 5.5 0 001.7 1L6.5 15h3l.5-1.6a5.5 5.5 0 001.7-1l1.6.6 1.5-2.6-1.4-1c.1-.3.1-.7.1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+
+      <!-- ============ PAGE: PANORAMICA ============ -->
+      <section class="page active" data-page="panoramica">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip" data-period="settimana">Settimana</button>
+            <button class="chip active" data-period="mese">Mese</button>
+            <button class="chip" data-period="tre-mesi">3 mesi</button>
+            <button class="chip" data-period="anno">Anno</button>
+            <button class="chip" data-period="tutto">Tutto</button>
+          </div>
+          <div class="card-meta">Maggio 2026 · al 5 del mese</div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M3 14V3M3 14h11M5 11l3-4 3 2 3-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Ricavi del mese</div>
+            <div class="kpi-value">€23.480</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +8,2% vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 22 L10 18 L20 24 L30 16 L40 14 L50 19 L60 12 L70 9 L80 6" fill="none" stroke="#175E47" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 10h12M5 6l-3 4 3 4M11 6l3 4-3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Costi del mese</div>
+            <div class="kpi-value">€17.620</div>
+            <div class="kpi-change negative">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +3,1% vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 18 L10 17 L20 19 L30 16 L40 14 L50 13 L60 11 L70 12 L80 10" fill="none" stroke="#C0552B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Margine</div>
+            <div class="kpi-value">€5.860<span class="small"> · 24,9%</span></div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +1,2 punti vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 20 L10 22 L20 18 L30 16 L40 14 L50 17 L60 12 L70 8 L80 7" fill="none" stroke="#1D9E75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 8h12M5 11h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Cassa proiettata 30gg</div>
+            <div class="kpi-value">+€2.140</div>
+            <div class="kpi-change neutral">in salute, niente da segnalare</div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 14 L10 12 L20 16 L30 13 L40 15 L50 11 L60 13 L70 10 L80 12" fill="none" stroke="#5C6660" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BIG CHART -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Ricavi, costi e margine</h2>
+            <div class="chart-legend">
+              <span><i style="background:#175E47"></i> Ricavi</span>
+              <span><i style="background:#C0552B"></i> Costi</span>
+              <span><i style="background:#E0A04A"></i> Margine</span>
+            </div>
+          </div>
+          <div class="big-chart-wrap">
+            <svg class="big-chart" viewBox="0 0 800 280" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="gradRev" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#175E47" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#175E47" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="gradMargin" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#E0A04A" stop-opacity="0.16"/>
+                  <stop offset="100%" stop-color="#E0A04A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Gridlines -->
+              <g stroke="rgba(14,20,16,0.06)" stroke-width="1">
+                <line x1="0" y1="40" x2="800" y2="40"/>
+                <line x1="0" y1="100" x2="800" y2="100"/>
+                <line x1="0" y1="160" x2="800" y2="160"/>
+                <line x1="0" y1="220" x2="800" y2="220"/>
+              </g>
+              <!-- Y axis labels -->
+              <g font-family="JetBrains Mono" font-size="9" fill="#8E948F">
+                <text x="6" y="36">30k</text>
+                <text x="6" y="96">22k</text>
+                <text x="6" y="156">15k</text>
+                <text x="6" y="216">8k</text>
+              </g>
+              <!-- Ricavi area -->
+              <path d="M0 110 L66 96 L132 124 L200 92 L266 78 L333 88 L400 64 L466 58 L533 70 L600 50 L666 56 L733 44 L800 38 L800 280 L0 280 Z" fill="url(#gradRev)"/>
+              <!-- Ricavi line -->
+              <path d="M0 110 L66 96 L132 124 L200 92 L266 78 L333 88 L400 64 L466 58 L533 70 L600 50 L666 56 L733 44 L800 38" fill="none" stroke="#175E47" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Costi line -->
+              <path d="M0 154 L66 148 L132 164 L200 138 L266 130 L333 142 L400 122 L466 118 L533 132 L600 112 L666 116 L733 106 L800 102" fill="none" stroke="#C0552B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"/>
+              <!-- Margin line -->
+              <path d="M0 220 L66 218 L132 226 L200 210 L266 202 L333 214 L400 188 L466 182 L533 198 L600 168 L666 174 L733 158 L800 150" fill="none" stroke="#E0A04A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Latest point markers -->
+              <circle cx="800" cy="38" r="5" fill="#FAF6EC" stroke="#175E47" stroke-width="2.4"/>
+              <circle cx="800" cy="102" r="4" fill="#FAF6EC" stroke="#C0552B" stroke-width="2"/>
+              <circle cx="800" cy="150" r="4" fill="#FAF6EC" stroke="#E0A04A" stroke-width="2"/>
+            </svg>
+            <div class="chart-x-axis">
+              <span>Mag 25</span><span>Giu</span><span>Lug</span><span>Ago</span><span>Set</span><span>Ott</span><span>Nov</span><span>Dic</span><span>Gen 26</span><span>Feb</span><span>Mar</span><span>Mag</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TWO COLS -->
+        <div class="dual-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Media incassi per giorno della settimana</h2>
+              <div class="card-meta">
+                <select id="dowFilter">
+                  <option value="month">Ultimo mese</option>
+                  <option value="quarter">Ultimi 3 mesi</option>
+                  <option value="year" selected>Ultimo anno</option>
+                  <option value="all">Tutti gli anni</option>
+                </select>
+              </div>
+            </div>
+            <div class="dow-chart">
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:32%"><span class="bar-value">€580</span></div></div>
+                <div class="dow-label">LUN</div>
+              </div>
+              <div class="dow-bar today">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:42%"><span class="bar-value">€720</span></div></div>
+                <div class="dow-label today">MAR</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:40%"><span class="bar-value">€690</span></div></div>
+                <div class="dow-label">MER</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:50%"><span class="bar-value">€840</span></div></div>
+                <div class="dow-label">GIO</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:74%"><span class="bar-value">€1.220</span></div></div>
+                <div class="dow-label">VEN</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:96%"><span class="bar-value">€1.560</span></div></div>
+                <div class="dow-label">SAB</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:70%"><span class="bar-value">€1.180</span></div></div>
+                <div class="dow-label">DOM</div>
+              </div>
+            </div>
+            <div class="hint-box" style="margin-top:18px;margin-bottom:0">
+              <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v4M8 11.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Sabato è il tuo giorno di punta (€1.560 medio). Il martedì è sotto la media settoriale del 12% — c'è margine di crescita con eventi infrasettimanali.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Festività in arrivo</h2>
+              <div class="card-meta">Previsione · prossimi 60 giorni</div>
+            </div>
+            <div class="holiday-list">
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">2</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Festa della Repubblica</div>
+                  <div class="holiday-meta">Martedì · ponte 1-2 giugno</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.180</div>
+                  <div class="forecast-change negative">-12% vs 2025</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">15</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Domenica · ultima del Giro</div>
+                  <div class="holiday-meta">Affluenza tipica eventi sportivi</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.860</div>
+                  <div class="forecast-change positive">+18% vs media dom.</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">29</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">San Pietro · weekend</div>
+                  <div class="holiday-meta">Lunedì festivo a Bologna</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.420</div>
+                  <div class="forecast-change positive">+9% vs lun. medio</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">15</div>
+                  <div class="month">Ago</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Ferragosto</div>
+                  <div class="holiday-meta">Sabato · città semivuota</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€640</div>
+                  <div class="forecast-change negative">-58% vs sab. medio</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Avvisi sulla deriva costi</h2>
+            <span class="badge danger">3 nuovi questa settimana</span>
+          </div>
+          <div class="alerts-list">
+            <div class="alert-item">
+              <div class="alert-icon up">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Burrata 250g — Caseificio La Sorgente</div>
+                <div class="alert-meta">+18% in 6 settimane · volume mensile <strong>12 kg</strong> · impatto stimato <strong>+94 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Vedi alternativa →</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon up">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Olio EVO Frantoio Rinaldi</div>
+                <div class="alert-meta">+22% in 8 settimane · volume <strong>18 lt/mese</strong> · impatto stimato <strong>+78 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Confronta fornitori →</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon opportunity">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 4.2 4.2.4-3 3 .8 4.4L8 12l-3.8 2 .8-4.4-3-3 4.2-.4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Software in abbonamento dimenticati</div>
+                <div class="alert-meta">2 abbonamenti senza attività da 4 mesi · risparmio totale <strong>+118 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Disdici →</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============ PAGE: PERSONALE ============ -->
+      <section class="page" data-page="personale">
+
+        <div class="filter-bar">
+          <div class="week-nav">
+            <button class="nav-arrow" aria-label="Settimana precedente">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="week-label">5 → 11 maggio 2026</span>
+            <button class="nav-arrow" aria-label="Settimana successiva">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-secondary">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M7 1v8M3 5l4-4 4 4M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Esporta calendario
+            </button>
+            <button class="btn-primary-app">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Condividi con il team
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti previsti settimana</div>
+            <div class="kpi-value">312<span class="small"> /405</span></div>
+            <div class="kpi-change neutral">77% di occupazione attesa</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Costo lavoro previsto</div>
+            <div class="kpi-value">€2.420</div>
+            <div class="kpi-change negative">31% sui ricavi attesi · target 28%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Risparmio se applichi i consigli</div>
+            <div class="kpi-value">€176</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              porta il costo lavoro al 28,8%
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Ore totali pianificate</div>
+            <div class="kpi-value">186<span class="small"> h</span></div>
+            <div class="kpi-change neutral">su 6 collaboratori attivi</div>
+          </div>
+        </div>
+
+        <div class="hint-box">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v4M8 11.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Il sistema calcola il fabbisogno personale incrociando coperti previsti, prenotazioni confermate e produttività media (1 cameriere ogni 14-16 coperti, 1 cuoco ogni 25 coperti).
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Pianificazione della settimana</h2>
+            <span class="card-meta">Trascina i turni per modificare · clicca un giorno per i dettagli</span>
+          </div>
+          <div class="staff-week">
+            <!-- Header -->
+            <div class="staff-week-head">
+              <div class="staff-name-col-h">Personale</div>
+              <div class="day-col-h"><div class="day-name">LUN</div><div class="day-date">5</div><div class="day-meta">22 cop.</div></div>
+              <div class="day-col-h today"><div class="day-name">MAR</div><div class="day-date">6</div><div class="day-meta">28 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">MER</div><div class="day-date">7</div><div class="day-meta">26 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">GIO</div><div class="day-date">8</div><div class="day-meta">34 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">VEN</div><div class="day-date">9</div><div class="day-meta">58 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">SAB</div><div class="day-date">10</div><div class="day-meta">64 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">DOM</div><div class="day-date">11</div><div class="day-meta">52 cop.</div></div>
+            </div>
+
+            <!-- Luca - Cuoco -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar">L</div>
+                <div>
+                  <div class="staff-name">Luca Bianchi</div>
+                  <div class="staff-role">Cuoco · €13/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift full">12—15</span><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift full">12—15</span><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Maria - Aiuto cucina -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-1">M</div>
+                <div>
+                  <div class="staff-name">Maria Conti</div>
+                  <div class="staff-role">Aiuto cucina · €10/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">18—24</span></div>
+              <div class="shift-cell"><span class="shift">18—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Sara -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-2">S</div>
+                <div>
+                  <div class="staff-name">Sara De Luca</div>
+                  <div class="staff-role">Sala · €11/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+            </div>
+
+            <!-- Paolo -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-3">P</div>
+                <div>
+                  <div class="staff-name">Paolo Riva</div>
+                  <div class="staff-role">Sala · €11/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Tommaso (junior) -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-4">T</div>
+                <div>
+                  <div class="staff-name">Tommaso Greco</div>
+                  <div class="staff-role">Runner · €9/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Suggerimenti del sistema</h2>
+            <span class="card-meta">Basati su prenotazioni confermate al 5 maggio 18:30</span>
+          </div>
+          <div class="day-suggestions">
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">MAR</div><div class="dt-date">6</div></div>
+              <div class="suggest-message">Solo <strong>11 prenotazioni confermate</strong> e media storica martedì = 24 cop. Hai <strong>2 in sala</strong>: ok, lascia così.</div>
+              <div class="suggest-savings">Nessuna azione</div>
+              <div></div>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">MER</div><div class="dt-date">7</div></div>
+              <div class="suggest-message">Hai schedulato <strong>2 in sala</strong> (Sara + Paolo) ma le prenotazioni sono ancora a 8 e media storica = 19 cop. Una basta.</div>
+              <div class="suggest-savings">Risparmio<strong>€44</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">SAB</div><div class="dt-date">10</div></div>
+              <div class="suggest-message">Prenotazioni già a <strong>52 su 64 cop. previsti</strong>. Considera di rinforzare con Tommaso anche al pranzo (12-15).</div>
+              <div class="suggest-savings">Costo aggiuntivo<strong>€27</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">DOM</div><div class="dt-date">11</div></div>
+              <div class="suggest-message">52 coperti previsti al pranzo, hai solo <strong>1 cuoco e 1 sala</strong>. È sopra la soglia di stress per la coppia. Aggiungi Maria al pranzo.</div>
+              <div class="suggest-savings">Costo aggiuntivo<strong>€33</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PAGE: PRENOTAZIONI ============ -->
+      <section class="page" data-page="prenotazioni">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip active">Tutte</button>
+            <button class="chip">Oggi</button>
+            <button class="chip">Domani</button>
+            <button class="chip">Settimana</button>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span class="badge success">
+              <svg viewBox="0 0 12 12" fill="none" width="9" height="9"><circle cx="6" cy="6" r="3" fill="currentColor"/></svg>
+              Bot online
+            </span>
+            <button class="btn-secondary">Apri WhatsApp Business</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti oggi</div>
+            <div class="kpi-value">38<span class="small"> /42</span></div>
+            <div class="kpi-change positive">90% di occupazione · sera quasi piena</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti settimana</div>
+            <div class="kpi-value">312</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +18% vs settimana scorsa
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Tasso cancellazione</div>
+            <div class="kpi-value">8,2<span class="small">%</span></div>
+            <div class="kpi-change neutral">media settore Bologna 11%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Prenotazioni via bot</div>
+            <div class="kpi-value">71<span class="small">%</span></div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +9 punti vs marzo
+            </div>
+          </div>
+        </div>
+
+        <div class="dual-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Prenotazioni recenti</h2>
+              <span class="card-meta">Ultime 24 ore · live dal bot</span>
+            </div>
+            <div class="reservations-feed">
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day today">OGGI</div>
+                  <div class="rsv-hour">20:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Famiglia Russo <span class="rsv-size">×4</span></div>
+                  <div class="rsv-meta">+39 339 412 5588 · richiesta 5 mag 14:18</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ celiaco</span>
+                    <span class="rsv-tag info">ricorrenza · compleanno</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day today">OGGI</div>
+                  <div class="rsv-hour">21:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">M. Bianchi <span class="rsv-size">×2</span></div>
+                  <div class="rsv-meta">+39 348 ··· 8214 · richiesta 5 mag 11:42</div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">DOM</div>
+                  <div class="rsv-hour">13:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Aliquota S.r.l. — pranzo team <span class="rsv-size">×6</span></div>
+                  <div class="rsv-meta">aliquota.it · fattura richiesta · 5 mag 09:55</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ 1 vegetariano</span>
+                    <span class="rsv-tag neutral">menu fisso 28€</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">VEN</div>
+                  <div class="rsv-hour">20:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Studio Conti — cena cliente <span class="rsv-size">×8</span></div>
+                  <div class="rsv-meta">+39 051 ··· 4422 · 4 mag 17:30</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ 1 intolleranza lattosio</span>
+                    <span class="rsv-tag neutral">posto al piano</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">SAB</div>
+                  <div class="rsv-hour">21:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">A. Verdi <span class="rsv-size">×3</span></div>
+                  <div class="rsv-meta">+39 333 ··· 9087 · cancellata stamattina 08:14</div>
+                </div>
+                <span class="status-badge cancelled">Cancellata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">SAB</div>
+                  <div class="rsv-hour">20:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Eleonora Pasi <span class="rsv-size">×2</span></div>
+                  <div class="rsv-meta">+39 392 ··· 7711 · in attesa di carta credito di garanzia</div>
+                </div>
+                <span class="status-badge pending">In attesa</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">DOM</div>
+                  <div class="rsv-hour">12:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Famiglia Petrini — pranzo battesimo <span class="rsv-size">×14</span></div>
+                  <div class="rsv-meta">+39 340 ··· 5566 · 4 mag 21:02</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag info">menu concordato</span>
+                    <span class="rsv-tag neutral">acconto €100 ricevuto</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column">
+            <div class="card-header">
+              <h2>Bot Margine via WhatsApp</h2>
+              <span class="badge success">attivo</span>
+            </div>
+            <div class="chat-preview" style="flex:1">
+              <div class="chat-day">Oggi</div>
+              <div class="chat-bubble customer">Buonasera, è possibile prenotare per 4 questa sera alle 20:30?<span class="ts">14:14</span></div>
+              <div class="chat-bubble bot">Ciao! Tavolo per 4 alle 20:30 disponibile ✓<br/>Mi confermi nome e numero?<span class="ts">14:14</span></div>
+              <div class="chat-bubble customer">Famiglia Russo, sono il numero che state vedendo<span class="ts">14:16</span></div>
+              <div class="chat-bubble bot">Perfetto Famiglia Russo, prenotazione registrata.<br/>Avete <strong>intolleranze o allergie</strong> da segnalarci?<span class="ts">14:16</span></div>
+              <div class="chat-bubble customer">Sì mio figlio è celiaco, c'è qualcosa per lui?<span class="ts">14:18</span></div>
+              <div class="chat-bubble bot">Annotato 👍 Abbiamo pasta e dolci dedicati. Lo chef vi dirà al tavolo.<br/>Vi aspettiamo alle 20:30!<span class="ts">14:18</span></div>
+              <div class="chat-typing">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ PAGE: FATTURE ============ -->
+      <section class="page" data-page="fatture">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip active">Tutte</button>
+            <button class="chip">Da pagare</button>
+            <button class="chip">Pagate</button>
+            <button class="chip">In contestazione</button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-secondary">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h10M2 10h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Filtri
+            </button>
+            <button class="btn-secondary">Esporta</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Da pagare questa settimana</div>
+            <div class="kpi-value">€1.620</div>
+            <div class="kpi-change urgent">
+              <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3v3M6 8.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              2 in scadenza nei prossimi 5gg
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Da pagare totale</div>
+            <div class="kpi-value">€8.430</div>
+            <div class="kpi-change neutral">14 fatture · scadenza media 22gg</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Pagate questo mese</div>
+            <div class="kpi-value">€12.180</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              22 fatture, tutte in tempo
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Insoluti</div>
+            <div class="kpi-value">€0</div>
+            <div class="kpi-change positive">tutto in regola</div>
+          </div>
+        </div>
+
+        <!-- URGENT -->
+        <div class="section-head first">
+          <h3>⚠ Urgenze · entro 5 giorni</h3>
+          <span class="meta">2 fatture · totale €1.620</span>
+        </div>
+        <div class="invoices-list">
+          <div class="invoice-row urgent">
+            <div class="inv-supplier">
+              Macelleria Ferri Bologna
+              <span class="inv-id">FT 2026-04-187 · sett. 17</span>
+            </div>
+            <div class="inv-desc">Carne fresca · 18 kg manzo, 4 kg vitello</div>
+            <div class="inv-amount">€1.240,00</div>
+            <div class="inv-due">
+              <div class="due-label">Scade</div>
+              <div class="due-date">domani · 6 mag</div>
+            </div>
+            <button class="inv-action">Segna pagata</button>
+          </div>
+          <div class="invoice-row urgent">
+            <div class="inv-supplier">
+              Centrale del Latte di Modena
+              <span class="inv-id">FT 2026-04-44 · sett. 17-18</span>
+            </div>
+            <div class="inv-desc">Latte intero, panna, mascarpone</div>
+            <div class="inv-amount">€380,00</div>
+            <div class="inv-due">
+              <div class="due-label">Scade</div>
+              <div class="due-date">7 mag · 2 gg</div>
+            </div>
+            <button class="inv-action">Segna pagata</button>
+          </div>
+        </div>
+
+        <!-- COMING -->
+        <div class="section-head">
+          <h3>In arrivo · prossimi 30 giorni</h3>
+          <span class="meta">12 fatture · totale €6.810</span>
+        </div>
+        <div class="card" style="padding:0">
+          <table class="invoices-table">
+            <thead>
+              <tr>
+                <th class="col-supplier">Fornitore</th>
+                <th>Descrizione</th>
+                <th style="text-align:right">Importo</th>
+                <th>Scadenza</th>
+                <th class="col-status">Stato</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-supplier">Az. Agricola Bergonzini<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-92</div></td>
+                <td>Vino sfuso · 60lt Sangiovese, 40lt Chardonnay</td>
+                <td class="col-amount">€890</td>
+                <td class="col-due">12 mag · 7 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Enel Energia<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-7712</div></td>
+                <td>Bolletta luce aprile · 1.842 kWh</td>
+                <td class="col-amount">€312</td>
+                <td class="col-due">14 mag · 9 gg</td>
+                <td class="col-status"><span class="badge neutral">RID</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Compagnia Olearia Rinaldi<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-58</div></td>
+                <td>Olio EVO 12 lt · ↑ vedi avviso</td>
+                <td class="col-amount">€240</td>
+                <td class="col-due">18 mag · 13 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Ortofrutta Bonanni<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-05-3</div></td>
+                <td>Frutta e verdura settimana 18</td>
+                <td class="col-amount">€420</td>
+                <td class="col-due">19 mag · 14 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Hera Gas<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-2298</div></td>
+                <td>Bolletta gas aprile · cucina + acqua calda</td>
+                <td class="col-amount">€198</td>
+                <td class="col-due">22 mag · 17 gg</td>
+                <td class="col-status"><span class="badge neutral">RID</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Caseificio La Sorgente<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-110</div></td>
+                <td>Burrata, mozzarella, ricotta · ↑ vedi avviso</td>
+                <td class="col-amount">€340</td>
+                <td class="col-due">24 mag · 19 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Studio Bertoldi (commercialista)<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-22</div></td>
+                <td>Tenuta contabilità · maggio</td>
+                <td class="col-amount">€220</td>
+                <td class="col-due">31 mag · 26 gg</td>
+                <td class="col-status"><span class="badge neutral">SDD</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PAID -->
+        <div class="section-head">
+          <h3>Pagate questo mese</h3>
+          <span class="meta">22 fatture · totale €12.180 · tutte in tempo</span>
+        </div>
+        <div class="invoices-list">
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Ortofrutta Bonanni
+              <span class="inv-id">FT 2026-04-118 · pagata 2 mag</span>
+            </div>
+            <div class="inv-desc">Frutta e verdura settimana 17</div>
+            <div class="inv-amount">€420,00</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">2 mag · bonifico</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Macelleria Ferri Bologna
+              <span class="inv-id">FT 2026-04-156 · pagata 28 apr</span>
+            </div>
+            <div class="inv-desc">Carne fresca settimana 16</div>
+            <div class="inv-amount">€1.180,00</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">28 apr · bonifico</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Iliad Business
+              <span class="inv-id">FT 2026-04-44ZX · pagata 26 apr</span>
+            </div>
+            <div class="inv-desc">Connettività mese di aprile</div>
+            <div class="inv-amount">€19,99</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">26 apr · RID</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div style="background:var(--surface);padding:14px 18px;border-top:1px solid var(--line-2);display:flex;justify-content:center">
+            <button class="btn-secondary">Vedi le altre 19 fatture pagate ↓</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const PAGES = {
+    panoramica: { title: 'Panoramica', subtitle: 'Martedì 5 maggio 2026 · settimana 19' },
+    personale: { title: 'Personale', subtitle: 'Pianificazione settimana 5 → 11 maggio' },
+    prenotazioni: { title: 'Prenotazioni', subtitle: 'Live dal bot WhatsApp · 14 in arrivo oggi' },
+    fatture: { title: 'Fatture', subtitle: '€1.620 in scadenza nei prossimi 5 giorni' }
+  };
+
+  function showPage(key){
+    if(!PAGES[key]) key = 'panoramica';
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === key));
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(a => a.classList.toggle('active', a.dataset.tab === key));
+    document.getElementById('pageTitle').textContent = PAGES[key].title;
+    document.getElementById('pageSubtitle').textContent = PAGES[key].subtitle;
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function fromHash(){
+    const h = (location.hash || '#panoramica').slice(1);
+    showPage(h);
+  }
+
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  // Filter chip interactivity (visual toggle within each group)
+  document.querySelectorAll('.chip-group').forEach(group => {
+    group.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // Suggest apply (visual)
+  document.querySelectorAll('.suggest-apply, .alert-action, .inv-action:not(.disabled):not(.secondary)').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const b = e.currentTarget;
+      const original = b.textContent;
+      b.textContent = '✓ fatto';
+      b.style.background = 'var(--green-700)';
+      setTimeout(() => { b.textContent = original; b.style.background = ''; }, 1400);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
