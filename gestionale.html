@@ -1085,30 +1085,213 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
 .hint-box svg{width:14px;height:14px;flex-shrink:0}
 
 /* Responsive */
+/* ============ Responsive ============ */
 @media (max-width:1100px){
   .kpi-grid{grid-template-columns:repeat(2, 1fr)}
   .dual-grid{grid-template-columns:1fr}
 }
+
+/* Tablet & small laptop */
 @media (max-width:880px){
+  /* App shell collapse: sidebar diventa nav orizzontale */
   .app{grid-template-columns:1fr}
-  .sidebar{position:relative;height:auto}
-  .sidebar-nav{flex-direction:row;overflow-x:auto;padding:8px}
+  .sidebar{position:relative;height:auto;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .sidebar-brand{padding:14px 18px}
+  .sidebar-nav{
+    flex-direction:row;overflow-x:auto;padding:8px 12px;gap:4px;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    /* gradient mask hint */
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10px,#000 calc(100% - 10px),transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10px,#000 calc(100% - 10px),transparent);
+  }
+  .sidebar-nav::-webkit-scrollbar{display:none}
   .sidebar-nav .nav-section-label{display:none}
-  .sidebar-nav .nav-item{flex-shrink:0}
+  .sidebar-nav .nav-item{
+    flex-shrink:0;padding:8px 12px;font-size:13px;
+    scroll-snap-align:start;
+  }
+  .sidebar-nav .nav-item.active::before{display:none}
+  .sidebar-nav .nav-item .nav-badge{display:none}
   .sidebar-restaurant,.sidebar-footer{display:none}
-  .app-content{padding:24px 18px 48px}
-  .app-topbar{padding:14px 18px}
-  .topbar-title h1{font-size:24px}
+
+  /* Topbar compatto */
+  .app-content{padding:20px 16px 48px}
+  .app-topbar{padding:12px 16px;gap:10px}
+  .topbar-title h1{font-size:22px;line-height:1.05}
+  .topbar-title .subtitle{font-size:11px;margin-top:4px}
+  .topbar-actions{gap:8px}
+  .icon-btn{width:36px;height:36px;border-radius:8px}
+  .icon-btn svg{width:14px;height:14px}
   .search-input{display:none}
+
+  /* Card padding ridotti */
+  .card{padding:18px 18px}
+  .card + .card{margin-top:14px}
+  .card-header{margin-bottom:14px;gap:10px}
+  .card-header h2{font-size:20px}
+
+  /* Filter bar */
+  .filter-bar{margin-bottom:14px;gap:10px}
+
+  /* KPI grid */
+  .kpi-grid{gap:10px;margin-bottom:18px}
+  .kpi-card{padding:16px 18px}
+  .kpi-card .kpi-value{font-size:28px}
+  .kpi-card .kpi-spark{width:60px;height:24px;right:14px;bottom:12px}
+
+  /* Big chart compatto */
+  .big-chart{height:220px}
+  .chart-x-axis{font-size:9px}
+  .chart-legend{gap:14px;font-size:11px}
+
+  /* Day-of-week bars compact */
+  .dow-chart{height:170px;gap:6px;padding:6px 0 0}
+  .dow-bar-fill{max-width:36px}
+  .dow-bar-fill .bar-value{font-size:10px;top:-19px}
+  .dow-label{font-size:10px}
+
+  /* Holiday list compact */
+  .holiday-row{padding:12px 14px;gap:12px}
+  .holiday-date{padding:6px 4px}
+  .holiday-date .day{font-size:18px}
+  .holiday-info .holiday-name{font-size:13px}
+  .holiday-forecast .forecast-value{font-size:18px}
+
+  /* Alerts compact */
+  .alert-item{padding:12px 14px;gap:10px;grid-template-columns:32px 1fr auto}
+  .alert-icon{width:32px;height:32px}
+  .alert-body .alert-title{font-size:13px}
+  .alert-body .alert-meta{font-size:11px}
+  .alert-action{font-size:11px;padding:5px 10px}
+
+  /* Staff calendar — scroll orizzontale con prima colonna fissa percezione */
+  .staff-week{
+    display:block;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border-radius:12px;
+  }
+  .staff-week-head,
+  .staff-row{
+    display:grid;
+    grid-template-columns:128px repeat(7, 86px);
+    min-width:730px;
+  }
+  .staff-week-head > div,
+  .staff-row > div{padding:10px 8px}
+  .staff-name-cell{gap:8px}
+  .staff-avatar{width:28px;height:28px;font-size:13px}
+  .staff-name-cell .staff-name{font-size:12px;line-height:1.15}
+  .staff-name-cell .staff-role{font-size:10px}
+  .staff-week-head .day-col-h .day-date{font-size:18px}
+  .staff-week-head .day-col-h .day-meta{font-size:9px;letter-spacing:0.02em}
+  .shift{font-size:10px;padding:2px 6px}
+  .shift-cell{min-height:46px}
+
+  /* Day suggestions */
+  .day-suggest{
+    grid-template-columns:60px 1fr;
+    gap:8px 12px;
+    padding:12px 14px;
+    align-items:start;
+  }
+  .day-suggest .day-tag{grid-row:1 / span 3;align-self:start}
+  .day-suggest .suggest-message{grid-column:2;align-self:center}
+  .day-suggest .suggest-savings{grid-column:2;text-align:left;font-size:11px}
+  .day-suggest .suggest-savings strong{font-size:15px;display:inline;margin-left:6px}
+  .day-suggest .suggest-apply{grid-column:2;justify-self:flex-start;font-size:11px;padding:6px 12px}
+  .day-tag .dt-date{font-size:16px}
+
+  /* Reservation feed */
+  .rsv-item{padding:12px 14px;gap:12px;grid-template-columns:64px 1fr auto}
+  .rsv-time{padding:6px 4px}
+  .rsv-time .rsv-hour{font-size:15px}
+  .rsv-body .rsv-name{font-size:13px}
+  .rsv-body .rsv-meta{font-size:11px}
+  .rsv-body .rsv-tags{margin-top:4px}
+  .rsv-tag{font-size:10px;padding:2px 6px}
+  .status-badge{font-size:9px;padding:4px 8px}
+
+  /* Invoice row (urgent + paid) */
+  .invoice-row{padding:12px 14px;grid-template-columns:1fr 1fr;gap:6px 12px}
+  .invoice-row.urgent,.invoice-row.coming,.invoice-row.paid{padding-left:11px}
+  .invoice-row .inv-supplier{grid-column:1 / -1;font-size:13px}
+  .invoice-row .inv-desc{grid-column:1 / -1;font-size:12px;color:var(--ink-3)}
+  .invoice-row .inv-amount{font-size:18px;text-align:left;justify-self:start}
+  .invoice-row .inv-due{text-align:left;justify-self:end}
+  .invoice-row .inv-action,.invoice-row .status-badge{grid-column:1 / -1;justify-self:flex-start}
+
+  /* Tabella fatture in arrivo — scroll orizzontale */
+  .scrollable-table{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .invoices-table{min-width:600px}
+
+  /* Notif dropdown — full width sotto la topbar */
+  .notif-dropdown{
+    position:fixed;
+    top:60px;
+    left:8px;right:8px;
+    width:auto;max-width:none;
+  }
+
+  /* Section heads */
+  .section-head h3{font-size:18px}
+  .section-head .meta{font-size:11px}
+
+  /* Chat preview */
+  .chat-preview{padding:14px;max-height:380px}
+
+  /* Hint box */
+  .hint-box{padding:10px 14px;font-size:12px}
+
+  /* Week nav */
+  .week-nav .week-label{font-size:12px;padding:0 8px}
+
+  /* Toast posizione su mobile */
+  .toast-container{bottom:16px;left:16px;right:16px;transform:none}
+  .toast{justify-content:center}
 }
+
+/* Mobile fino a 640px */
 @media (max-width:640px){
-  .invoice-row{grid-template-columns:1fr 1fr;gap:8px}
-  .invoice-row .inv-desc,.invoice-row .inv-action{grid-column:1 / -1}
-  .staff-week{font-size:11px}
   .kpi-grid{grid-template-columns:1fr}
-  .day-suggest{grid-template-columns:1fr;gap:8px}
-  .rsv-item{grid-template-columns:60px 1fr;gap:12px}
-  .rsv-item .status-badge{grid-column:2;justify-self:flex-start}
+  .app-topbar{padding:10px 14px}
+  .topbar-title h1{font-size:20px}
+  .topbar-title .subtitle{font-size:10px}
+  .card{padding:16px 14px}
+  .card-header{flex-direction:column;align-items:flex-start;gap:8px}
+
+  /* Suggerimenti — sopra altre cose */
+  .filter-bar{flex-direction:column;align-items:stretch}
+  .filter-bar > div:not(.chip-group){width:100%}
+  .chip-group{width:100%;justify-content:space-between}
+  .chip{flex:1;text-align:center;padding:6px 8px;font-size:12px}
+
+  /* DOW più compatti */
+  .dow-chart{height:150px;gap:4px}
+  .dow-bar-fill{max-width:30px}
+  .dow-bar-fill .bar-value{font-size:9px}
+
+  /* Modal turni — full padding */
+  .shift-modal{padding:20px 22px 16px}
+  .shift-modal-title{font-size:20px}
+  .shift-modal-form{margin-top:14px;gap:12px}
+  .shift-times{grid-template-columns:1fr 1fr;gap:8px}
+}
+
+/* iPhone SE / piccolissimi */
+@media (max-width:380px){
+  .sidebar-brand .logo-name{font-size:15px}
+  .sidebar-brand .demo-badge{font-size:9px;padding:2px 6px}
+  .topbar-title h1{font-size:18px}
+  .icon-btn{width:34px;height:34px}
+  .topbar-actions .icon-btn[aria-label="Impostazioni"]{display:none}
+  .kpi-card .kpi-value{font-size:24px}
+  .kpi-card .kpi-spark{display:none}
+  .chip{font-size:11px;padding:5px 6px}
 }
 </style>
 </head>
@@ -2020,7 +2203,7 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
           <h3>In arrivo · prossimi 30 giorni</h3>
           <span class="meta">12 fatture · totale €6.810</span>
         </div>
-        <div class="card" style="padding:0">
+        <div class="card scrollable-table" style="padding:0">
           <table class="invoices-table">
             <thead>
               <tr>
