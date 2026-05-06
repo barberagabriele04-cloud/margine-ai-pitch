@@ -1,138 +1,3178 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#1f5a45" />
-  <title>Margine.ai — Demo gestionale</title>
-  <meta name="description" content="Demo navigabile dell'interfaccia di Margine.ai. Panoramica margini, personale, prenotazioni e fatture in un unico posto." />
-  <meta name="robots" content="noindex" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Margine.ai — Demo gestionale</title>
+<meta name="description" content="L'interfaccia di Margine.ai. Panoramica margini, personale, prenotazioni e fatture in un unico posto, sempre aggiornati." />
+<meta name="theme-color" content="#0F4D3A" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230F4D3A'/><path d='M8 22 L13 14 L17 18 L24 8' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M19 8 L24 8 L24 13' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230F4D3A'/><path d='M8 22 L13 14 L17 18 L24 8' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M19 8 L24 8 L24 13' stroke='%23F5F1EA' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+<style>
+:root{
+  --green-900:#06281F;
+  --green-800:#0F4D3A;
+  --green-700:#175E47;
+  --green-600:#1D9E75;
+  --green-500:#2BB585;
+  --green-400:#4DCB9D;
+  --green-100:#E1F0E8;
+  --green-50:#F0F7F2;
+
+  --paper:#F5F1EA;
+  --paper-soft:#EDE7DA;
+  --bg-app:#F7F3EC;
+  --surface:#FFFFFF;
+  --surface-2:#FAF6EC;
+
+  --ink:#0E1410;
+  --ink-2:#2A322D;
+  --ink-3:#5C6660;
+  --ink-4:#8E948F;
+  --ink-5:#B5BAB5;
+
+  --line:rgba(14,20,16,0.10);
+  --line-2:rgba(14,20,16,0.06);
+  --line-strong:rgba(14,20,16,0.16);
+
+  --amber:#E0A04A;
+  --amber-bg:#FFF4E0;
+  --rust:#C0552B;
+  --rust-bg:#FBE9E2;
+  --rust-soft:#F2D6CB;
+
+  --serif:'Instrument Serif', 'Times New Roman', serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --radius-s:6px;
+  --radius-m:10px;
+  --radius-l:16px;
+  --radius-xl:24px;
+
+  --shadow-xs:0 1px 2px rgba(14,20,16,0.04);
+  --shadow-sm:0 1px 3px rgba(14,20,16,0.06), 0 1px 2px rgba(14,20,16,0.04);
+  --shadow-md:0 4px 12px rgba(14,20,16,0.08), 0 2px 4px rgba(14,20,16,0.04);
+  --shadow-lg:0 12px 28px rgba(14,20,16,0.10), 0 4px 8px rgba(14,20,16,0.04);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg-app);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  font-size:14px;
+}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit;background:none;border:0;cursor:pointer;color:inherit;font-size:inherit}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+table{border-collapse:collapse;width:100%}
+input,select{font-family:inherit;font-size:inherit;color:inherit}
+
+/* ============ APP SHELL ============ */
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  min-height:100vh;
+  background:var(--bg-app);
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar{
+  background:var(--green-900);
+  color:rgba(250,246,236,0.78);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;
+  height:100vh;
+  overflow-y:auto;
+}
+.sidebar-brand{
+  display:flex;align-items:center;gap:10px;
+  padding:22px 22px 22px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.sidebar-brand .logo-mark{
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.sidebar-brand .logo-mark svg{width:18px;height:18px}
+.sidebar-brand .logo-name{
+  font-size:17px;font-weight:500;letter-spacing:-0.02em;
+  color:var(--paper);
+}
+.sidebar-brand .logo-name em{
+  font-style:normal;color:var(--green-500);
+  font-family:var(--serif);font-size:20px;letter-spacing:-0.01em;font-weight:400;
+}
+.demo-badge{
+  margin-left:auto;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  background:var(--amber);color:#3a2305;
+  padding:3px 8px;border-radius:4px;
+}
+
+.sidebar-restaurant{
+  padding:18px 22px 22px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.sidebar-restaurant .rs-label{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:rgba(250,246,236,0.45);
+  margin-bottom:6px;
+}
+.sidebar-restaurant .rs-name{
+  font-family:var(--serif);font-size:22px;color:var(--paper);line-height:1.1;
+  letter-spacing:-0.01em;
+}
+.sidebar-restaurant .rs-meta{
+  font-size:12px;color:rgba(250,246,236,0.55);margin-top:4px;
+}
+
+.sidebar-nav{
+  padding:14px 12px;
+  display:flex;flex-direction:column;gap:2px;
+  flex:1;
+}
+.sidebar-nav .nav-section-label{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:rgba(250,246,236,0.4);
+  padding:14px 12px 8px;
+}
+.sidebar-nav .nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:8px;
+  color:rgba(250,246,236,0.78);
+  font-size:14px;font-weight:500;
+  transition:background .15s, color .15s;
+  position:relative;
+}
+.sidebar-nav .nav-item:hover{
+  background:rgba(255,255,255,0.04);
+  color:var(--paper);
+}
+.sidebar-nav .nav-item.active{
+  background:var(--green-700);
+  color:var(--paper);
+}
+.sidebar-nav .nav-item.active::before{
+  content:"";position:absolute;left:-12px;top:8px;bottom:8px;
+  width:3px;background:var(--green-500);border-radius:0 3px 3px 0;
+}
+.sidebar-nav .nav-item .ic{
+  width:18px;height:18px;flex-shrink:0;
+  color:rgba(250,246,236,0.6);
+}
+.sidebar-nav .nav-item.active .ic,
+.sidebar-nav .nav-item:hover .ic{color:var(--green-500)}
+.sidebar-nav .nav-item .nav-badge{
+  margin-left:auto;
+  font-size:10px;font-weight:500;
+  background:rgba(255,255,255,0.08);
+  color:rgba(250,246,236,0.7);
+  padding:2px 7px;border-radius:999px;
+  font-family:var(--mono);letter-spacing:0.04em;
+}
+.sidebar-nav .nav-item .nav-badge.urgent{
+  background:var(--rust);color:#fff;
+}
+
+.sidebar-footer{
+  padding:18px 18px;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.user-info{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 0;
+  margin-bottom:14px;
+}
+.user-info .avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.user-info .user-name{
+  font-size:13px;font-weight:500;color:var(--paper);line-height:1.2;
+}
+.user-info .user-role{
+  font-size:11px;color:rgba(250,246,236,0.5);margin-top:2px;
+}
+.back-to-site{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:6px;
+  font-size:12px;color:rgba(250,246,236,0.6);
+  transition:background .15s, color .15s;
+}
+.back-to-site:hover{
+  background:rgba(255,255,255,0.04);
+  color:var(--paper);
+}
+.back-to-site svg{width:12px;height:12px}
+
+/* ============ APP MAIN ============ */
+.app-main{
+  display:flex;flex-direction:column;
+  min-width:0;
+}
+
+/* Topbar */
+.app-topbar{
+  position:sticky;top:0;z-index:30;
+  background:rgba(247,243,236,0.85);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--line-2);
+  padding:18px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+}
+.topbar-title h1{
+  font-family:var(--serif);font-size:34px;line-height:1;letter-spacing:-0.015em;
+  font-weight:400;color:var(--ink);
+}
+.topbar-title .subtitle{
+  font-size:13px;color:var(--ink-3);margin-top:6px;
+}
+.topbar-actions{
+  display:flex;align-items:center;gap:12px;
+}
+.search-input{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 14px;
+  width:240px;
+  font-size:13px;color:var(--ink-3);
+}
+.search-input svg{width:14px;height:14px}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);
+  position:relative;
+  transition:background .15s, border-color .15s;
+}
+.icon-btn:hover{background:#fff;border-color:var(--line-strong)}
+.icon-btn svg{width:16px;height:16px}
+.icon-btn .dot-notif{
+  position:absolute;top:8px;right:9px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--rust);
+  border:2px solid var(--surface);
+}
+
+/* App content */
+.app-content{
+  padding:32px 36px 64px;
+  max-width:1400px;
+  width:100%;
+}
+
+/* Pages */
+.page{display:none;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ============ PRIMITIVES ============ */
+.eyebrow{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:var(--ink-3);
+}
+
+/* Filter bar */
+.filter-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:14px;
+}
+.chip-group{
+  display:inline-flex;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:3px;
+  gap:2px;
+}
+.chip{
+  font-size:13px;font-weight:500;
+  color:var(--ink-3);
+  padding:7px 14px;border-radius:999px;
+  transition:background .15s, color .15s;
+}
+.chip:hover{color:var(--ink)}
+.chip.active{
+  background:var(--green-800);
+  color:var(--paper);
+}
+.chip-group.small .chip{font-size:12px;padding:5px 11px}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:500;
+  background:var(--surface);color:var(--ink-2);
+  border:1px solid var(--line);
+  padding:8px 14px;border-radius:8px;
+  transition:background .15s, border-color .15s;
+}
+.btn-secondary:hover{background:#fff;border-color:var(--line-strong)}
+.btn-secondary svg{width:13px;height:13px}
+
+.btn-primary-app{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:500;
+  background:var(--green-800);color:var(--paper);
+  border:1px solid var(--green-800);
+  padding:8px 16px;border-radius:8px;
+  transition:background .15s;
+}
+.btn-primary-app:hover{background:var(--green-900)}
+.btn-primary-app svg{width:13px;height:13px}
+
+/* Cards */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:24px 26px;
+  box-shadow:var(--shadow-xs);
+}
+.card + .card{margin-top:18px}
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;gap:14px;flex-wrap:wrap;
+}
+.card-header h2{
+  font-family:var(--serif);font-size:24px;font-weight:400;
+  letter-spacing:-0.01em;line-height:1.1;
+  color:var(--ink);
+}
+.card-meta{
+  font-size:12px;color:var(--ink-3);
+}
+.card-meta select{
+  border:1px solid var(--line);
+  background:var(--surface);
+  border-radius:6px;
+  padding:5px 10px;font-size:12px;color:var(--ink-2);
+  cursor:pointer;
+}
+
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.12em;
+  padding:4px 9px;border-radius:4px;
+}
+.badge.warn{background:var(--amber-bg);color:#8A5A18}
+.badge.danger{background:var(--rust-bg);color:var(--rust)}
+.badge.success{background:var(--green-50);color:var(--green-800)}
+.badge.neutral{background:var(--paper-soft);color:var(--ink-3)}
+
+/* KPI grid */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;
+  margin-bottom:24px;
+}
+.kpi-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:20px 22px;
+  display:flex;flex-direction:column;gap:8px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow-xs);
+}
+.kpi-card .kpi-label{
+  font-size:12px;color:var(--ink-3);
+  display:flex;align-items:center;gap:6px;
+}
+.kpi-card .kpi-label .ic{width:13px;height:13px;color:var(--ink-4)}
+.kpi-card .kpi-value{
+  font-family:var(--serif);font-size:34px;line-height:1;letter-spacing:-0.02em;
+  color:var(--ink);font-weight:400;
+}
+.kpi-card .kpi-value .small{font-size:18px;color:var(--ink-3);margin-left:2px}
+.kpi-card .kpi-change{
+  font-size:12px;font-weight:500;
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:auto;
+}
+.kpi-change.positive{color:var(--green-700)}
+.kpi-change.negative{color:var(--rust)}
+.kpi-change.neutral{color:var(--ink-3)}
+.kpi-change.urgent{color:var(--rust);font-weight:600}
+.kpi-change svg{width:11px;height:11px}
+.kpi-card .kpi-spark{
+  position:absolute;right:16px;bottom:14px;
+  width:74px;height:30px;
+  opacity:0.6;
+}
+
+/* Dual grid (2 columns) */
+.dual-grid{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:18px;
+  margin-bottom:18px;
+}
+
+/* ============ PANORAMICA ============ */
+
+/* Big chart */
+.big-chart-wrap{position:relative}
+.chart-legend{
+  display:flex;gap:18px;
+  font-size:12px;color:var(--ink-3);
+}
+.chart-legend span{display:inline-flex;align-items:center;gap:7px}
+.chart-legend i{width:12px;height:2px;border-radius:2px;display:inline-block}
+.big-chart{width:100%;height:280px}
+.chart-x-axis{
+  display:grid;grid-template-columns:repeat(12,1fr);
+  font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-top:8px;text-align:center;
+}
+
+/* Day-of-week bars */
+.dow-chart{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:8px;
+  align-items:end;
+  height:200px;
+  padding:10px 4px 0;
+}
+.dow-bar{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  height:100%;
+  position:relative;
+}
+.dow-bar-track{
+  flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;
+  position:relative;
+}
+.dow-bar-fill{
+  width:80%;max-width:42px;
+  background:linear-gradient(180deg,var(--green-500),var(--green-700));
+  border-radius:6px 6px 0 0;
+  position:relative;
+  transition:transform .25s;
+}
+.dow-bar:hover .dow-bar-fill{transform:scaleY(1.04);transform-origin:bottom}
+.dow-bar-fill .bar-value{
+  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:600;color:var(--ink-2);
+  white-space:nowrap;
+}
+.dow-bar.today .dow-bar-fill{
+  background:linear-gradient(180deg,var(--amber),#C18437);
+}
+.dow-bar.today .dow-bar-fill::after{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  bottom:100%;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--amber);
+  margin-bottom:6px;
+  box-shadow:0 0 0 4px rgba(224,160,74,0.18);
+}
+.dow-label{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--ink-3);text-transform:uppercase;letter-spacing:0.1em;
+}
+.dow-label.today{color:var(--amber)}
+
+/* Holidays */
+.holiday-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.holiday-row{
+  display:grid;grid-template-columns:64px 1fr auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.holiday-row:hover{background:var(--surface-2)}
+.holiday-date{
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  border-radius:8px;
+  padding:8px 4px;text-align:center;
+}
+.holiday-date .day{
+  font-family:var(--serif);font-size:22px;line-height:1;color:var(--green-800);
+}
+.holiday-date .month{
+  font-family:var(--mono);font-size:9px;color:var(--green-700);
+  text-transform:uppercase;letter-spacing:0.16em;margin-top:3px;font-weight:500;
+}
+.holiday-info .holiday-name{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.holiday-info .holiday-meta{
+  font-size:12px;color:var(--ink-3);margin-top:3px;
+}
+.holiday-forecast{text-align:right}
+.holiday-forecast .forecast-value{
+  font-family:var(--serif);font-size:22px;color:var(--ink);line-height:1;
+  letter-spacing:-0.01em;
+}
+.holiday-forecast .forecast-change{
+  font-size:11px;font-weight:500;margin-top:4px;
+}
+.holiday-forecast .forecast-change.positive{color:var(--green-700)}
+.holiday-forecast .forecast-change.negative{color:var(--rust)}
+
+/* Cost drift alerts */
+.alerts-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.alert-item{
+  display:grid;grid-template-columns:36px 1fr auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.alert-item:hover{background:var(--surface-2)}
+.alert-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.alert-icon.up{background:var(--rust-bg);color:var(--rust)}
+.alert-icon.flat{background:var(--paper-soft);color:var(--ink-3)}
+.alert-icon.opportunity{background:var(--green-50);color:var(--green-700)}
+.alert-icon svg{width:16px;height:16px}
+.alert-body .alert-title{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.alert-body .alert-meta{
+  font-size:12px;color:var(--ink-3);margin-top:3px;
+}
+.alert-body .alert-meta strong{color:var(--ink-2);font-weight:600}
+.alert-action{
+  font-size:12px;font-weight:500;color:var(--green-800);
+  padding:6px 12px;border-radius:8px;
+  background:var(--green-50);border:1px solid var(--green-100);
+  transition:background .15s;
+}
+.alert-action:hover{background:var(--green-100)}
+
+/* ============ PERSONALE ============ */
+.week-nav{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;
+  padding:4px;
+}
+.week-nav .nav-arrow{
+  width:30px;height:30px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);
+  transition:background .15s;
+}
+.week-nav .nav-arrow:hover{background:var(--paper-soft)}
+.week-nav .nav-arrow svg{width:12px;height:12px}
+.week-nav .week-label{
+  font-size:13px;font-weight:500;color:var(--ink-2);
+  padding:0 12px;
+}
+
+.staff-week{
+  display:grid;
+  grid-template-columns:200px repeat(7, 1fr);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--surface);
+}
+.staff-week-head{display:contents}
+.staff-week-head > div{
+  padding:14px 12px;
+  background:var(--paper-soft);
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  font-size:12px;
+}
+.staff-week-head > div:last-child{border-right:0}
+.staff-week-head .staff-name-col-h{
+  font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:0.16em;color:var(--ink-3);font-weight:500;
+}
+.staff-week-head .day-col-h{
+  text-align:center;
+}
+.staff-week-head .day-col-h .day-name{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;color:var(--ink-3);
+}
+.staff-week-head .day-col-h .day-date{
+  font-family:var(--serif);font-size:20px;color:var(--ink);line-height:1;margin-top:6px;
+}
+.staff-week-head .day-col-h .day-meta{
+  font-size:10px;color:var(--ink-3);margin-top:4px;
+  font-family:var(--mono);letter-spacing:0.04em;
+}
+.staff-week-head .day-col-h.today .day-date{color:var(--amber)}
+.staff-week-head .day-col-h.today .day-name{color:var(--amber)}
+
+.staff-row{display:contents}
+.staff-row > div{
+  padding:14px 12px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  background:var(--surface);
+  transition:background .15s;
+}
+.staff-row:last-child > div{border-bottom:0}
+.staff-row > div:last-child{border-right:0}
+.staff-row:hover > div{background:var(--surface-2)}
+
+.staff-name-cell{
+  display:flex;align-items:center;gap:10px;
+}
+.staff-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:15px;color:#fff;
+  flex-shrink:0;
+}
+.staff-avatar.alt-1{background:linear-gradient(135deg,#D88A66,#A04A2E)}
+.staff-avatar.alt-2{background:linear-gradient(135deg,#B89968,#7A5E33)}
+.staff-avatar.alt-3{background:linear-gradient(135deg,#7A98A8,#3D5566)}
+.staff-avatar.alt-4{background:linear-gradient(135deg,#A8868F,#6B484F)}
+.staff-name-cell .staff-name{font-size:13px;font-weight:500;color:var(--ink);line-height:1.2}
+.staff-name-cell .staff-role{font-size:11px;color:var(--ink-3);margin-top:2px}
+
+.shift-cell{text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:center;min-height:56px}
+.shift{
+  display:inline-flex;align-items:center;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--green-800);
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  padding:3px 8px;border-radius:6px;
+  letter-spacing:0.04em;
+}
+.shift.full{background:var(--green-100);color:var(--green-900)}
+.shift.off{
+  color:var(--ink-4);background:transparent;border-color:transparent;
+  font-style:italic;
+}
+
+/* Day suggestions */
+.day-suggestions{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.day-suggest{
+  display:grid;grid-template-columns:88px 1fr auto auto;
+  gap:14px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+}
+.day-tag{
+  background:var(--paper-soft);
+  border-radius:6px;
+  padding:6px 10px;text-align:center;
+}
+.day-tag .dt-day{font-family:var(--mono);font-size:10px;color:var(--ink-3);font-weight:500;letter-spacing:0.1em}
+.day-tag .dt-date{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1;margin-top:2px}
+.suggest-message{font-size:13px;color:var(--ink-2);line-height:1.5}
+.suggest-message strong{color:var(--ink);font-weight:600}
+.suggest-savings{
+  font-size:12px;color:var(--green-700);font-weight:500;text-align:right;
+}
+.suggest-savings strong{font-family:var(--serif);font-size:18px;color:var(--green-800);font-weight:400;display:block;margin-top:2px}
+.suggest-apply{
+  font-size:12px;font-weight:500;color:#fff;
+  background:var(--green-800);
+  padding:7px 14px;border-radius:7px;
+  transition:background .15s;
+}
+.suggest-apply:hover{background:var(--green-900)}
+
+/* ============ PRENOTAZIONI ============ */
+.reservations-feed{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.rsv-item{
+  display:grid;grid-template-columns:74px 1fr auto;
+  gap:16px;align-items:center;
+  padding:14px 16px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.rsv-item:hover{background:var(--surface-2)}
+.rsv-time{text-align:center;background:var(--paper-soft);border-radius:8px;padding:8px 6px}
+.rsv-time .rsv-day{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;color:var(--ink-3);
+}
+.rsv-time .rsv-day.today{color:var(--amber)}
+.rsv-time .rsv-hour{
+  font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1;margin-top:3px;
+}
+.rsv-body .rsv-name{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.rsv-body .rsv-name .rsv-size{
+  display:inline-block;margin-left:8px;
+  font-family:var(--mono);font-size:11px;
+  background:var(--green-50);color:var(--green-800);
+  padding:2px 8px;border-radius:4px;font-weight:500;
+}
+.rsv-body .rsv-meta{font-size:12px;color:var(--ink-3);margin-top:3px}
+.rsv-body .rsv-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rsv-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:500;
+  padding:3px 8px;border-radius:4px;
+}
+.rsv-tag.warn{background:var(--amber-bg);color:#8A5A18}
+.rsv-tag.info{background:var(--green-50);color:var(--green-800)}
+.rsv-tag.neutral{background:var(--paper-soft);color:var(--ink-3)}
+.status-badge{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;
+  padding:5px 10px;border-radius:6px;
+}
+.status-badge.ok{background:var(--green-50);color:var(--green-800)}
+.status-badge.pending{background:var(--amber-bg);color:#8A5A18}
+.status-badge.cancelled{background:var(--rust-bg);color:var(--rust)}
+
+/* ---------- Notifications dropdown ---------- */
+.notif-wrapper{position:relative}
+.notif-dropdown{
+  position:absolute;
+  top:calc(100% + 10px);right:0;
+  width:380px;max-width:calc(100vw - 32px);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  z-index:60;
+  animation:fadeInDrop .2s ease;
+}
+@keyframes fadeInDrop{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.notif-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper-soft);
+}
+.notif-header h3{
+  font-family:var(--serif);font-size:18px;font-weight:400;
+  letter-spacing:-0.01em;color:var(--ink);line-height:1;
+}
+.notif-clear{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--ink-3);text-transform:uppercase;letter-spacing:0.12em;
+  transition:color .15s;
+}
+.notif-clear:hover{color:var(--green-700)}
+.notif-list{max-height:440px;overflow-y:auto}
+.notif-item{
+  display:grid;grid-template-columns:36px 1fr;gap:12px;
+  padding:14px 18px 14px 22px;
+  border-bottom:1px solid var(--line-2);
+  transition:background .15s;
+  align-items:start;
+  position:relative;
+  cursor:pointer;
+}
+.notif-item:hover{background:var(--surface-2)}
+.notif-item:last-child{border-bottom:none}
+.notif-item.unread::before{
+  content:"";
+  position:absolute;left:8px;top:24px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green-500);
+}
+.notif-item .notif-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.notif-icon.urgent{background:var(--rust-bg);color:var(--rust)}
+.notif-icon.warning{background:var(--amber-bg);color:#8A5A18}
+.notif-icon.info{background:var(--green-50);color:var(--green-800)}
+.notif-icon.neutral{background:var(--paper-soft);color:var(--ink-3)}
+.notif-icon svg{width:16px;height:16px}
+.notif-body .notif-title{
+  font-size:13px;font-weight:500;color:var(--ink);line-height:1.35;
+}
+.notif-body .notif-desc{
+  font-size:12px;color:var(--ink-3);
+  margin-top:4px;line-height:1.45;
+}
+.notif-body .notif-time{
+  font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  margin-top:6px;letter-spacing:0.04em;
+}
+.notif-footer{
+  display:block;text-align:center;
+  padding:12px 18px;
+  font-size:12px;font-weight:500;
+  color:var(--green-800);
+  border-top:1px solid var(--line);
+  background:var(--paper-soft);
+  transition:background .15s;
+  text-decoration:none;
+}
+.notif-footer:hover{background:#fff}
+
+/* ---------- Shift edit modal ---------- */
+.shift-modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(14,20,16,0.45);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;padding:20px;
+  animation:fadeInOverlay .2s ease;
+}
+.shift-modal-overlay[hidden]{display:none}
+.notif-dropdown[hidden]{display:none}
+@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
+.shift-modal{
+  background:var(--surface);
+  border-radius:16px;
+  padding:24px 28px 20px;
+  width:380px;max-width:100%;
+  box-shadow:var(--shadow-lg);
+  animation:slideInModal .25s ease;
+}
+@keyframes slideInModal{
+  from{opacity:0;transform:translateY(-12px) scale(0.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.shift-modal-meta{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.16em;
+  color:var(--green-700);margin-bottom:6px;
+}
+.shift-modal-title{
+  font-family:var(--serif);font-size:24px;font-weight:400;
+  letter-spacing:-0.01em;color:var(--ink);line-height:1.1;
+}
+.shift-modal-form{
+  margin-top:20px;display:flex;flex-direction:column;gap:14px;
+}
+.shift-modal-form label{
+  display:flex;flex-direction:column;gap:6px;
+  font-size:11px;color:var(--ink-3);font-weight:500;
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:0.12em;
+}
+.shift-modal-form select,
+.shift-modal-form input{
+  padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  font-size:14px;color:var(--ink);font-family:var(--sans);
+  background:var(--surface-2);
+  text-transform:none;letter-spacing:normal;
+}
+.shift-modal-form select:focus,
+.shift-modal-form input:focus{
+  outline:2px solid var(--green-700);outline-offset:0;border-color:var(--green-700);
+}
+.shift-times{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.shift-times.hidden{display:none}
+.shift-modal-actions{
+  display:flex;gap:10px;justify-content:flex-end;
+  margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--line-2);
+}
+
+/* ---------- Toast notifications ---------- */
+.toast-container{
+  position:fixed;
+  bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;gap:8px;
+  z-index:200;
+  pointer-events:none;
+}
+.toast{
+  background:var(--green-900);color:var(--paper);
+  padding:12px 18px;
+  border-radius:10px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-lg);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .25s, transform .25s;
+  pointer-events:auto;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast .toast-icon{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--green-500);color:var(--green-900);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-weight:700;font-size:11px;
+}
+
+/* Make shift cells visibly clickable */
+.shift-cell{cursor:pointer;transition:background .15s}
+.staff-row > .shift-cell:hover{background:var(--green-50) !important}
+.staff-row > .shift-cell:hover .shift{transform:scale(1.04);box-shadow:0 2px 6px rgba(15,77,58,0.18)}
+.shift{transition:transform .15s, box-shadow .15s}
+
+/* Chat preview */
+.chat-preview{
+  background:#0B141A;
+  border-radius:14px;
+  padding:18px;
+  display:flex;flex-direction:column;gap:8px;
+  max-height:480px;overflow:hidden;
+  position:relative;
+}
+.chat-preview::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:60px;
+  background:linear-gradient(180deg, transparent 0%, #0B141A 100%);
+  pointer-events:none;
+}
+.chat-day{
+  align-self:center;
+  background:#182229;color:#8696A0;
+  font-size:10px;padding:4px 10px;border-radius:6px;
+  margin:4px 0;
+}
+.chat-bubble{
+  max-width:80%;
+  padding:8px 12px 7px;
+  font-size:12.5px;line-height:1.4;
+  border-radius:8px;
+  position:relative;
+}
+.chat-bubble.customer{
+  align-self:flex-start;
+  background:#1F2C33;
+  color:#E9EDEF;
+  border-radius:8px 8px 8px 2px;
+}
+.chat-bubble.bot{
+  align-self:flex-end;
+  background:#005C4B;
+  color:#E9EDEF;
+  border-radius:8px 8px 2px 8px;
+}
+.chat-bubble strong{color:#fff;font-weight:600}
+.chat-bubble .ts{
+  font-size:9px;color:rgba(233,237,239,0.55);
+  margin-left:8px;float:right;margin-top:4px;
+}
+.chat-typing{
+  align-self:flex-start;background:#1F2C33;border-radius:12px;padding:8px 10px;
+  display:inline-flex;gap:3px;
+}
+.chat-typing span{width:5px;height:5px;background:#8696A0;border-radius:50%;animation:bounceTyping 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.15s}
+.chat-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounceTyping{0%,80%,100%{transform:translateY(0);opacity:0.4}40%{transform:translateY(-3px);opacity:1}}
+
+/* ============ FATTURE ============ */
+.invoices-list{display:flex;flex-direction:column;gap:1px;background:var(--line-2);border-radius:10px;overflow:hidden}
+.invoice-row{
+  display:grid;grid-template-columns:1.6fr 2fr 100px 110px auto;
+  gap:18px;align-items:center;
+  padding:14px 18px;
+  background:var(--surface);
+  transition:background .15s;
+}
+.invoice-row:hover{background:var(--surface-2)}
+.invoice-row.urgent{
+  border-left:3px solid var(--rust);
+  padding-left:15px;
+}
+.invoice-row.coming{border-left:3px solid var(--amber);padding-left:15px}
+.invoice-row.paid{border-left:3px solid var(--green-500);padding-left:15px;opacity:0.85}
+.inv-supplier{
+  font-size:14px;font-weight:500;color:var(--ink);
+}
+.inv-supplier .inv-id{
+  display:block;font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  margin-top:3px;letter-spacing:0.04em;
+}
+.inv-desc{
+  font-size:13px;color:var(--ink-3);
+}
+.inv-amount{
+  font-family:var(--serif);font-size:20px;color:var(--ink);text-align:right;letter-spacing:-0.01em;
+}
+.inv-due{text-align:right}
+.inv-due .due-label{font-family:var(--mono);font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.12em;font-weight:500}
+.inv-due .due-date{font-size:13px;font-weight:500;color:var(--ink-2);margin-top:3px}
+.invoice-row.urgent .due-date{color:var(--rust);font-weight:600}
+.inv-action{
+  font-size:12px;font-weight:500;
+  background:var(--green-800);color:var(--paper);
+  padding:7px 14px;border-radius:7px;
+  transition:background .15s;
+  white-space:nowrap;
+}
+.inv-action:hover{background:var(--green-900)}
+.inv-action.secondary{
+  background:var(--surface);color:var(--ink-2);
+  border:1px solid var(--line);
+}
+.inv-action.secondary:hover{background:#fff;border-color:var(--line-strong)}
+.inv-action.disabled{
+  background:var(--paper-soft);color:var(--ink-4);
+  cursor:default;
+}
+.inv-action.disabled:hover{background:var(--paper-soft)}
+
+.invoices-table{
+  width:100%;border-collapse:collapse;
+}
+.invoices-table thead th{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--ink-3);
+  text-align:left;padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper-soft);
+}
+.invoices-table tbody td{
+  padding:14px 12px;
+  border-bottom:1px solid var(--line-2);
+  font-size:13px;color:var(--ink-2);
+  vertical-align:middle;
+}
+.invoices-table tbody tr:last-child td{border-bottom:0}
+.invoices-table tbody tr:hover{background:var(--surface-2)}
+.invoices-table .col-supplier{font-weight:500;color:var(--ink)}
+.invoices-table .col-amount{font-family:var(--serif);font-size:16px;text-align:right}
+.invoices-table .col-due{white-space:nowrap}
+.invoices-table .col-status{text-align:center}
+
+/* Section headers within page */
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin:32px 0 14px;gap:14px;flex-wrap:wrap;
+}
+.section-head h3{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  color:var(--ink);letter-spacing:-0.01em;line-height:1;
+}
+.section-head .meta{font-size:12px;color:var(--ink-3)}
+.section-head.first{margin-top:0}
+
+/* Empty state hint */
+.hint-box{
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:12.5px;color:var(--green-800);
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.hint-box svg{width:14px;height:14px;flex-shrink:0}
+
+/* Responsive */
+/* ============ Responsive ============ */
+@media (max-width:1100px){
+  .kpi-grid{grid-template-columns:repeat(2, 1fr)}
+  .dual-grid{grid-template-columns:1fr}
+}
+
+/* Tablet & small laptop */
+@media (max-width:880px){
+  /* App shell collapse: sidebar diventa nav orizzontale */
+  .app{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .sidebar-brand{padding:14px 18px}
+  .sidebar-nav{
+    flex-direction:row;overflow-x:auto;padding:8px 12px;gap:4px;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    /* gradient mask hint */
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10px,#000 calc(100% - 10px),transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10px,#000 calc(100% - 10px),transparent);
+  }
+  .sidebar-nav::-webkit-scrollbar{display:none}
+  .sidebar-nav .nav-section-label{display:none}
+  .sidebar-nav .nav-item{
+    flex-shrink:0;padding:8px 12px;font-size:13px;
+    scroll-snap-align:start;
+  }
+  .sidebar-nav .nav-item.active::before{display:none}
+  .sidebar-nav .nav-item .nav-badge{display:none}
+  .sidebar-restaurant,.sidebar-footer{display:none}
+
+  /* Topbar compatto */
+  .app-content{padding:20px 16px 48px}
+  .app-topbar{padding:12px 16px;gap:10px}
+  .topbar-title h1{font-size:22px;line-height:1.05}
+  .topbar-title .subtitle{font-size:11px;margin-top:4px}
+  .topbar-actions{gap:8px}
+  .icon-btn{width:36px;height:36px;border-radius:8px}
+  .icon-btn svg{width:14px;height:14px}
+  .search-input{display:none}
+
+  /* Card padding ridotti */
+  .card{padding:18px 18px}
+  .card + .card{margin-top:14px}
+  .card-header{margin-bottom:14px;gap:10px}
+  .card-header h2{font-size:20px}
+
+  /* Filter bar */
+  .filter-bar{margin-bottom:14px;gap:10px}
+
+  /* KPI grid */
+  .kpi-grid{gap:10px;margin-bottom:18px}
+  .kpi-card{padding:16px 18px}
+  .kpi-card .kpi-value{font-size:28px}
+  .kpi-card .kpi-spark{width:60px;height:24px;right:14px;bottom:12px}
+
+  /* Big chart compatto */
+  .big-chart{height:220px}
+  .chart-x-axis{font-size:9px}
+  .chart-legend{gap:14px;font-size:11px}
+
+  /* Day-of-week bars compact */
+  .dow-chart{height:170px;gap:6px;padding:6px 0 0}
+  .dow-bar-fill{max-width:36px}
+  .dow-bar-fill .bar-value{font-size:10px;top:-19px}
+  .dow-label{font-size:10px}
+
+  /* Holiday list compact */
+  .holiday-row{padding:12px 14px;gap:12px}
+  .holiday-date{padding:6px 4px}
+  .holiday-date .day{font-size:18px}
+  .holiday-info .holiday-name{font-size:13px}
+  .holiday-forecast .forecast-value{font-size:18px}
+
+  /* Alerts compact */
+  .alert-item{padding:12px 14px;gap:10px;grid-template-columns:32px 1fr auto}
+  .alert-icon{width:32px;height:32px}
+  .alert-body .alert-title{font-size:13px}
+  .alert-body .alert-meta{font-size:11px}
+  .alert-action{font-size:11px;padding:5px 10px}
+
+  /* Staff calendar — scroll orizzontale con prima colonna fissa percezione */
+  .staff-week{
+    display:block;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border-radius:12px;
+  }
+  .staff-week-head,
+  .staff-row{
+    display:grid;
+    grid-template-columns:128px repeat(7, 86px);
+    min-width:730px;
+  }
+  .staff-week-head > div,
+  .staff-row > div{padding:10px 8px}
+  .staff-name-cell{gap:8px}
+  .staff-avatar{width:28px;height:28px;font-size:13px}
+  .staff-name-cell .staff-name{font-size:12px;line-height:1.15}
+  .staff-name-cell .staff-role{font-size:10px}
+  .staff-week-head .day-col-h .day-date{font-size:18px}
+  .staff-week-head .day-col-h .day-meta{font-size:9px;letter-spacing:0.02em}
+  .shift{font-size:10px;padding:2px 6px}
+  .shift-cell{min-height:46px}
+
+  /* Day suggestions */
+  .day-suggest{
+    grid-template-columns:60px 1fr;
+    gap:8px 12px;
+    padding:12px 14px;
+    align-items:start;
+  }
+  .day-suggest .day-tag{grid-row:1 / span 3;align-self:start}
+  .day-suggest .suggest-message{grid-column:2;align-self:center}
+  .day-suggest .suggest-savings{grid-column:2;text-align:left;font-size:11px}
+  .day-suggest .suggest-savings strong{font-size:15px;display:inline;margin-left:6px}
+  .day-suggest .suggest-apply{grid-column:2;justify-self:flex-start;font-size:11px;padding:6px 12px}
+  .day-tag .dt-date{font-size:16px}
+
+  /* Reservation feed */
+  .rsv-item{padding:12px 14px;gap:12px;grid-template-columns:64px 1fr auto}
+  .rsv-time{padding:6px 4px}
+  .rsv-time .rsv-hour{font-size:15px}
+  .rsv-body .rsv-name{font-size:13px}
+  .rsv-body .rsv-meta{font-size:11px}
+  .rsv-body .rsv-tags{margin-top:4px}
+  .rsv-tag{font-size:10px;padding:2px 6px}
+  .status-badge{font-size:9px;padding:4px 8px}
+
+  /* Invoice row (urgent + paid) */
+  .invoice-row{padding:12px 14px;grid-template-columns:1fr 1fr;gap:6px 12px}
+  .invoice-row.urgent,.invoice-row.coming,.invoice-row.paid{padding-left:11px}
+  .invoice-row .inv-supplier{grid-column:1 / -1;font-size:13px}
+  .invoice-row .inv-desc{grid-column:1 / -1;font-size:12px;color:var(--ink-3)}
+  .invoice-row .inv-amount{font-size:18px;text-align:left;justify-self:start}
+  .invoice-row .inv-due{text-align:left;justify-self:end}
+  .invoice-row .inv-action,.invoice-row .status-badge{grid-column:1 / -1;justify-self:flex-start}
+
+  /* Tabella fatture in arrivo — scroll orizzontale */
+  .scrollable-table{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .invoices-table{min-width:600px}
+
+  /* Notif dropdown — full width sotto la topbar */
+  .notif-dropdown{
+    position:fixed;
+    top:60px;
+    left:8px;right:8px;
+    width:auto;max-width:none;
+  }
+
+  /* Section heads */
+  .section-head h3{font-size:18px}
+  .section-head .meta{font-size:11px}
+
+  /* Chat preview */
+  .chat-preview{padding:14px;max-height:380px}
+
+  /* Hint box */
+  .hint-box{padding:10px 14px;font-size:12px}
+
+  /* Week nav */
+  .week-nav .week-label{font-size:12px;padding:0 8px}
+
+  /* Toast posizione su mobile */
+  .toast-container{bottom:16px;left:16px;right:16px;transform:none}
+  .toast{justify-content:center}
+}
+
+/* Mobile fino a 640px */
+@media (max-width:640px){
+  .kpi-grid{grid-template-columns:1fr}
+  .app-topbar{padding:10px 14px}
+  .topbar-title h1{font-size:20px}
+  .topbar-title .subtitle{font-size:10px}
+  .card{padding:16px 14px}
+  .card-header{flex-direction:column;align-items:flex-start;gap:8px}
+
+  /* Suggerimenti — sopra altre cose */
+  .filter-bar{flex-direction:column;align-items:stretch}
+  .filter-bar > div:not(.chip-group){width:100%}
+  .chip-group{width:100%;justify-content:space-between}
+  .chip{flex:1;text-align:center;padding:6px 8px;font-size:12px}
+
+  /* DOW più compatti */
+  .dow-chart{height:150px;gap:4px}
+  .dow-bar-fill{max-width:30px}
+  .dow-bar-fill .bar-value{font-size:9px}
+
+  /* Modal turni — full padding */
+  .shift-modal{padding:20px 22px 16px}
+  .shift-modal-title{font-size:20px}
+  .shift-modal-form{margin-top:14px;gap:12px}
+  .shift-times{grid-template-columns:1fr 1fr;gap:8px}
+}
+
+/* iPhone SE / piccolissimi */
+@media (max-width:380px){
+  .sidebar-brand .logo-name{font-size:15px}
+  .sidebar-brand .demo-badge{font-size:9px;padding:2px 6px}
+  .topbar-title h1{font-size:18px}
+  .icon-btn{width:34px;height:34px}
+  .topbar-actions .icon-btn[aria-label="Impostazioni"]{display:none}
+  .kpi-card .kpi-spark{display:none}
+  .chip{font-size:11px;padding:5px 6px}
+}
+
+/* ============================================================
+   MOBILE APP-STYLE OVERHAUL
+   Bottom nav (iOS/Android pattern) + KPI carousel (Stripe/Square)
+   + topbar compatto (Linear) + cards più stretti (Notion)
+   ============================================================ */
+.bottom-nav{display:none}
+
+@media (max-width:880px){
+  /* Sidebar diventa solo brand strip in alto */
+  .sidebar{height:auto}
+  .sidebar-nav{display:none}
+  .sidebar-brand{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+
+  /* App content lascia spazio per la bottom nav */
+  .app-content{padding:16px 14px 92px}
+
+  /* ============ Bottom navigation ============ */
+  .bottom-nav{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--surface);
+    border-top:1px solid var(--line);
+    padding:6px 0 max(6px, env(safe-area-inset-bottom));
+    z-index:90;
+    box-shadow:0 -4px 16px rgba(14,20,16,0.05);
+    backdrop-filter:saturate(140%) blur(14px);
+    -webkit-backdrop-filter:saturate(140%) blur(14px);
+    background:rgba(255,255,255,0.92);
+  }
+  .bn-item{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:8px 4px;
+    color:var(--ink-3);
+    font-size:10.5px;font-weight:500;
+    letter-spacing:0;
+    text-decoration:none;
+    transition:color .15s;
+    position:relative;
+  }
+  .bn-item svg{
+    width:22px;height:22px;
+    transition:transform .2s;
+  }
+  .bn-item.active{
+    color:var(--green-700);
+    font-weight:600;
+  }
+  .bn-item.active svg{transform:scale(1.06)}
+  .bn-item.active::before{
+    content:"";
+    position:absolute;
+    top:0;left:50%;transform:translateX(-50%);
+    width:28px;height:3px;
+    background:var(--green-600);
+    border-radius:0 0 3px 3px;
+  }
+  .bn-badge{
+    position:absolute;
+    top:5px;left:50%;
+    margin-left:7px;
+    background:var(--green-700);color:white;
+    font-size:9px;font-weight:600;
+    padding:1px 5px;border-radius:999px;
+    line-height:1.3;letter-spacing:0;
+  }
+  .bn-badge.urgent{background:var(--rust)}
+
+  /* ============ KPI carousel orizzontale ============ */
+  .kpi-grid{
+    display:flex !important;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:10px;
+    padding:0 14px 8px;
+    margin:0 -14px 18px;
+    scroll-padding-left:14px;
+    -webkit-overflow-scrolling:touch;
+    grid-template-columns:none;
+  }
+  .kpi-grid::-webkit-scrollbar{display:none}
+  .kpi-card{
+    flex-shrink:0;
+    width:76%;
+    max-width:280px;
+    min-width:248px;
+    scroll-snap-align:start;
+    padding:18px 20px;
+  }
+  .kpi-card .kpi-value{font-size:36px}
+  .kpi-card .kpi-spark{
+    width:60px;height:24px;
+    right:14px;bottom:14px;
+  }
+
+  /* ============ Topbar app-style ============ */
+  .app-topbar{
+    padding:10px 14px;
+    border-bottom:1px solid var(--line-2);
+    background:rgba(247,243,236,0.92);
+  }
+  .topbar-title h1{
+    font-family:var(--serif);
+    font-size:20px;line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+  .topbar-title .subtitle{display:none}
+
+  /* ============ Cards più puliti ============ */
+  .card{padding:16px 16px;border-radius:14px}
+  .card + .card{margin-top:12px}
+  .card-header{margin-bottom:12px;gap:8px}
+  .card-header h2{font-size:18px;line-height:1.15}
+  .card-meta{font-size:11px}
+
+  /* Section heads */
+  .section-head{margin:22px 0 10px;gap:8px}
+  .section-head h3{font-size:18px}
+  .section-head .meta{font-size:11px}
+
+  /* Filter bar */
+  .filter-bar{margin-bottom:12px;gap:8px}
+
+  /* Chip group più compatti */
+  .chip-group{padding:2px}
+  .chip{padding:6px 12px;font-size:12px}
+
+  /* KPI label leggermente più grande per leggibilità sul big number */
+  .kpi-card .kpi-label{font-size:11.5px}
+  .kpi-card .kpi-change{font-size:11.5px}
+}
+
+/* ============ Smartphone piccoli ============ */
+@media (max-width:480px){
+  .bn-item{font-size:9.5px;gap:2px}
+  .bn-item svg{width:20px;height:20px}
+  .bn-badge{font-size:8.5px;padding:1px 4px;margin-left:6px}
+  .kpi-card{width:82%;min-width:230px}
+  .kpi-card .kpi-value{font-size:32px}
+  .topbar-title h1{font-size:18px}
+  .app-content{padding:14px 12px 92px}
+}
+
+/* Toast non finisce sotto la bottom nav */
+@media (max-width:880px){
+  .toast-container{bottom:80px}
+}
+
+/* ================================================================
+   FINAL POLISH LAYER
+   - Spacing scale rigorosa (multipli di 4)
+   - Border-radius scale: 8 / 12 / 16 / 22
+   - Hairlines 0.5px iOS-style
+   - Glassmorphism più denso su topbar/bottom-nav
+   - System font stack (-apple-system) per crispness su mobile
+   - Tap-feedback iOS pattern (opacity + scale)
+   - Color palette stretta: paper / surface / ink / brand / semantic
+   - KPI numbers grandi e bold (iOS Dashboard pattern)
+   ================================================================ */
+
+/* ---------- Desktop symmetry tightening ---------- */
+
+/* Card consistency: tutti i card stessa radius (16px) e shadow uniforme */
+.card{
+  border-radius:16px;
+  border:0.5px solid rgba(14,20,16,0.08);
+  box-shadow:
+    0 0 0 0.5px rgba(14,20,16,0.02),
+    0 1px 2px rgba(14,20,16,0.04);
+}
+.kpi-card{
+  border-radius:16px;
+  border:0.5px solid rgba(14,20,16,0.08);
+  box-shadow:
+    0 0 0 0.5px rgba(14,20,16,0.02),
+    0 1px 2px rgba(14,20,16,0.04);
+}
+
+/* Container lists con hairlines più fini e radius uniforme */
+.holiday-list,
+.alerts-list,
+.reservations-feed,
+.invoices-list,
+.day-suggestions{
+  border-radius:14px;
+  background:transparent;
+  border:0.5px solid rgba(14,20,16,0.08);
+  overflow:hidden;
+  box-shadow:0 0 0 0.5px rgba(14,20,16,0.02);
+}
+.holiday-row,
+.alert-item,
+.rsv-item,
+.invoice-row,
+.day-suggest{
+  border-bottom:0.5px solid rgba(14,20,16,0.06);
+  background:var(--surface);
+}
+.holiday-row:last-child,
+.alert-item:last-child,
+.rsv-item:last-child,
+.invoice-row:last-child,
+.day-suggest:last-child{
+  border-bottom:none;
+}
+
+/* Shift week border */
+.staff-week{
+  border-radius:14px;
+  border:0.5px solid rgba(14,20,16,0.08);
+}
+
+/* Search input refinement (desktop) */
+.search-input{
+  border-radius:10px;
+  border:0.5px solid rgba(14,20,16,0.08);
+  background:rgba(14,20,16,0.03);
+}
+.icon-btn{
+  border-radius:10px;
+  border:0.5px solid rgba(14,20,16,0.08);
+}
+
+/* ---------- iOS-style mobile (≤880px) ---------- */
+@media (max-width:880px){
+  /* System font stack solo per mobile per il "crispness" iOS */
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* App background: paper consistente */
+  body, .app, .app-main{background:var(--paper)}
+
+  /* Topbar glassmorphism iOS UINavigationBar */
+  .app-topbar{
+    background:rgba(247,243,236,0.78);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:0.5px solid rgba(14,20,16,0.08);
+    padding:9px 16px;
+    min-height:44px;
+    align-items:center;
+  }
+  .topbar-title h1{
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", var(--sans);
+    font-size:17px;
+    font-weight:600;
+    letter-spacing:-0.024em;
+    color:var(--ink);
+    line-height:1.2;
+  }
+  .topbar-title .subtitle{display:none}
+
+  /* Icon buttons iOS-style: pill rounded, neutral fill */
+  .icon-btn{
+    width:34px;height:34px;
+    border-radius:10px;
+    background:rgba(14,20,16,0.05);
+    border:none;
+    color:var(--ink-2);
+    transition:opacity .15s, transform .1s, background .15s;
+  }
+  .icon-btn:hover{background:rgba(14,20,16,0.08);border:none}
+  .icon-btn:active{opacity:.6;transform:scale(.96);background:rgba(14,20,16,0.10)}
+  .icon-btn .dot-notif{
+    width:8px;height:8px;top:6px;right:7px;
+    border:2px solid var(--paper);
+  }
+
+  /* Sidebar brand strip compatto */
+  .sidebar{background:var(--green-900)}
+  .sidebar-brand{padding:10px 16px}
+  .sidebar-brand .logo-name{font-size:16px;font-weight:600;letter-spacing:-0.02em}
+  .sidebar-brand .demo-badge{
+    font-size:9px;padding:2px 7px;border-radius:10px;
+    font-weight:600;letter-spacing:0.08em;
+  }
+
+  /* App content padding rigoroso */
+  .app-content{padding:16px 16px 96px}
+
+  /* Cards hairline + radius consistente */
+  .card{
+    padding:16px 16px;
+    border-radius:16px;
+    border:0.5px solid rgba(14,20,16,0.08);
+    box-shadow:0 1px 2px rgba(14,20,16,0.04);
+    background:var(--surface);
+  }
+  .card + .card{margin-top:12px}
+  .card-header{margin-bottom:12px;gap:10px}
+  .card-header h2{
+    font-family:-apple-system, BlinkMacSystemFont, var(--serif);
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-0.022em;
+    line-height:1.15;
+  }
+
+  /* KPI carousel iOS Dashboard widgets feel */
+  .kpi-grid{
+    padding:0 16px 8px;
+    margin:0 -16px 20px;
+    scroll-padding-left:16px;
+    gap:12px;
+  }
+  .kpi-card{
+    width:78%;max-width:280px;min-width:248px;
+    padding:18px 20px 16px;
+    border-radius:18px;
+    border:0.5px solid rgba(14,20,16,0.08);
+    background:var(--surface);
+    box-shadow:0 1px 2px rgba(14,20,16,0.04);
+  }
+  .kpi-card .kpi-label{
+    font-family:-apple-system, var(--sans);
+    font-size:13px;font-weight:500;
+    color:var(--ink-3);
+    letter-spacing:-0.005em;
+    gap:6px;
+  }
+  .kpi-card .kpi-value{
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", var(--serif);
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:-0.025em;
+    line-height:1;
+  }
+  .kpi-card .kpi-value .small{
+    font-family:-apple-system, var(--sans);
+    font-size:16px;font-weight:500;color:var(--ink-3);
+  }
+  .kpi-card .kpi-change{
+    font-size:12px;font-weight:600;letter-spacing:-0.01em;
+    margin-top:6px;
+  }
+  .kpi-card .kpi-spark{
+    width:64px;height:24px;
+    right:16px;bottom:14px;
+  }
+
+  /* Filter bar + chips iOS-segmented control feel */
+  .filter-bar{margin-bottom:12px;gap:10px}
+  .chip-group{
+    background:rgba(14,20,16,0.05);
+    border:none;
+    padding:2px;
+    border-radius:9px;
+  }
+  .chip{
+    padding:6px 12px;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:-0.005em;
+    color:var(--ink-2);
+  }
+  .chip.active{
+    background:var(--surface);
+    color:var(--ink);
+    box-shadow:0 1px 1px rgba(14,20,16,0.04), 0 0.5px 0 rgba(14,20,16,0.05);
+    font-weight:600;
+  }
+
+  /* Lists iOS-style con divider 0.5px */
+  .holiday-list,
+  .alerts-list,
+  .reservations-feed,
+  .invoices-list,
+  .day-suggestions{
+    background:var(--surface);
+    border-radius:14px;
+    border:0.5px solid rgba(14,20,16,0.08);
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(14,20,16,0.04);
+  }
+  .holiday-row,
+  .alert-item,
+  .rsv-item,
+  .invoice-row,
+  .day-suggest{
+    background:transparent;
+    padding:12px 14px;
+    border-bottom:0.5px solid rgba(14,20,16,0.06);
+  }
+
+  /* List item hover: solo opacity dim, niente bg change (iOS pattern) */
+  .holiday-row:active,
+  .alert-item:active,
+  .rsv-item:active,
+  .invoice-row:active{
+    background:rgba(14,20,16,0.04);
+  }
+
+  /* Section headers iOS-style (small caps) */
+  .section-head{margin:24px 4px 8px;gap:8px}
+  .section-head h3{
+    font-family:-apple-system, var(--sans);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+  }
+  .section-head .meta{
+    font-size:12px;font-weight:500;color:var(--ink-3);
+  }
+
+  /* Bottom nav glassmorphism iOS UITabBar */
+  .bottom-nav{
+    background:rgba(255,255,255,0.85);
+    -webkit-backdrop-filter:saturate(180%) blur(28px);
+    backdrop-filter:saturate(180%) blur(28px);
+    border-top:0.5px solid rgba(14,20,16,0.10);
+    box-shadow:none;
+    padding:4px 0 max(8px, env(safe-area-inset-bottom));
+  }
+  .bn-item{
+    padding:6px 4px;
+    transition:opacity .15s, transform .1s, color .15s;
+    color:var(--ink-4);
+  }
+  .bn-item:active{
+    opacity:.55;transform:scale(.96);
+  }
+  .bn-item span{
+    font-size:10.5px;font-weight:500;letter-spacing:-0.005em;
+    color:inherit;
+  }
+  .bn-item.active{color:var(--green-700);font-weight:600}
+  .bn-item.active::before{display:none}
+  .bn-item.active svg{transform:none;filter:drop-shadow(0 0 0.5px currentColor)}
+  .bn-badge{
+    background:var(--green-600);color:white;
+    font-size:9.5px;font-weight:700;
+    padding:1px 5px;border-radius:999px;
+    line-height:1.4;
+    box-shadow:0 0 0 1.5px var(--surface);
+    top:3px;margin-left:8px;
+  }
+  .bn-badge.urgent{background:var(--rust)}
+
+  /* Notif dropdown — iOS-style sheet */
+  .notif-dropdown{
+    border-radius:14px;
+    border:0.5px solid rgba(14,20,16,0.10);
+    box-shadow:
+      0 12px 40px -8px rgba(14,20,16,0.18),
+      0 4px 12px -4px rgba(14,20,16,0.10),
+      0 0 0 0.5px rgba(14,20,16,0.05);
+  }
+  .notif-header{
+    background:rgba(247,243,236,0.6);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:0.5px solid rgba(14,20,16,0.08);
+  }
+  .notif-item{border-bottom:0.5px solid rgba(14,20,16,0.06)}
+  .notif-item:active{background:rgba(14,20,16,0.04)}
+
+  /* Modal turni — iOS sheet */
+  .shift-modal{
+    border-radius:18px;
+    border:0.5px solid rgba(14,20,16,0.08);
+    box-shadow:
+      0 20px 60px -10px rgba(14,20,16,0.30),
+      0 4px 12px -4px rgba(14,20,16,0.10);
+  }
+
+  /* Toast — iOS Capsule */
+  .toast{
+    background:rgba(14,40,31,0.95);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-radius:999px;
+    padding:10px 18px;
+    font-size:13.5px;font-weight:500;
+    letter-spacing:-0.01em;
+    box-shadow:
+      0 10px 30px -8px rgba(14,20,16,0.30),
+      0 4px 8px -4px rgba(14,20,16,0.15);
+  }
+  .toast .toast-icon{
+    background:var(--green-500);
+    box-shadow:0 0 0 0.5px rgba(255,255,255,0.2);
+  }
+
+  /* Avatar consistente */
+  .staff-avatar{
+    box-shadow:0 0 0 0.5px rgba(14,20,16,0.06);
+  }
+}
+
+/* ---------- iPhone-specific (≤480px) ---------- */
+@media (max-width:480px){
+  .app-content{padding:14px 14px 96px}
+  .card{padding:14px 14px;border-radius:14px}
+  .card-header h2{font-size:18px}
+  .kpi-card{width:84%;min-width:228px;padding:16px 18px 14px}
+  .kpi-card .kpi-value{font-size:30px}
+  .topbar-title h1{font-size:16px}
+}
+</style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<div class="app">
 
-  <script type="text/babel" src="icons.jsx"></script>
-  <script type="text/babel" src="shell.jsx"></script>
-  <script type="text/babel" src="screen-panoramica.jsx"></script>
-  <script type="text/babel" src="screen-personale.jsx"></script>
-  <script type="text/babel" src="screen-prenotazioni.jsx"></script>
-  <script type="text/babel" src="screen-fatture.jsx"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none">
+          <polyline points="2,15 7,9 11,12 18,4" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="14,4 18,4 18,8" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="logo-name">mar<em>gine</em>.ai</span>
+      <span class="demo-badge">Demo</span>
+    </div>
 
-  <script type="text/babel" data-presets="react">
-    const { useState, useEffect } = React;
+    <div class="sidebar-restaurant">
+      <div class="rs-label">Locale</div>
+      <div class="rs-name">Trattoria del Borgo</div>
+      <div class="rs-meta">Bologna · 42 coperti · attivo da 41 mesi</div>
+    </div>
 
-    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-      "theme": "dark",
-      "density": "cozy",
-      "brand": "vivid",
-      "screen": "panoramica"
-    }/*EDITMODE-END*/;
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-section-label">Gestione</div>
+      <a href="#panoramica" class="nav-item active" data-tab="panoramica">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M3 13h7V3H3v10zm0 8h7v-6H3v6zm11 0h7V11h-7v10zm0-18v6h7V3h-7z" fill="currentColor"/></svg>
+        Panoramica
+      </a>
+      <a href="#personale" class="nav-item" data-tab="personale">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M9 11a4 4 0 100-8 4 4 0 000 8zm-7 9a7 7 0 1114 0H2zm17-3.5l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Personale
+      </a>
+      <a href="#prenotazioni" class="nav-item" data-tab="prenotazioni">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Prenotazioni
+        <span class="nav-badge">14 oggi</span>
+      </a>
+      <a href="#fatture" class="nav-item" data-tab="fatture">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 2v6h6M9 14h6M9 18h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Fatture
+        <span class="nav-badge urgent">2 urgenti</span>
+      </a>
+    </nav>
 
-    const BRAND_PRESETS = {
-      moss:   { h: 158, c: 0.06 },   /* verde Margine — bottiglia profondo */
-      forest: { h: 165, c: 0.07 },   /* pino, leggermente più freddo */
-      slate:  { h: 230, c: 0.04 },   /* blu-grigio bank-grade */
-      ink:    { h: 250, c: 0.05 },   /* indaco scuro */
-      vivid:  { h: 158, c: 0.10 },   /* verde più saturo */
-    };
-
-    function applyBrand(name) {
-      const p = BRAND_PRESETS[name] || BRAND_PRESETS.moss;
-      const r = document.documentElement.style;
-      r.setProperty("--brand-h", p.h);
-      r.setProperty("--brand-c", p.c);
-    }
-
-    function App() {
-      const [t, setT] = useTweaks(TWEAK_DEFAULTS);
-      const [active, setActive] = useState(t.screen || "panoramica");
-
-      useEffect(() => { document.documentElement.dataset.theme = t.theme; }, [t.theme]);
-      useEffect(() => { document.documentElement.dataset.density = t.density; }, [t.density]);
-      useEffect(() => { applyBrand(t.brand); }, [t.brand]);
-      useEffect(() => { setT({ screen: active }); }, [active]);
-
-      const titles = {
-        panoramica:  ["Panoramica", "Martedì 5 maggio 2026 · settimana 19"],
-        personale:   ["Personale", "5 → 11 maggio 2026 · 6 collaboratori attivi"],
-        prenotazioni:["Prenotazioni", "14 oggi · bot WhatsApp attivo"],
-        fatture:     ["Fatture", "2 urgenze · 14 in arrivo · €8.430 da pagare"],
-      };
-      const [title, sub] = titles[active] || titles.panoramica;
-
-      return (
-        <div className="app">
-          <Sidebar active={active} onChange={setActive} />
-          <div className="app__main">
-            <Topbar active={active} title={title} sub={sub} />
-            <main className="content" key={active}>
-              {active === "panoramica" && <Panoramica />}
-              {active === "personale" && <Personale />}
-              {active === "prenotazioni" && <Prenotazioni />}
-              {active === "fatture" && <Fatture />}
-            </main>
-          </div>
-          <MobileNav active={active} onChange={setActive} />
-
-          <TweaksPanel title="Tweaks">
-            <TweakSection label="Tema">
-              <TweakRadio
-                label="Modalità"
-                value={t.theme}
-                onChange={v => setT("theme", v)}
-                options={[{value:"light", label:"Chiaro"},{value:"dark", label:"Scuro"}]}
-              />
-            </TweakSection>
-
-            <TweakSection label="Densità">
-              <TweakRadio
-                label="Spaziatura"
-                value={t.density}
-                onChange={v => setT("density", v)}
-                options={[
-                  {value:"compact", label:"Compatta"},
-                  {value:"cozy",    label:"Comoda"},
-                  {value:"comfy",   label:"Ariosa"},
-                ]}
-              />
-            </TweakSection>
-
-            <TweakSection label="Colore brand">
-              <TweakColor
-                label="Verde Margine"
-                value={t.brand}
-                onChange={v => setT("brand", v)}
-                options={["moss","forest","slate","ink","vivid"]}
-              />
-            </TweakSection>
-
-            <TweakSection label="Schermata">
-              <TweakSelect
-                label="Vai a"
-                value={active}
-                onChange={v => setActive(v)}
-                options={NAV.map(n => ({value:n.id, label:n.label}))}
-              />
-            </TweakSection>
-          </TweaksPanel>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar">G</div>
+        <div>
+          <div class="user-name">Gabriele Russo</div>
+          <div class="user-role">Proprietario</div>
         </div>
-      );
+      </div>
+      <a href="index.html" class="back-to-site">
+        <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Esci dalla demo
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="app-main">
+
+    <!-- TOPBAR -->
+    <header class="app-topbar">
+      <div class="topbar-title">
+        <h1 id="pageTitle">Panoramica</h1>
+        <p class="subtitle" id="pageSubtitle">Martedì 5 maggio 2026 · settimana 19</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-input">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>Cerca fattura, fornitore, prenotazione…</span>
+        </div>
+        <div class="notif-wrapper">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifiche" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 014 4v3l1.5 2.5h-11L4 9V6a4 4 0 014-4zm-2 12a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            <span class="dot-notif"></span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown" hidden>
+            <div class="notif-header">
+              <h3>Notifiche</h3>
+              <button class="notif-clear" type="button">Segna tutte come lette</button>
+            </div>
+            <div class="notif-list">
+              <a href="#fatture" class="notif-item unread">
+                <div class="notif-icon urgent" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 7v3M8 12v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Macelleria Ferri scade DOMANI</div>
+                  <div class="notif-desc">Fattura €1.240 — pagamento entro il 6 maggio. Saldo cassa proiettato: ok.</div>
+                  <div class="notif-time">2 minuti fa</div>
+                </div>
+              </a>
+              <a href="#personale" class="notif-item unread">
+                <div class="notif-icon warning" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M5 6a3 3 0 106 0 3 3 0 00-6 0zM2 14a6 6 0 0112 0H2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Sabato cena: serve un cameriere extra</div>
+                  <div class="notif-desc">64 coperti previsti, hai 3 in sala. Soglia di stress superata: aggiungi Tommaso 19—24.</div>
+                  <div class="notif-time">15 minuti fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item unread">
+                <div class="notif-icon warning" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M2 12l4-5 3 2 5-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 2h3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Olio EVO Frantoio Rinaldi: prezzo +22%</div>
+                  <div class="notif-desc">In 6 settimane il prezzo è passato da €5,80 a €7,08/lt. Volume tuo 18lt/mese → impatto €78/mese.</div>
+                  <div class="notif-time">1 ora fa</div>
+                </div>
+              </a>
+              <a href="#prenotazioni" class="notif-item">
+                <div class="notif-icon info" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M14 8a6 6 0 11-2.5-4.9L14 2v3.5h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Nuova prenotazione confermata</div>
+                  <div class="notif-desc">Famiglia Russo · 4 coperti · oggi 20:30 · ⚠ 1 celiaco segnalato</div>
+                  <div class="notif-time">3 ore fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon urgent" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Burrata 250g: +28% in 6 settimane</div>
+                  <div class="notif-desc">Caseificio La Sorgente. Da €4,20 a €5,38/cad. Confronto fornitori disponibile.</div>
+                  <div class="notif-time">5 ore fa</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon info" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M14 2H6a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6h6M8 9h6M8 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">47 nuove fatture classificate</div>
+                  <div class="notif-desc">Settimana 18: 31 acquisti, 8 utenze, 6 servizi, 2 catering attivi.</div>
+                  <div class="notif-time">ieri</div>
+                </div>
+              </a>
+              <a href="#panoramica" class="notif-item">
+                <div class="notif-icon neutral" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="scale(0.6) translate(2 2)"/></svg>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-title">Report del lunedì inviato</div>
+                  <div class="notif-desc">Settimana 18 · 3 azioni consegnate su WhatsApp alle 7:30. Risparmio stimato: €212/mese.</div>
+                  <div class="notif-time">2 giorni fa</div>
+                </div>
+              </a>
+            </div>
+            <a class="notif-footer" href="#">Vedi tutte le notifiche →</a>
+          </div>
+        </div>
+        <button class="icon-btn" aria-label="Impostazioni">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 8a5.5 5.5 0 00-.1-1l1.4-1-1.5-2.6-1.6.6a5.5 5.5 0 00-1.7-1L9.5 1h-3l-.5 1.6a5.5 5.5 0 00-1.7 1l-1.6-.6L1.2 6l1.4 1A5.5 5.5 0 002.5 8c0 .3 0 .7.1 1l-1.4 1 1.5 2.6 1.6-.6a5.5 5.5 0 001.7 1L6.5 15h3l.5-1.6a5.5 5.5 0 001.7-1l1.6.6 1.5-2.6-1.4-1c.1-.3.1-.7.1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+
+      <!-- ============ PAGE: PANORAMICA ============ -->
+      <section class="page active" data-page="panoramica">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip" data-period="settimana">Settimana</button>
+            <button class="chip active" data-period="mese">Mese</button>
+            <button class="chip" data-period="tre-mesi">3 mesi</button>
+            <button class="chip" data-period="anno">Anno</button>
+            <button class="chip" data-period="tutto">Tutto</button>
+          </div>
+          <div class="card-meta">Maggio 2026 · al 5 del mese</div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M3 14V3M3 14h11M5 11l3-4 3 2 3-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Ricavi del mese</div>
+            <div class="kpi-value">€23.480</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +8,2% vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 22 L10 18 L20 24 L30 16 L40 14 L50 19 L60 12 L70 9 L80 6" fill="none" stroke="#175E47" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 10h12M5 6l-3 4 3 4M11 6l3 4-3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Costi del mese</div>
+            <div class="kpi-value">€17.620</div>
+            <div class="kpi-change negative">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +3,1% vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 18 L10 17 L20 19 L30 16 L40 14 L50 13 L60 11 L70 12 L80 10" fill="none" stroke="#C0552B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Margine</div>
+            <div class="kpi-value">€5.860<span class="small"> · 24,9%</span></div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +1,2 punti vs aprile
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 20 L10 22 L20 18 L30 16 L40 14 L50 17 L60 12 L70 8 L80 7" fill="none" stroke="#1D9E75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label"><svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 8h12M5 11h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Cassa proiettata 30gg</div>
+            <div class="kpi-value">+€2.140</div>
+            <div class="kpi-change neutral">in salute, niente da segnalare</div>
+            <svg class="kpi-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+              <path d="M0 14 L10 12 L20 16 L30 13 L40 15 L50 11 L60 13 L70 10 L80 12" fill="none" stroke="#5C6660" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BIG CHART -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Ricavi, costi e margine</h2>
+            <div class="chart-legend">
+              <span><i style="background:#175E47"></i> Ricavi</span>
+              <span><i style="background:#C0552B"></i> Costi</span>
+              <span><i style="background:#E0A04A"></i> Margine</span>
+            </div>
+          </div>
+          <div class="big-chart-wrap">
+            <svg class="big-chart" viewBox="0 0 800 280" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="gradRev" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#175E47" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#175E47" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="gradMargin" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#E0A04A" stop-opacity="0.16"/>
+                  <stop offset="100%" stop-color="#E0A04A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Gridlines -->
+              <g stroke="rgba(14,20,16,0.06)" stroke-width="1">
+                <line x1="0" y1="40" x2="800" y2="40"/>
+                <line x1="0" y1="100" x2="800" y2="100"/>
+                <line x1="0" y1="160" x2="800" y2="160"/>
+                <line x1="0" y1="220" x2="800" y2="220"/>
+              </g>
+              <!-- Y axis labels -->
+              <g font-family="JetBrains Mono" font-size="9" fill="#8E948F">
+                <text x="6" y="36">30k</text>
+                <text x="6" y="96">22k</text>
+                <text x="6" y="156">15k</text>
+                <text x="6" y="216">8k</text>
+              </g>
+              <!-- Ricavi area -->
+              <path d="M0 110 L66 96 L132 124 L200 92 L266 78 L333 88 L400 64 L466 58 L533 70 L600 50 L666 56 L733 44 L800 38 L800 280 L0 280 Z" fill="url(#gradRev)"/>
+              <!-- Ricavi line -->
+              <path d="M0 110 L66 96 L132 124 L200 92 L266 78 L333 88 L400 64 L466 58 L533 70 L600 50 L666 56 L733 44 L800 38" fill="none" stroke="#175E47" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Costi line -->
+              <path d="M0 154 L66 148 L132 164 L200 138 L266 130 L333 142 L400 122 L466 118 L533 132 L600 112 L666 116 L733 106 L800 102" fill="none" stroke="#C0552B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"/>
+              <!-- Margin line -->
+              <path d="M0 220 L66 218 L132 226 L200 210 L266 202 L333 214 L400 188 L466 182 L533 198 L600 168 L666 174 L733 158 L800 150" fill="none" stroke="#E0A04A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Latest point markers -->
+              <circle cx="800" cy="38" r="5" fill="#FAF6EC" stroke="#175E47" stroke-width="2.4"/>
+              <circle cx="800" cy="102" r="4" fill="#FAF6EC" stroke="#C0552B" stroke-width="2"/>
+              <circle cx="800" cy="150" r="4" fill="#FAF6EC" stroke="#E0A04A" stroke-width="2"/>
+            </svg>
+            <div class="chart-x-axis">
+              <span>Mag 25</span><span>Giu</span><span>Lug</span><span>Ago</span><span>Set</span><span>Ott</span><span>Nov</span><span>Dic</span><span>Gen 26</span><span>Feb</span><span>Mar</span><span>Mag</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TWO COLS -->
+        <div class="dual-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Media incassi per giorno della settimana</h2>
+              <div class="card-meta">
+                <select id="dowFilter">
+                  <option value="month">Ultimo mese</option>
+                  <option value="quarter">Ultimi 3 mesi</option>
+                  <option value="year" selected>Ultimo anno</option>
+                  <option value="all">Tutti gli anni</option>
+                </select>
+              </div>
+            </div>
+            <div class="dow-chart">
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:32%"><span class="bar-value">€580</span></div></div>
+                <div class="dow-label">LUN</div>
+              </div>
+              <div class="dow-bar today">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:42%"><span class="bar-value">€720</span></div></div>
+                <div class="dow-label today">MAR</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:40%"><span class="bar-value">€690</span></div></div>
+                <div class="dow-label">MER</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:50%"><span class="bar-value">€840</span></div></div>
+                <div class="dow-label">GIO</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:74%"><span class="bar-value">€1.220</span></div></div>
+                <div class="dow-label">VEN</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:96%"><span class="bar-value">€1.560</span></div></div>
+                <div class="dow-label">SAB</div>
+              </div>
+              <div class="dow-bar">
+                <div class="dow-bar-track"><div class="dow-bar-fill" style="height:70%"><span class="bar-value">€1.180</span></div></div>
+                <div class="dow-label">DOM</div>
+              </div>
+            </div>
+            <div class="hint-box" style="margin-top:18px;margin-bottom:0">
+              <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v4M8 11.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Sabato è il tuo giorno di punta (€1.560 medio). Il martedì è sotto la media settoriale del 12% — c'è margine di crescita con eventi infrasettimanali.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Festività in arrivo</h2>
+              <div class="card-meta">Previsione · prossimi 60 giorni</div>
+            </div>
+            <div class="holiday-list">
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">2</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Festa della Repubblica</div>
+                  <div class="holiday-meta">Martedì · ponte 1-2 giugno</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.180</div>
+                  <div class="forecast-change negative">-12% vs 2025</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">15</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Domenica · ultima del Giro</div>
+                  <div class="holiday-meta">Affluenza tipica eventi sportivi</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.860</div>
+                  <div class="forecast-change positive">+18% vs media dom.</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">29</div>
+                  <div class="month">Giu</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">San Pietro · weekend</div>
+                  <div class="holiday-meta">Lunedì festivo a Bologna</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€1.420</div>
+                  <div class="forecast-change positive">+9% vs lun. medio</div>
+                </div>
+              </div>
+              <div class="holiday-row">
+                <div class="holiday-date">
+                  <div class="day">15</div>
+                  <div class="month">Ago</div>
+                </div>
+                <div class="holiday-info">
+                  <div class="holiday-name">Ferragosto</div>
+                  <div class="holiday-meta">Sabato · città semivuota</div>
+                </div>
+                <div class="holiday-forecast">
+                  <div class="forecast-value">€640</div>
+                  <div class="forecast-change negative">-58% vs sab. medio</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Avvisi sulla deriva costi</h2>
+            <span class="badge danger">3 nuovi questa settimana</span>
+          </div>
+          <div class="alerts-list">
+            <div class="alert-item">
+              <div class="alert-icon up">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Burrata 250g — Caseificio La Sorgente</div>
+                <div class="alert-meta">+18% in 6 settimane · volume mensile <strong>12 kg</strong> · impatto stimato <strong>+94 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Vedi alternativa →</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon up">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 11l5-6 5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Olio EVO Frantoio Rinaldi</div>
+                <div class="alert-meta">+22% in 8 settimane · volume <strong>18 lt/mese</strong> · impatto stimato <strong>+78 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Confronta fornitori →</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon opportunity">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 4.2 4.2.4-3 3 .8 4.4L8 12l-3.8 2 .8-4.4-3-3 4.2-.4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="alert-body">
+                <div class="alert-title">Software in abbonamento dimenticati</div>
+                <div class="alert-meta">2 abbonamenti senza attività da 4 mesi · risparmio totale <strong>+118 €/mese</strong></div>
+              </div>
+              <button class="alert-action">Disdici →</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============ PAGE: PERSONALE ============ -->
+      <section class="page" data-page="personale">
+
+        <div class="filter-bar">
+          <div class="week-nav">
+            <button class="nav-arrow" aria-label="Settimana precedente">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="week-label">5 → 11 maggio 2026</span>
+            <button class="nav-arrow" aria-label="Settimana successiva">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-secondary">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M7 1v8M3 5l4-4 4 4M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Esporta calendario
+            </button>
+            <button class="btn-primary-app">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Condividi con il team
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti previsti settimana</div>
+            <div class="kpi-value">312<span class="small"> /405</span></div>
+            <div class="kpi-change neutral">77% di occupazione attesa</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Costo lavoro previsto</div>
+            <div class="kpi-value">€2.420</div>
+            <div class="kpi-change negative">31% sui ricavi attesi · target 28%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Risparmio se applichi i consigli</div>
+            <div class="kpi-value">€176</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              porta il costo lavoro al 28,8%
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Ore totali pianificate</div>
+            <div class="kpi-value">186<span class="small"> h</span></div>
+            <div class="kpi-change neutral">su 6 collaboratori attivi</div>
+          </div>
+        </div>
+
+        <div class="hint-box">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v4M8 11.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Il sistema calcola il fabbisogno personale incrociando coperti previsti, prenotazioni confermate e produttività media (1 cameriere ogni 14-16 coperti, 1 cuoco ogni 25 coperti).
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Pianificazione della settimana</h2>
+            <span class="card-meta">Trascina i turni per modificare · clicca un giorno per i dettagli</span>
+          </div>
+          <div class="staff-week">
+            <!-- Header -->
+            <div class="staff-week-head">
+              <div class="staff-name-col-h">Personale</div>
+              <div class="day-col-h"><div class="day-name">LUN</div><div class="day-date">5</div><div class="day-meta">22 cop.</div></div>
+              <div class="day-col-h today"><div class="day-name">MAR</div><div class="day-date">6</div><div class="day-meta">28 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">MER</div><div class="day-date">7</div><div class="day-meta">26 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">GIO</div><div class="day-date">8</div><div class="day-meta">34 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">VEN</div><div class="day-date">9</div><div class="day-meta">58 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">SAB</div><div class="day-date">10</div><div class="day-meta">64 cop.</div></div>
+              <div class="day-col-h"><div class="day-name">DOM</div><div class="day-date">11</div><div class="day-meta">52 cop.</div></div>
+            </div>
+
+            <!-- Luca - Cuoco -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar">L</div>
+                <div>
+                  <div class="staff-name">Luca Bianchi</div>
+                  <div class="staff-role">Cuoco · €13/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift full">12—15</span><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift full">12—15</span><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Maria - Aiuto cucina -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-1">M</div>
+                <div>
+                  <div class="staff-name">Maria Conti</div>
+                  <div class="staff-role">Aiuto cucina · €10/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">18—24</span></div>
+              <div class="shift-cell"><span class="shift">18—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Sara -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-2">S</div>
+                <div>
+                  <div class="staff-name">Sara De Luca</div>
+                  <div class="staff-role">Sala · €11/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+            </div>
+
+            <!-- Paolo -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-3">P</div>
+                <div>
+                  <div class="staff-name">Paolo Riva</div>
+                  <div class="staff-role">Sala · €11/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">riposo</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—23</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">12—15</span></div>
+            </div>
+
+            <!-- Tommaso (junior) -->
+            <div class="staff-row">
+              <div class="staff-name-cell">
+                <div class="staff-avatar alt-4">T</div>
+                <div>
+                  <div class="staff-name">Tommaso Greco</div>
+                  <div class="staff-role">Runner · €9/h</div>
+                </div>
+              </div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift">19—24</span></div>
+              <div class="shift-cell"><span class="shift off">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Suggerimenti del sistema</h2>
+            <span class="card-meta">Basati su prenotazioni confermate al 5 maggio 18:30</span>
+          </div>
+          <div class="day-suggestions">
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">MAR</div><div class="dt-date">6</div></div>
+              <div class="suggest-message">Solo <strong>11 prenotazioni confermate</strong> e media storica martedì = 24 cop. Hai <strong>2 in sala</strong>: ok, lascia così.</div>
+              <div class="suggest-savings">Nessuna azione</div>
+              <div></div>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">MER</div><div class="dt-date">7</div></div>
+              <div class="suggest-message">Hai schedulato <strong>2 in sala</strong> (Sara + Paolo) ma le prenotazioni sono ancora a 8 e media storica = 19 cop. Una basta.</div>
+              <div class="suggest-savings">Risparmio<strong>€44</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">SAB</div><div class="dt-date">10</div></div>
+              <div class="suggest-message">Prenotazioni già a <strong>52 su 64 cop. previsti</strong>. Considera di rinforzare con Tommaso anche al pranzo (12-15).</div>
+              <div class="suggest-savings">Costo aggiuntivo<strong>€27</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+            <div class="day-suggest">
+              <div class="day-tag"><div class="dt-day">DOM</div><div class="dt-date">11</div></div>
+              <div class="suggest-message">52 coperti previsti al pranzo, hai solo <strong>1 cuoco e 1 sala</strong>. È sopra la soglia di stress per la coppia. Aggiungi Maria al pranzo.</div>
+              <div class="suggest-savings">Costo aggiuntivo<strong>€33</strong></div>
+              <button class="suggest-apply">Applica</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PAGE: PRENOTAZIONI ============ -->
+      <section class="page" data-page="prenotazioni">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip active">Tutte</button>
+            <button class="chip">Oggi</button>
+            <button class="chip">Domani</button>
+            <button class="chip">Settimana</button>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span class="badge success">
+              <svg viewBox="0 0 12 12" fill="none" width="9" height="9"><circle cx="6" cy="6" r="3" fill="currentColor"/></svg>
+              Bot online
+            </span>
+            <button class="btn-secondary">Apri WhatsApp Business</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti oggi</div>
+            <div class="kpi-value">38<span class="small"> /42</span></div>
+            <div class="kpi-change positive">90% di occupazione · sera quasi piena</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Coperti settimana</div>
+            <div class="kpi-value">312</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +18% vs settimana scorsa
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Tasso cancellazione</div>
+            <div class="kpi-value">8,2<span class="small">%</span></div>
+            <div class="kpi-change neutral">media settore Bologna 11%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Prenotazioni via bot</div>
+            <div class="kpi-value">71<span class="small">%</span></div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              +9 punti vs marzo
+            </div>
+          </div>
+        </div>
+
+        <div class="dual-grid">
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Prenotazioni recenti</h2>
+              <span class="card-meta">Ultime 24 ore · live dal bot</span>
+            </div>
+            <div class="reservations-feed">
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day today">OGGI</div>
+                  <div class="rsv-hour">20:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Famiglia Russo <span class="rsv-size">×4</span></div>
+                  <div class="rsv-meta">+39 339 412 5588 · richiesta 5 mag 14:18</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ celiaco</span>
+                    <span class="rsv-tag info">ricorrenza · compleanno</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day today">OGGI</div>
+                  <div class="rsv-hour">21:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">M. Bianchi <span class="rsv-size">×2</span></div>
+                  <div class="rsv-meta">+39 348 ··· 8214 · richiesta 5 mag 11:42</div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">DOM</div>
+                  <div class="rsv-hour">13:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Aliquota S.r.l. — pranzo team <span class="rsv-size">×6</span></div>
+                  <div class="rsv-meta">aliquota.it · fattura richiesta · 5 mag 09:55</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ 1 vegetariano</span>
+                    <span class="rsv-tag neutral">menu fisso 28€</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">VEN</div>
+                  <div class="rsv-hour">20:00</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Studio Conti — cena cliente <span class="rsv-size">×8</span></div>
+                  <div class="rsv-meta">+39 051 ··· 4422 · 4 mag 17:30</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag warn">⚠ 1 intolleranza lattosio</span>
+                    <span class="rsv-tag neutral">posto al piano</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">SAB</div>
+                  <div class="rsv-hour">21:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">A. Verdi <span class="rsv-size">×3</span></div>
+                  <div class="rsv-meta">+39 333 ··· 9087 · cancellata stamattina 08:14</div>
+                </div>
+                <span class="status-badge cancelled">Cancellata</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">SAB</div>
+                  <div class="rsv-hour">20:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Eleonora Pasi <span class="rsv-size">×2</span></div>
+                  <div class="rsv-meta">+39 392 ··· 7711 · in attesa di carta credito di garanzia</div>
+                </div>
+                <span class="status-badge pending">In attesa</span>
+              </div>
+
+              <div class="rsv-item">
+                <div class="rsv-time">
+                  <div class="rsv-day">DOM</div>
+                  <div class="rsv-hour">12:30</div>
+                </div>
+                <div class="rsv-body">
+                  <div class="rsv-name">Famiglia Petrini — pranzo battesimo <span class="rsv-size">×14</span></div>
+                  <div class="rsv-meta">+39 340 ··· 5566 · 4 mag 21:02</div>
+                  <div class="rsv-tags">
+                    <span class="rsv-tag info">menu concordato</span>
+                    <span class="rsv-tag neutral">acconto €100 ricevuto</span>
+                  </div>
+                </div>
+                <span class="status-badge ok">Confermata</span>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column">
+            <div class="card-header">
+              <h2>Bot Margine via WhatsApp</h2>
+              <span class="badge success">attivo</span>
+            </div>
+            <div class="chat-preview" style="flex:1">
+              <div class="chat-day">Oggi</div>
+              <div class="chat-bubble customer">Buonasera, è possibile prenotare per 4 questa sera alle 20:30?<span class="ts">14:14</span></div>
+              <div class="chat-bubble bot">Ciao! Tavolo per 4 alle 20:30 disponibile ✓<br/>Mi confermi nome e numero?<span class="ts">14:14</span></div>
+              <div class="chat-bubble customer">Famiglia Russo, sono il numero che state vedendo<span class="ts">14:16</span></div>
+              <div class="chat-bubble bot">Perfetto Famiglia Russo, prenotazione registrata.<br/>Avete <strong>intolleranze o allergie</strong> da segnalarci?<span class="ts">14:16</span></div>
+              <div class="chat-bubble customer">Sì mio figlio è celiaco, c'è qualcosa per lui?<span class="ts">14:18</span></div>
+              <div class="chat-bubble bot">Annotato 👍 Abbiamo pasta e dolci dedicati. Lo chef vi dirà al tavolo.<br/>Vi aspettiamo alle 20:30!<span class="ts">14:18</span></div>
+              <div class="chat-typing">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ PAGE: FATTURE ============ -->
+      <section class="page" data-page="fatture">
+
+        <div class="filter-bar">
+          <div class="chip-group">
+            <button class="chip active">Tutte</button>
+            <button class="chip">Da pagare</button>
+            <button class="chip">Pagate</button>
+            <button class="chip">In contestazione</button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-secondary">
+              <svg viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h10M2 10h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Filtri
+            </button>
+            <button class="btn-secondary">Esporta</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Da pagare questa settimana</div>
+            <div class="kpi-value">€1.620</div>
+            <div class="kpi-change urgent">
+              <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3v3M6 8.5v0.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              2 in scadenza nei prossimi 5gg
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Da pagare totale</div>
+            <div class="kpi-value">€8.430</div>
+            <div class="kpi-change neutral">14 fatture · scadenza media 22gg</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Pagate questo mese</div>
+            <div class="kpi-value">€12.180</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              22 fatture, tutte in tempo
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Insoluti</div>
+            <div class="kpi-value">€0</div>
+            <div class="kpi-change positive">tutto in regola</div>
+          </div>
+        </div>
+
+        <!-- URGENT -->
+        <div class="section-head first">
+          <h3>⚠ Urgenze · entro 5 giorni</h3>
+          <span class="meta">2 fatture · totale €1.620</span>
+        </div>
+        <div class="invoices-list">
+          <div class="invoice-row urgent">
+            <div class="inv-supplier">
+              Macelleria Ferri Bologna
+              <span class="inv-id">FT 2026-04-187 · sett. 17</span>
+            </div>
+            <div class="inv-desc">Carne fresca · 18 kg manzo, 4 kg vitello</div>
+            <div class="inv-amount">€1.240,00</div>
+            <div class="inv-due">
+              <div class="due-label">Scade</div>
+              <div class="due-date">domani · 6 mag</div>
+            </div>
+            <button class="inv-action">Segna pagata</button>
+          </div>
+          <div class="invoice-row urgent">
+            <div class="inv-supplier">
+              Centrale del Latte di Modena
+              <span class="inv-id">FT 2026-04-44 · sett. 17-18</span>
+            </div>
+            <div class="inv-desc">Latte intero, panna, mascarpone</div>
+            <div class="inv-amount">€380,00</div>
+            <div class="inv-due">
+              <div class="due-label">Scade</div>
+              <div class="due-date">7 mag · 2 gg</div>
+            </div>
+            <button class="inv-action">Segna pagata</button>
+          </div>
+        </div>
+
+        <!-- COMING -->
+        <div class="section-head">
+          <h3>In arrivo · prossimi 30 giorni</h3>
+          <span class="meta">12 fatture · totale €6.810</span>
+        </div>
+        <div class="card scrollable-table" style="padding:0">
+          <table class="invoices-table">
+            <thead>
+              <tr>
+                <th class="col-supplier">Fornitore</th>
+                <th>Descrizione</th>
+                <th style="text-align:right">Importo</th>
+                <th>Scadenza</th>
+                <th class="col-status">Stato</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-supplier">Az. Agricola Bergonzini<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-92</div></td>
+                <td>Vino sfuso · 60lt Sangiovese, 40lt Chardonnay</td>
+                <td class="col-amount">€890</td>
+                <td class="col-due">12 mag · 7 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Enel Energia<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-7712</div></td>
+                <td>Bolletta luce aprile · 1.842 kWh</td>
+                <td class="col-amount">€312</td>
+                <td class="col-due">14 mag · 9 gg</td>
+                <td class="col-status"><span class="badge neutral">RID</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Compagnia Olearia Rinaldi<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-58</div></td>
+                <td>Olio EVO 12 lt · ↑ vedi avviso</td>
+                <td class="col-amount">€240</td>
+                <td class="col-due">18 mag · 13 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Ortofrutta Bonanni<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-05-3</div></td>
+                <td>Frutta e verdura settimana 18</td>
+                <td class="col-amount">€420</td>
+                <td class="col-due">19 mag · 14 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Hera Gas<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-2298</div></td>
+                <td>Bolletta gas aprile · cucina + acqua calda</td>
+                <td class="col-amount">€198</td>
+                <td class="col-due">22 mag · 17 gg</td>
+                <td class="col-status"><span class="badge neutral">RID</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Caseificio La Sorgente<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-110</div></td>
+                <td>Burrata, mozzarella, ricotta · ↑ vedi avviso</td>
+                <td class="col-amount">€340</td>
+                <td class="col-due">24 mag · 19 gg</td>
+                <td class="col-status"><span class="badge warn">Pianificata</span></td>
+                <td><button class="inv-action secondary">Posticipa</button></td>
+              </tr>
+              <tr>
+                <td class="col-supplier">Studio Bertoldi (commercialista)<div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:3px">FT 2026-04-22</div></td>
+                <td>Tenuta contabilità · maggio</td>
+                <td class="col-amount">€220</td>
+                <td class="col-due">31 mag · 26 gg</td>
+                <td class="col-status"><span class="badge neutral">SDD</span></td>
+                <td><button class="inv-action disabled">Auto</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PAID -->
+        <div class="section-head">
+          <h3>Pagate questo mese</h3>
+          <span class="meta">22 fatture · totale €12.180 · tutte in tempo</span>
+        </div>
+        <div class="invoices-list">
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Ortofrutta Bonanni
+              <span class="inv-id">FT 2026-04-118 · pagata 2 mag</span>
+            </div>
+            <div class="inv-desc">Frutta e verdura settimana 17</div>
+            <div class="inv-amount">€420,00</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">2 mag · bonifico</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Macelleria Ferri Bologna
+              <span class="inv-id">FT 2026-04-156 · pagata 28 apr</span>
+            </div>
+            <div class="inv-desc">Carne fresca settimana 16</div>
+            <div class="inv-amount">€1.180,00</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">28 apr · bonifico</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div class="invoice-row paid">
+            <div class="inv-supplier">
+              Iliad Business
+              <span class="inv-id">FT 2026-04-44ZX · pagata 26 apr</span>
+            </div>
+            <div class="inv-desc">Connettività mese di aprile</div>
+            <div class="inv-amount">€19,99</div>
+            <div class="inv-due">
+              <div class="due-label">Pagata</div>
+              <div class="due-date">26 apr · RID</div>
+            </div>
+            <span class="status-badge ok">Pagata</span>
+          </div>
+          <div style="background:var(--surface);padding:14px 18px;border-top:1px solid var(--line-2);display:flex;justify-content:center">
+            <button class="btn-secondary">Vedi le altre 19 fatture pagate ↓</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============ Shift edit modal ============ -->
+<div class="shift-modal-overlay" id="shiftModalOverlay" hidden>
+  <div class="shift-modal">
+    <div class="shift-modal-meta" id="shiftModalMeta">Membro staff · Giorno</div>
+    <div class="shift-modal-title">Modifica turno</div>
+    <div class="shift-modal-form">
+      <label>
+        <span>Tipo</span>
+        <select id="shiftType">
+          <option value="cena">Cena</option>
+          <option value="pranzo">Pranzo</option>
+          <option value="doppio">Doppio turno</option>
+          <option value="riposo">Riposo</option>
+        </select>
+      </label>
+      <div class="shift-times" id="shiftTimes">
+        <label>
+          <span>Dalle</span>
+          <input type="time" id="shiftFrom" value="19:00" />
+        </label>
+        <label>
+          <span>Alle</span>
+          <input type="time" id="shiftTo" value="23:00" />
+        </label>
+      </div>
+    </div>
+    <div class="shift-modal-actions">
+      <button class="btn-secondary" type="button" id="shiftCancel">Annulla</button>
+      <button class="btn-primary-app" type="button" id="shiftSave">Salva turno</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast container ============ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============ Bottom navigation (mobile only) ============ -->
+<nav class="bottom-nav" aria-label="Navigazione principale">
+  <a href="#panoramica" class="bn-item" data-tab="panoramica">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M3 13h7V3H3v10zm0 8h7v-6H3v6zm11 0h7V11h-7v10zm0-18v6h7V3h-7z" fill="currentColor"/>
+    </svg>
+    <span>Panoramica</span>
+  </a>
+  <a href="#personale" class="bn-item" data-tab="personale">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm-7 9a7 7 0 0114 0H2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+    <span>Personale</span>
+  </a>
+  <a href="#prenotazioni" class="bn-item" data-tab="prenotazioni">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Prenotazioni</span>
+    <span class="bn-badge">14</span>
+  </a>
+  <a href="#fatture" class="bn-item" data-tab="fatture">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Fatture</span>
+    <span class="bn-badge urgent">2</span>
+  </a>
+</nav>
+
+<script>
+(function(){
+  const PAGES = {
+    panoramica: { title: 'Panoramica', subtitle: 'Martedì 5 maggio 2026 · settimana 19' },
+    personale: { title: 'Personale', subtitle: 'Pianificazione settimana 5 → 11 maggio' },
+    prenotazioni: { title: 'Prenotazioni', subtitle: 'Live dal bot WhatsApp · 14 in arrivo oggi' },
+    fatture: { title: 'Fatture', subtitle: '€1.620 in scadenza nei prossimi 5 giorni' }
+  };
+
+  function showPage(key){
+    if(!PAGES[key]) key = 'panoramica';
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === key));
+    document.querySelectorAll('.sidebar-nav .nav-item, .bottom-nav .bn-item').forEach(a => a.classList.toggle('active', a.dataset.tab === key));
+    document.getElementById('pageTitle').textContent = PAGES[key].title;
+    document.getElementById('pageSubtitle').textContent = PAGES[key].subtitle;
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function fromHash(){
+    const h = (location.hash || '#panoramica').slice(1);
+    showPage(h);
+  }
+
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  // Filter chip interactivity (visual toggle within each group)
+  document.querySelectorAll('.chip-group').forEach(group => {
+    group.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // Suggest apply (visual + toast)
+  document.querySelectorAll('.suggest-apply, .alert-action, .inv-action:not(.disabled):not(.secondary)').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const b = e.currentTarget;
+      const original = b.textContent;
+      b.textContent = '✓ fatto';
+      b.style.background = 'var(--green-700)';
+      const action = original.toLowerCase();
+      let msg = 'Azione applicata';
+      if (action.includes('paga')) msg = 'Fattura segnata come pagata';
+      else if (action.includes('applica')) msg = 'Suggerimento applicato';
+      else if (action.includes('alternativa')) msg = 'Confronto fornitori aperto';
+      else if (action.includes('disdici')) msg = 'Promemoria disdetta inviato';
+      else if (action.includes('confronta')) msg = 'Confronto fornitori avviato';
+      showToast(msg);
+      setTimeout(() => { b.textContent = original; b.style.background = ''; }, 1800);
+    });
+  });
+
+  // ============ Toast helper ============
+  function showToast(text){
+    const container = document.getElementById('toastContainer');
+    if(!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<span class="toast-icon">✓</span><span>' + text + '</span>';
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 2400);
+  }
+  window.showToast = showToast;
+
+  // ============ Notifications dropdown ============
+  const notifBtn = document.getElementById('notifBtn');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const dotNotif = notifBtn ? notifBtn.querySelector('.dot-notif') : null;
+
+  function updateUnreadDot(){
+    if(!dotNotif) return;
+    const hasUnread = !!notifDropdown.querySelector('.notif-item.unread');
+    dotNotif.style.display = hasUnread ? '' : 'none';
+  }
+
+  if(notifBtn && notifDropdown){
+    notifBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = !notifDropdown.hidden;
+      notifDropdown.hidden = isOpen;
+      notifBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    document.addEventListener('click', e => {
+      if(!notifDropdown.hidden && !notifDropdown.contains(e.target) && !notifBtn.contains(e.target)){
+        notifDropdown.hidden = true;
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    notifDropdown.addEventListener('click', e => {
+      const item = e.target.closest('.notif-item');
+      if(item){
+        item.classList.remove('unread');
+        updateUnreadDot();
+      }
+      const link = e.target.closest('a.notif-item, a.notif-footer');
+      if(link){
+        setTimeout(() => {
+          notifDropdown.hidden = true;
+          notifBtn.setAttribute('aria-expanded', 'false');
+        }, 60);
+      }
+    });
+
+    const clearBtn = notifDropdown.querySelector('.notif-clear');
+    if(clearBtn){
+      clearBtn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        notifDropdown.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
+        updateUnreadDot();
+        showToast('Notifiche segnate come lette');
+      });
+    }
+  }
+
+  // ============ Shift edit modal ============
+  const shiftModalOverlay = document.getElementById('shiftModalOverlay');
+  const shiftType = document.getElementById('shiftType');
+  const shiftFrom = document.getElementById('shiftFrom');
+  const shiftTo = document.getElementById('shiftTo');
+  const shiftTimes = document.getElementById('shiftTimes');
+  const shiftSave = document.getElementById('shiftSave');
+  const shiftCancel = document.getElementById('shiftCancel');
+  const shiftModalMeta = document.getElementById('shiftModalMeta');
+
+  let activeShiftCell = null;
+
+  function openShiftModal(cell){
+    activeShiftCell = cell;
+
+    const row = cell.closest('.staff-row');
+    const staffName = row && row.querySelector('.staff-name') ? row.querySelector('.staff-name').textContent.trim() : 'Membro staff';
+
+    const cellsInRow = row ? Array.from(row.children) : [];
+    const cellIndex = cellsInRow.indexOf(cell); // 0 = staff name, 1-7 = days
+    const dayHeaders = document.querySelectorAll('.staff-week-head .day-col-h');
+    const dayHeader = dayHeaders[cellIndex - 1];
+    let dayLabel = 'Giorno';
+    if(dayHeader){
+      const dn = dayHeader.querySelector('.day-name')?.textContent.trim();
+      const dd = dayHeader.querySelector('.day-date')?.textContent.trim();
+      dayLabel = (dn && dd) ? (dn + ' ' + dd + ' maggio') : dayLabel;
+    }
+    shiftModalMeta.textContent = staffName + ' · ' + dayLabel;
+
+    // Determine current state from cell content
+    const shifts = cell.querySelectorAll('.shift');
+    const firstShift = shifts[0];
+    const txt = firstShift ? firstShift.textContent.trim() : '';
+
+    if(!firstShift || txt === '—'){
+      shiftType.value = 'cena';
+      shiftFrom.value = '19:00';
+      shiftTo.value = '23:00';
+      shiftTimes.classList.remove('hidden');
+    } else if(firstShift.classList.contains('off')){
+      shiftType.value = 'riposo';
+      shiftTimes.classList.add('hidden');
+    } else {
+      const m = txt.match(/(\d{1,2})\D+(\d{1,2})/);
+      if(m){
+        const fromHour = parseInt(m[1], 10);
+        const toHour = parseInt(m[2], 10);
+        if(shifts.length > 1){
+          shiftType.value = 'doppio';
+          shiftFrom.value = '12:00';
+          shiftTo.value = '23:00';
+        } else if(fromHour < 14){
+          shiftType.value = 'pranzo';
+          shiftFrom.value = String(fromHour).padStart(2,'0') + ':00';
+          shiftTo.value = String(toHour).padStart(2,'0') + ':00';
+        } else {
+          shiftType.value = 'cena';
+          shiftFrom.value = String(fromHour).padStart(2,'0') + ':00';
+          shiftTo.value = String(toHour).padStart(2,'0') + ':00';
+        }
+      } else {
+        shiftType.value = 'cena';
+        shiftFrom.value = '19:00';
+        shiftTo.value = '23:00';
+      }
+      shiftTimes.classList.remove('hidden');
     }
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-  </script>
+    shiftModalOverlay.hidden = false;
+    setTimeout(() => shiftType.focus(), 50);
+  }
+
+  function closeShiftModal(){
+    shiftModalOverlay.hidden = true;
+    activeShiftCell = null;
+  }
+
+  function saveShift(){
+    if(!activeShiftCell) return;
+    const type = shiftType.value;
+
+    if(type === 'riposo'){
+      activeShiftCell.innerHTML = '<span class="shift off">riposo</span>';
+    } else {
+      const fromInt = parseInt(shiftFrom.value.split(':')[0], 10);
+      const toInt = parseInt(shiftTo.value.split(':')[0], 10);
+      if(type === 'doppio'){
+        activeShiftCell.innerHTML = '<span class="shift full">' + fromInt + '—15</span><span class="shift">19—' + toInt + '</span>';
+      } else if(type === 'pranzo'){
+        activeShiftCell.innerHTML = '<span class="shift full">' + fromInt + '—' + toInt + '</span>';
+      } else {
+        activeShiftCell.innerHTML = '<span class="shift">' + fromInt + '—' + toInt + '</span>';
+      }
+    }
+
+    closeShiftModal();
+    showToast('Turno aggiornato');
+  }
+
+  // Shift type change → adjust default times
+  if(shiftType){
+    shiftType.addEventListener('change', () => {
+      if(shiftType.value === 'riposo'){
+        shiftTimes.classList.add('hidden');
+      } else {
+        shiftTimes.classList.remove('hidden');
+        if(shiftType.value === 'pranzo'){
+          shiftFrom.value = '12:00'; shiftTo.value = '15:00';
+        } else if(shiftType.value === 'cena'){
+          shiftFrom.value = '19:00'; shiftTo.value = '23:00';
+        } else if(shiftType.value === 'doppio'){
+          shiftFrom.value = '12:00'; shiftTo.value = '23:00';
+        }
+      }
+    });
+  }
+
+  if(shiftSave) shiftSave.addEventListener('click', saveShift);
+  if(shiftCancel) shiftCancel.addEventListener('click', closeShiftModal);
+  if(shiftModalOverlay){
+    shiftModalOverlay.addEventListener('click', e => {
+      if(e.target === shiftModalOverlay) closeShiftModal();
+    });
+  }
+
+  // Click on shift cells (event delegation, only in personale page)
+  document.addEventListener('click', e => {
+    const cell = e.target.closest('.shift-cell');
+    if(cell && cell.closest('[data-page="personale"]')) openShiftModal(cell);
+  });
+
+  // ESC closes any open overlay
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      if(shiftModalOverlay && !shiftModalOverlay.hidden) closeShiftModal();
+      if(notifDropdown && !notifDropdown.hidden){
+        notifDropdown.hidden = true;
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  // Initial state
+  updateUnreadDot();
+})();
+</script>
+
 </body>
 </html>
