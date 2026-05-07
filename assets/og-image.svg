@@ -32,7 +32,7 @@
 
   <!-- Wordmark -->
   <text x="230" y="265" fill="#ffffff" font-size="68" font-weight="500" letter-spacing="-2">
-    peak<tspan fill="#A8E5CE">rest</tspan>
+    Peak<tspan fill="#A8E5CE">rest</tspan>
   </text>
 
   <!-- Headline -->
