@@ -356,6 +356,8 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
   box-shadow:var(--shadow-xs);
 }
 .card + .card{margin-top:18px}
+.card + .dual-grid{margin-top:18px}
+.dual-grid + .card{margin-top:18px}
 .card-header{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:20px;gap:14px;flex-wrap:wrap;
@@ -430,7 +432,6 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
 /* Dual grid (2 columns) */
 .dual-grid{
   display:grid;grid-template-columns:1.4fr 1fr;gap:18px;
-  margin-bottom:18px;
 }
 
 /* ============ PANORAMICA ============ */
@@ -486,11 +487,12 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
 .dow-bar.today .dow-bar-fill::after{
   content:"";position:absolute;left:50%;transform:translateX(-50%);
   bottom:100%;
-  width:8px;height:8px;border-radius:50%;
+  width:6px;height:6px;border-radius:50%;
   background:var(--amber);
-  margin-bottom:6px;
-  box-shadow:0 0 0 4px rgba(224,160,74,0.18);
+  margin-bottom:4px;
+  box-shadow:0 0 0 3px rgba(224,160,74,0.18);
 }
+.dow-bar.today .dow-bar-fill .bar-value{top:-36px}
 .dow-label{
   font-family:var(--mono);font-size:11px;font-weight:500;
   color:var(--ink-3);text-transform:uppercase;letter-spacing:0.1em;
@@ -1128,6 +1130,9 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
   /* Card padding ridotti */
   .card{padding:18px 18px}
   .card + .card{margin-top:14px}
+  .card + .dual-grid{margin-top:14px}
+  .dual-grid + .card{margin-top:14px}
+  .dual-grid{gap:14px;margin-bottom:0}
   .card-header{margin-bottom:14px;gap:10px}
   .card-header h2{font-size:20px}
 
@@ -1405,6 +1410,9 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
   /* ============ Cards più puliti ============ */
   .card{padding:16px 16px;border-radius:14px}
   .card + .card{margin-top:12px}
+  .card + .dual-grid{margin-top:12px}
+  .dual-grid + .card{margin-top:12px}
+  .dual-grid{gap:12px;margin-bottom:0}
   .card-header{margin-bottom:12px;gap:8px}
   .card-header h2{font-size:18px;line-height:1.15}
   .card-meta{font-size:11px}
@@ -1586,6 +1594,9 @@ input,select{font-family:inherit;font-size:inherit;color:inherit}
     background:var(--surface);
   }
   .card + .card{margin-top:12px}
+  .card + .dual-grid{margin-top:12px}
+  .dual-grid + .card{margin-top:12px}
+  .dual-grid{gap:12px;margin-bottom:0}
   .card-header{margin-bottom:12px;gap:10px}
   .card-header h2{
     font-family:-apple-system, BlinkMacSystemFont, var(--serif);
