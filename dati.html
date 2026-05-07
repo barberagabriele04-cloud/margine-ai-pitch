@@ -158,13 +158,21 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-0.02em}
 }
 .hstat{
   background:#fff;border:1px solid var(--line);
-  border-radius:var(--radius-l);padding:24px 22px;
+  border-radius:var(--radius-l);padding:24px 24px;
 }
 .hstat .num{font-family:var(--serif);font-size:54px;line-height:1;letter-spacing:-0.02em;color:var(--green-800)}
 .hstat .lbl{font-size:13px;color:var(--ink-3);margin-top:10px;line-height:1.5}
 @media (max-width:880px){
   .page-hero-grid{grid-template-columns:1fr;gap:36px}
   .page-hero{padding:48px 0 56px}
+}
+@media (max-width:640px){
+  .block-head{gap:14px;margin-bottom:32px}
+}
+@media (max-width:380px){
+  .nav-cta{padding:7px 12px;font-size:12px}
+  .h-section{font-size:30px}
+  .page-hero h1{font-size:38px}
 }
 
 /* ---------- Section base ---------- */
