@@ -1,11 +1,11 @@
-# Margine.ai — pitch + demo gestionale
+# Peakrest — pitch + demo gestionale
 
-Sito statico per la presentazione di **Margine.ai** ai ristoratori prospect, con demo navigabile dell'interfaccia. Vanilla HTML/CSS/JS, nessun build step, nessuna dipendenza esterna oltre ai font Google e ad Anthropic/OpenAI side (non runtime).
+Sito statico per la presentazione di **Peakrest** ai ristoratori prospect, con demo navigabile dell'interfaccia. Vanilla HTML/CSS/JS, nessun build step, nessuna dipendenza esterna oltre ai font Google e ad Anthropic/OpenAI side (non runtime).
 
 ## Struttura attuale
 
 ```
-margine.ai/
+peakrest/
 ├── index.html             # ⭐ pitch principale (1-pager con piani, ROI, FAQ)
 ├── dati.html              # pagina di approfondimento "quali dati ci servono"
 ├── gestionale.html        # demo navigabile dell'interfaccia (4 dashboard)
@@ -38,13 +38,13 @@ Flusso navigabile:
 ## Pubblicazione su GitHub Pages — passo passo
 
 ### 1. Crea un repo su GitHub
-Vai su [github.com/new](https://github.com/new), crea un repo (es. `margine-ai-pitch`). Lascialo **pubblico** (GitHub Pages gratuito richiede repo pubblico).
+Vai su [github.com/new](https://github.com/new), crea un repo (es. `peakrest-pitch`). Lascialo **pubblico** (GitHub Pages gratuito richiede repo pubblico).
 
 ### 2. Inizializza git e pusha
 Da terminale, dentro la cartella del progetto:
 
 ```bash
-cd "C:/Users/barbe/Desktop/margine.ai"
+cd "C:/Users/barbe/Desktop/peakrest"
 
 git init
 git add .
@@ -77,11 +77,11 @@ git push
 ```
 GitHub Pages ricostruisce automaticamente in 1-2 minuti.
 
-## (Opzionale) Custom domain `margine.ai`
+## (Opzionale) Custom domain `peakrest`
 
 Quando hai il dominio:
 
-1. Crea un file `CNAME` nella root con dentro solo: `margine.ai`
+1. Crea un file `CNAME` nella root con dentro solo: `peakrest`
 2. Nel pannello DNS del dominio aggiungi:
    - 4 record `A` agli IP di GitHub Pages:
      ```
@@ -93,7 +93,7 @@ Quando hai il dominio:
    - 1 record `CNAME` da `www` a `<TUO_UTENTE>.github.io`
 3. Su GitHub Pages → spunta **Enforce HTTPS**
 
-Dopo 5-30 minuti il dominio risolve a https://margine.ai.
+Dopo 5-30 minuti il dominio risolve a https://peakrest.com.
 
 ## Personalizzazione veloce
 
@@ -103,7 +103,7 @@ Dopo 5-30 minuti il dominio risolve a https://margine.ai.
 | Prezzi dei 4 piani | `index.html`, sezione `#piani` |
 | Esempio messaggio WhatsApp | `index.html`, sezione hero (`.wa-bubble`) |
 | Mock dashboard | `gestionale.html` (dati hard-coded, modifica i numeri inline) |
-| Email contatto | sostituisci `mailto:hello@margine.ai` (cerca con grep) |
+| Email contatto | sostituisci `mailto:hello@peakrest.com` (cerca con grep) |
 | Numero WhatsApp | sostituisci `https://wa.me/` con `https://wa.me/+39…` |
 
 ## Compatibilità mobile
@@ -119,4 +119,4 @@ Niente overflow orizzontale.
 
 - Il claim ROI (€400-900/mese, 6× ritorno) è basato sulla nostra analisi costi reali post-ricerca SDI/WhatsApp/LLM 2026.
 - Il piano Brand è strutturato come "AI-driven social automation", non agenzia umana — coerente coi margini sostenibili a €250.
-- Margine.ai non promette **menu engineering classico** (richiede dati POS oggi non standardizzati in Italia). Il pitch è esplicito su questo lato `dati.html`.
+- Peakrest non promette **menu engineering classico** (richiede dati POS oggi non standardizzati in Italia). Il pitch è esplicito su questo lato `dati.html`.
